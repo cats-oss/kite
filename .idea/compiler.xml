@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="kite-core" target="1.8" />
+      <module name="kite-epoxy" target="1.8" />
+      <module name="kite.buildSrc" target="1.8" />
+      <module name="kite.kite-core" target="1.8" />
+      <module name="kite.kite-epoxy" target="1.8" />
+      <module name="kite.kite-sample" target="1.8" />
+      <module name="kotlin-android-template.app" target="1.8" />
+      <module name="kotlin-android-template.buildSrc" target="1.8" />
+      <module name="kotlin-android-template.library-android" target="1.8" />
+      <module name="kotlin-android-template.library-kotlin" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
