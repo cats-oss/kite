@@ -1,8 +1,17 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
   `module-config`
   id("com.android.application")
   kotlin("android")
   id("kotlin-android-extensions")
+}
+
+android {
+
+  buildFeatures {
+    viewBinding = true
+  }
 }
 
 dependencies {
@@ -14,6 +23,10 @@ dependencies {
   implementation(AndroidX.appCompat)
   implementation(AndroidX.constraintLayout)
   implementation(AndroidX.coreKtx)
+  implementation(AndroidX.navigation.commonKtx)
+  implementation(AndroidX.navigation.fragmentKtx)
+
+  implementation(Google.android.material)
 
   testImplementation(Testing.junit4)
 

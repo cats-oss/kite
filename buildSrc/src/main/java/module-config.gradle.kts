@@ -1,4 +1,7 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -9,6 +12,7 @@ project.afterEvaluate {
   plugins.all {
     when (this) {
       is LibraryPlugin -> {
+        extensions.getByType<LibraryExtension>().androidLibraryConfig()
         extensions.getByType<TestedExtension>().androidCommonConfig(project.gradle.startParameter)
       }
       is AppPlugin -> {
@@ -72,6 +76,12 @@ fun TestedExtension.androidCommonConfig(startParameter: StartParameter) {
 fun BaseAppModuleExtension.androidAppConfig() {
   defaultConfig {
     applicationId = AppCoordinates.APP_ID
+  }
+}
+
+fun LibraryExtension.androidLibraryConfig() {
+  buildFeatures {
+    buildConfig = false
   }
 }
 
