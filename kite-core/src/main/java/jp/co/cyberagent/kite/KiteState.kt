@@ -9,3 +9,7 @@ interface KiteGetter<T> : KiteState {
 interface KiteProperty<T> : KiteGetter<T> {
   override var value: T
 }
+
+fun <T> KiteProperty<T>.update(f: (prev: T) -> T) {
+  value = f(value)
+}
