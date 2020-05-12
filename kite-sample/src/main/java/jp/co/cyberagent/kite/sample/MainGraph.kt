@@ -9,9 +9,11 @@ object MainGraph {
   object Dest {
     val home = idCount++
     val counterExample = idCount++
+    val timelineExample = idCount++
   }
 
   object Action {
     val toCounterExample = idCount++
+    val toTimelineExample = idCount++
   }
 }

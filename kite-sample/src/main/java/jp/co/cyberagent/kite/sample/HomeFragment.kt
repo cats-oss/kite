@@ -13,5 +13,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     binding.buttonCounterExample.setOnClickListener {
       findNavController().navigate(MainGraph.Action.toCounterExample)
     }
+    binding.buttonTimelineExample.setOnClickListener {
+      findNavController().navigate(MainGraph.Action.toTimelineExample)
+    }
   }
 }

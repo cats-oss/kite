@@ -26,6 +26,7 @@ dependencies {
   implementation(AndroidX.coreKtx)
   implementation(AndroidX.navigation.commonKtx)
   implementation(AndroidX.navigation.fragmentKtx)
+  implementation(AndroidX.swipeRefreshLayout)
 
   implementation(Google.android.material)
 

@@ -14,4 +14,11 @@
     android:text="Counter Example"
     />
 
+  <Button
+    android:id="@+id/button_timeline_example"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Timeline Example"
+    />
+
 </LinearLayout>

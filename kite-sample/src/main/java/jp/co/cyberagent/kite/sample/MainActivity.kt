@@ -6,6 +6,7 @@ import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
 import jp.co.cyberagent.kite.sample.counter.CounterExampleFragment
+import jp.co.cyberagent.kite.sample.timeline.TimelineExampleFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,9 +22,14 @@ class MainActivity : AppCompatActivity() {
           action(MainGraph.Action.toCounterExample) {
             destinationId = MainGraph.Dest.counterExample
           }
+          action(MainGraph.Action.toTimelineExample) {
+            destinationId = MainGraph.Dest.timelineExample
+          }
         }
 
         fragment<CounterExampleFragment>(MainGraph.Dest.counterExample)
+
+        fragment<TimelineExampleFragment>(MainGraph.Dest.timelineExample)
       }
     }
   }
