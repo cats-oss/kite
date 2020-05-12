@@ -23,15 +23,15 @@ interface KiteDslScope {
 
   fun <T : Any> addService(service: T, kClass: KClass<T>)
 
-  fun <T : Any> getService(kClass: KClass<T>)
+  fun <T : Any> getService(kClass: KClass<T>): T
 }
 
 inline fun <reified T : Any> KiteDslScope.addService(service: T) {
   addService(service, T::class)
 }
 
-inline fun <reified T : Any> KiteDslScope.getService() {
-  getService(T::class)
+inline fun <reified T : Any> KiteDslScope.getService(): T {
+  return getService(T::class)
 }
 
 internal class KiteDslScopeImpl(
@@ -53,8 +53,8 @@ internal class KiteDslScopeImpl(
     componentScopeModel.addService(service, kClass)
   }
 
-  override fun <T : Any> getService(kClass: KClass<T>) {
-    componentScopeModel.getService(kClass)
+  override fun <T : Any> getService(kClass: KClass<T>): T {
+    return componentScopeModel.getService(kClass)
   }
 }
 
