@@ -1,18 +1,12 @@
 package jp.co.cyberagent.kite
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelLazy
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 @KiteDslMaker
 class KiteDslScope(
@@ -39,7 +33,7 @@ class KiteDslScope(
   }
 }
 
-fun dslUi(
+fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
   stateHolderLazy: Lazy<KiteComponentScopeModel>,
   body: KiteDslScope.() -> Unit
@@ -47,25 +41,5 @@ fun dslUi(
   KiteDslScope(lifecycleOwner, stateHolderLazy).apply {
     componentScopeModel.registerIn(this)
     onCreate { body.invoke(this) }
-  }
-}
-
-inline fun <reified T : KiteComponentScopeModel> AppCompatActivity.activityUi(
-  noinline factoryProducer: () -> ViewModelProvider.Factory = { defaultViewModelProviderFactory },
-  noinline body: KiteDslScope.() -> Unit
-) {
-  val holder = ViewModelLazy(T::class, { viewModelStore }, factoryProducer)
-  dslUi(this, holder, body)
-}
-
-inline fun <reified T : KiteComponentScopeModel> Fragment.fragmentUi(
-  noinline storeProducer: () -> ViewModelStore = { this.viewModelStore },
-  noinline factoryProducer: () -> ViewModelProvider.Factory = { defaultViewModelProviderFactory },
-  noinline body: KiteDslScope.() -> Unit
-) {
-  viewLifecycleOwnerLiveData.observe(this) { owner ->
-    owner ?: return@observe
-    val holder = ViewModelLazy(T::class, storeProducer, factoryProducer)
-    dslUi(owner, holder, body)
   }
 }

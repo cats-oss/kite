@@ -7,6 +7,8 @@ plugins {
 }
 
 dependencies {
+  implementation(project(":kite-core"))
+
   implementation(Kotlin.stdlib.jdk8)
 
   implementation(AndroidX.appCompat)
