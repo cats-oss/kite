@@ -1,6 +1,6 @@
 package jp.co.cyberagent.kite
 
-class KiteStateDependencyManager {
+internal class KiteStateDependencyManager {
 
   private val dependencyMap: MutableMap<KiteState, LinkedHashSet<Runnable>> =
     mutableMapOf()

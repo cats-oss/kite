@@ -4,32 +4,57 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.reflect.KClass
 
 @KiteDslMaker
-class KiteDslScope(
-  val lifecycleOwner: LifecycleOwner,
-  stateHolderLazy: Lazy<KiteComponentScopeModel>
-) {
+interface KiteDslScope {
 
-  val componentScopeModel: KiteComponentScopeModel by stateHolderLazy
-
-  val stateDependencyManager = KiteStateDependencyManager()
+  val lifecycleOwner: LifecycleOwner
 
   fun launch(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> Unit
+  ): Job
+
+  fun <T : Any> addService(service: T, kClass: KClass<T>)
+
+  fun <T : Any> getService(kClass: KClass<T>)
+}
+
+inline fun <reified T : Any> KiteDslScope.addService(service: T) {
+  addService(service, T::class)
+}
+
+inline fun <reified T : Any> KiteDslScope.getService() {
+  getService(T::class)
+}
+
+internal class KiteDslScopeImpl(
+  override val lifecycleOwner: LifecycleOwner,
+  stateHolderLazy: Lazy<KiteComponentScopeModel>
+) : KiteDslScope {
+
+  internal val componentScopeModel: KiteComponentScopeModel by stateHolderLazy
+
+  internal val stateDependencyManager = KiteStateDependencyManager()
+
+  override fun launch(
+    context: CoroutineContext,
+    start: CoroutineStart,
+    block: suspend CoroutineScope.() -> Unit
   ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
 
-  inline fun <reified T : Any> addService(service: T) {
-    componentScopeModel.addService(service, T::class)
+  override fun <T : Any> addService(service: T, kClass: KClass<T>) {
+    componentScopeModel.addService(service, kClass)
   }
 
-  inline fun <reified T : Any> getService() {
-    componentScopeModel.getService(T::class)
+  override fun <T : Any> getService(kClass: KClass<T>) {
+    componentScopeModel.getService(kClass)
   }
 }
 
@@ -38,8 +63,8 @@ fun kiteDsl(
   stateHolderLazy: Lazy<KiteComponentScopeModel>,
   body: KiteDslScope.() -> Unit
 ) {
-  KiteDslScope(lifecycleOwner, stateHolderLazy).apply {
-    componentScopeModel.registerIn(this)
+  KiteDslScopeImpl(lifecycleOwner, stateHolderLazy).apply {
     onCreate { body.invoke(this) }
+    onDestroy { componentScopeModel.keyGenerator.set(0) }
   }
 }

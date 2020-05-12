@@ -10,17 +10,13 @@ open class KiteComponentScopeModel : ViewModel() {
 
   private val serviceLocator = mutableMapOf<KClass<*>, Any>()
 
-  private val keyGenerator = AtomicInteger(0)
+  internal val keyGenerator = AtomicInteger(0)
 
   fun <T : Any> keepDuringLifecycle(creator: () -> T): T {
     val k = keyGenerator.getAndIncrement()
     val v = map.getOrPut(k, creator)
     @Suppress("UNCHECKED_CAST")
     return v as T
-  }
-
-  fun registerIn(dslUiScope: KiteDslScope) {
-    dslUiScope.onDestroy { keyGenerator.set(0) }
   }
 
   fun <T : Any> addService(service: T, kClass: KClass<T>) {

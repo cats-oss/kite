@@ -54,6 +54,7 @@ private class KiteLiveDataBackedGetter<T>(
 }
 
 fun <T> KiteDslScope.state(liveData: LiveData<T>): KiteGetter<T> {
+  this as KiteDslScopeImpl
   val state = KiteLiveDataBackedGetter(liveData, stateDependencyManager)
   val observer = KiteLiveDataBackedStateObserver<T>(state, stateDependencyManager)
   liveData.observe(lifecycleOwner, observer)
@@ -61,6 +62,7 @@ fun <T> KiteDslScope.state(liveData: LiveData<T>): KiteGetter<T> {
 }
 
 fun <T> KiteDslScope.state(liveData: MutableLiveData<T>): KiteProperty<T> {
+  this as KiteDslScopeImpl
   val state = KiteLiveDataBackedProperty(liveData, stateDependencyManager)
   val observer = KiteLiveDataBackedStateObserver<T>(state, stateDependencyManager)
   liveData.observe(lifecycleOwner, observer)
@@ -68,6 +70,7 @@ fun <T> KiteDslScope.state(liveData: MutableLiveData<T>): KiteProperty<T> {
 }
 
 fun <T> KiteDslScope.state(initialValue: T): KiteProperty<T> {
+  this as KiteDslScopeImpl
   val liveData = componentScopeModel.keepDuringLifecycle { MutableLiveData(initialValue) }
   return state(liveData)
 }
