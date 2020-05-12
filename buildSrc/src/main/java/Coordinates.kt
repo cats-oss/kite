@@ -1,7 +1,5 @@
-const val PUBLISHING_GROUP = "jp.co.cyberagent.android"
-
 object AppCoordinates {
-  const val APP_ID = "jp.cyberagent.android.kite.sample"
+  const val APP_ID = "jp.co.cyberagent.kite.sample"
 }
 
 object Coordinates {
