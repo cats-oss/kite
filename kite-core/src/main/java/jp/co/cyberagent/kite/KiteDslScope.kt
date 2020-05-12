@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 @KiteDslMaker
 class KiteDslScope(
@@ -29,6 +29,14 @@ class KiteDslScope(
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> Unit
   ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
+
+  inline fun <reified T : Any> addService(service: T) {
+    componentScopeModel.addService(service, T::class)
+  }
+
+  inline fun <reified T : Any> getService() {
+    componentScopeModel.getService(T::class)
+  }
 }
 
 fun dslUi(
