@@ -8,6 +8,7 @@
       <module name="kite.kite-core" target="1.8" />
       <module name="kite.kite-epoxy" target="1.8" />
       <module name="kite.kite-sample" target="1.8" />
+      <module name="kite.kite-ui" target="1.8" />
       <module name="kotlin-android-template.app" target="1.8" />
       <module name="kotlin-android-template.buildSrc" target="1.8" />
       <module name="kotlin-android-template.library-android" target="1.8" />
