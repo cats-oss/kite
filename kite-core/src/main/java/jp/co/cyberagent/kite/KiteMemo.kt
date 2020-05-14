@@ -1,5 +1,7 @@
 package jp.co.cyberagent.kite
 
+import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
+
 private class KiteMemoState<T>(
   private val computation: () -> T,
   private val subscriberManager: KiteStateSubscriberManager

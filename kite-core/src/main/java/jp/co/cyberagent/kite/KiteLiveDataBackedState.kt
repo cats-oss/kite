@@ -4,6 +4,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 
 private class KiteLiveDataBackedStateObserver<T>(
   private val state: KiteState,

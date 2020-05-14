@@ -1,5 +1,8 @@
-package jp.co.cyberagent.kite
+package jp.co.cyberagent.kite.internal
 
+import jp.co.cyberagent.kite.KiteState
+import jp.co.cyberagent.kite.checkIsMainThread
+import jp.co.cyberagent.kite.isMainThread
 import java.util.ArrayDeque
 
 internal class KiteStateSubscriberManager {

@@ -3,6 +3,7 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
@@ -33,7 +34,8 @@ internal class KiteDslScopeImpl(
 
   private val stateKeyGenerator = AtomicInteger(0)
 
-  val stateDependencyManager = KiteStateSubscriberManager()
+  val stateDependencyManager =
+    KiteStateSubscriberManager()
 
   fun createStateKey(): Any {
     return "KiteDslScopeImpl_StateKey_${stateKeyGenerator.incrementAndGet()}"
