@@ -31,32 +31,32 @@ class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    fragmentKiteDsl<TimelineExampleScopeModel>(scopeModelFactory) {
-      val binding = FragmentTimelineExampleBinding.bind(requireView())
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) = fragmentKiteDsl(
+    scopeModelFactory = scopeModelFactory
+  ) {
+    val binding = FragmentTimelineExampleBinding.bind(requireView())
 
-      val (timelineState, fetchTimeline, updateIsFavorite) = useTimeline()
+    val (timelineState, fetchTimeline, updateIsFavorite) = useTimeline()
 
-      binding.swipeRefreshLayout.setOnRefreshListener {
-        fetchTimeline.invoke()
-      }
-
-      onStart {
-        fetchTimeline.invoke()
-      }
-
-      subscribe {
-        timelineState.value.error?.let {
-          Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-        }
-      }
-
-      subscribe {
-        binding.swipeRefreshLayout.isRefreshing = timelineState.value.isLoading
-      }
-
-      bindTimeline(binding.recyclerView, timelineState, updateIsFavorite)
+    binding.swipeRefreshLayout.setOnRefreshListener {
+      fetchTimeline.invoke()
     }
+
+    onStart {
+      fetchTimeline.invoke()
+    }
+
+    subscribe {
+      timelineState.value.error?.let {
+        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+      }
+    }
+
+    subscribe {
+      binding.swipeRefreshLayout.isRefreshing = timelineState.value.isLoading
+    }
+
+    bindTimeline(binding.recyclerView, timelineState, updateIsFavorite)
   }
 }
 

@@ -4,20 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
-inline fun <reified T : KiteComponentScopeModel> AppCompatActivity.activityKiteDsl(
+fun AppCompatActivity.activityKiteDsl(
   scopeModelFactory: ViewModelProvider.Factory? = null,
-  noinline body: KiteDslScope.() -> Unit
+  body: KiteDslScope.() -> Unit
 ) {
   val factory = scopeModelFactory ?: defaultViewModelProviderFactory
-  val scopeModel = factory.create(T::class.java)
+  val scopeModel = factory.create(KiteComponentScopeModel::class.java)
   kiteDsl(this, scopeModel, body)
 }
 
-inline fun <reified T : KiteComponentScopeModel> Fragment.fragmentKiteDsl(
+fun Fragment.fragmentKiteDsl(
   scopeModelFactory: ViewModelProvider.Factory? = null,
-  noinline body: KiteDslScope.() -> Unit
+  body: KiteDslScope.() -> Unit
 ) {
   val factory = scopeModelFactory ?: defaultViewModelProviderFactory
-  val scopeModel = factory.create(T::class.java)
+  val scopeModel = factory.create(KiteComponentScopeModel::class.java)
   kiteDsl(viewLifecycleOwner, scopeModel, body)
 }
