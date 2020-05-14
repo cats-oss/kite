@@ -26,7 +26,6 @@ data class TimelineState(
 )
 
 fun KiteDslScope.useTimeline(): Tuple3<KiteGetter<TimelineState>, FetchTimeline, UpdateIsFavorite> {
-
   val repository = getService<TimelineRepository>()
 
   val timelineState = state(TimelineState())

@@ -79,7 +79,6 @@ private fun KiteDslScope.bindTimeline(
   }
 
   epoxyDsl(recyclerView) {
-
     isReady {
       !timelineState.value.isLoading
     }

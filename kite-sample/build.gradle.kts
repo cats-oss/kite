@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
   `module-config`
   id("com.android.application")
@@ -9,6 +7,7 @@ plugins {
 
 android {
 
+  @Suppress("UnstableApiUsage")
   buildFeatures {
     viewBinding = true
   }

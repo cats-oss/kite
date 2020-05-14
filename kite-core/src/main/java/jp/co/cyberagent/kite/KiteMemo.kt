@@ -10,10 +10,12 @@ private class KiteMemoState<T>(
   override val value: T
     get() {
       if (_value == Unset) {
-        dependencyManager.resolveAndRun(Runnable {
-          _value = computation.invoke()
-          dependencyManager.notifyDependencyChanged(this)
-        })
+        dependencyManager.resolveAndRun(
+          Runnable {
+            _value = computation.invoke()
+            dependencyManager.notifyDependencyChanged(this)
+          }
+        )
       }
       dependencyManager.registerDependency(this)
       @Suppress("UNCHECKED_CAST")
