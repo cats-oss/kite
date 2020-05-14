@@ -31,6 +31,7 @@ inline fun KiteDslScope.onDestroy(
   crossinline onDestroy: () -> Unit
 ) = onLifecycleEvent(onDestroy = onDestroy)
 
+@Suppress("LongParameterList")
 inline fun KiteDslScope.onLifecycleEvent(
   crossinline onCreate: () -> Unit = {},
   crossinline onStart: () -> Unit = {},

@@ -17,7 +17,6 @@ allprojects {
 
 subprojects {
   apply {
-    plugin("io.gitlab.arturbosch.detekt")
     plugin("org.jlleitschuh.gradle.ktlint")
   }
 
@@ -35,12 +34,18 @@ subprojects {
     }
   }
 
-  detekt {
-    config = rootProject.files("config/detekt/detekt.yml")
-    reports {
-      html {
-        enabled = true
-        destination = file("build/reports/detekt.html")
+  if (name != "kite-sample") {
+    apply {
+      plugin("io.gitlab.arturbosch.detekt")
+    }
+
+    detekt {
+      config = rootProject.files("config/detekt/detekt.yml")
+      reports {
+        html {
+          enabled = true
+          destination = file("build/reports/detekt.html")
+        }
       }
     }
   }
