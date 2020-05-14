@@ -1,11 +1,13 @@
 package jp.co.cyberagent.kite.sample.counter
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteComponentScopeModel
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteProperty
-import jp.co.cyberagent.kite.fragmentUi
+import jp.co.cyberagent.kite.fragmentKiteDsl
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.databinding.FragmentCounterExampleBinding
 import jp.co.cyberagent.kite.sample.databinding.IncludeCounterBinding
@@ -15,18 +17,20 @@ import jp.co.cyberagent.kite.subscribe
 @SuppressLint("SetTextI18n")
 class CounterExampleFragment : Fragment(R.layout.fragment_counter_example) {
 
-  val ui = fragmentUi<KiteComponentScopeModel> {
-    val binding = FragmentCounterExampleBinding.bind(requireView())
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    fragmentKiteDsl<KiteComponentScopeModel> {
+      val binding = FragmentCounterExampleBinding.bind(requireView())
 
-    val count1 = state(0)
-    val count2 = state(0)
+      val count1 = state(0)
+      val count2 = state(0)
 
-    subscribe {
-      binding.textSum.text = "Sum: ${count1.value + count2.value}"
+      subscribe {
+        binding.textSum.text = "Sum: ${count1.value + count2.value}"
+      }
+
+      bindCounter(binding.counter1, count1)
+      bindCounter(binding.counter2, count2)
     }
-
-    bindCounter(binding.counter1, count1)
-    bindCounter(binding.counter2, count2)
   }
 }
 

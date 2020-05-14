@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlin.coroutines.CoroutineContext
@@ -36,10 +37,8 @@ inline fun <reified T : Any> KiteDslScope.getService(): T {
 
 internal class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
-  stateHolderLazy: Lazy<KiteComponentScopeModel>
+  internal val scopeModel: KiteComponentScopeModel
 ) : KiteDslScope {
-
-  internal val componentScopeModel: KiteComponentScopeModel by stateHolderLazy
 
   internal val stateDependencyManager = KiteStateSubscriberManager()
 
@@ -50,21 +49,23 @@ internal class KiteDslScopeImpl(
   ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
 
   override fun <T : Any> addService(service: T, kClass: KClass<T>) {
-    componentScopeModel.addService(service, kClass)
+    scopeModel.addService(service, kClass)
   }
 
   override fun <T : Any> getService(kClass: KClass<T>): T {
-    return componentScopeModel.getService(kClass)
+    return scopeModel.getService(kClass)
   }
 }
 
 fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
-  scopeModel: Lazy<KiteComponentScopeModel>,
+  scopeModel: KiteComponentScopeModel,
   body: KiteDslScope.() -> Unit
 ) {
-  KiteDslScopeImpl(lifecycleOwner, scopeModel).apply {
-    onCreate { body.invoke(this) }
-    lifecycleOwner.lifecycle.addObserver(componentScopeModel.lifecycleObserver)
+  val currentState = lifecycleOwner.lifecycle.currentState
+  check(currentState == Lifecycle.State.INITIALIZED) {
+    "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. Current state is $currentState"
   }
+  KiteDslScopeImpl(lifecycleOwner, scopeModel).apply(body)
+  lifecycleOwner.lifecycle.addObserver(scopeModel.lifecycleObserver)
 }
