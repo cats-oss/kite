@@ -12,6 +12,14 @@ android {
   buildFeatures {
     viewBinding = true
   }
+
+  lintOptions {
+    disable(
+      "HardcodedText",
+      "VectorRaster",
+      "ContentDescription"
+    )
+  }
 }
 
 dependencies {
