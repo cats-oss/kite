@@ -60,11 +60,11 @@ internal class KiteDslScopeImpl(
 
 fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
-  stateHolderLazy: Lazy<KiteComponentScopeModel>,
+  scopeModel: Lazy<KiteComponentScopeModel>,
   body: KiteDslScope.() -> Unit
 ) {
-  KiteDslScopeImpl(lifecycleOwner, stateHolderLazy).apply {
+  KiteDslScopeImpl(lifecycleOwner, scopeModel).apply {
     onCreate { body.invoke(this) }
-    onDestroy { componentScopeModel.keyGenerator.set(0) }
+    lifecycleOwner.lifecycle.addObserver(componentScopeModel.lifecycleObserver)
   }
 }

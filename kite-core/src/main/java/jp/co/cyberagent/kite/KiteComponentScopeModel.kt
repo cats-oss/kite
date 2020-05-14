@@ -1,33 +1,44 @@
 package jp.co.cyberagent.kite
 
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KClass
 
 open class KiteComponentScopeModel : ViewModel() {
 
-  private val map = mutableMapOf<Any, Any>()
+  private val tagMap = mutableMapOf<Any, Any>()
 
-  private val serviceLocator = mutableMapOf<KClass<*>, Any>()
+  private val tagKeyGenerator = AtomicInteger(0)
 
-  internal val keyGenerator = AtomicInteger(0)
+  private val serviceMap = mutableMapOf<KClass<*>, Any>()
 
-  fun <T : Any> keepDuringLifecycle(creator: () -> T): T {
-    val k = keyGenerator.getAndIncrement()
-    val v = map.getOrPut(k, creator)
+  val lifecycleObserver = object : DefaultLifecycleObserver {
+    override fun onDestroy(owner: LifecycleOwner) {
+      tagKeyGenerator.set(0)
+    }
+  }
+
+  fun <T : Any> createTagIfAbsent(creator: () -> T): T {
+    val k = tagKeyGenerator.getAndIncrement()
+    val v = tagMap.getOrPut(k, creator)
     @Suppress("UNCHECKED_CAST")
     return v as T
   }
 
   fun <T : Any> addService(service: T, kClass: KClass<T>) {
-    serviceLocator[kClass] = service
+    check(kClass !in serviceMap.keys) {
+      "Service $kClass already added."
+    }
+    serviceMap[kClass] = service
   }
 
   fun <T : Any> getService(kClass: KClass<T>): T {
-    checkNotNull(serviceLocator[kClass]) {
-      "Service $kClass is not added yet"
+    checkNotNull(serviceMap[kClass]) {
+      "Service $kClass not found, please ensure add it via addService."
     }
     @Suppress("UNCHECKED_CAST")
-    return serviceLocator[kClass] as T
+    return serviceMap[kClass] as T
   }
 }
