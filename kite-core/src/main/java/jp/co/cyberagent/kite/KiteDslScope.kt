@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 @KiteDslMaker
@@ -24,6 +25,10 @@ interface KiteDslScope {
     block: suspend CoroutineScope.() -> Unit
   ): Job
 
+  fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T
+
+  fun <T> getContextualValue(key: Any): T
+
   fun <T : Any> getService(kClass: KClass<T>): T
 }
 
@@ -31,6 +36,8 @@ internal class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
   internal val scopeModel: KiteComponentScopeModel
 ) : KiteDslScope {
+
+  private val contextualValueMap = ConcurrentHashMap<Any, Any>()
 
   private val stateKeyGenerator = AtomicInteger(0)
 
@@ -47,6 +54,21 @@ internal class KiteDslScopeImpl(
     block: suspend CoroutineScope.() -> Unit
   ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
 
+  override fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T {
+    val v = contextualValueMap.getOrPut(key, creator)
+    @Suppress("UNCHECKED_CAST")
+    return v as T
+  }
+
+  override fun <T> getContextualValue(key: Any): T {
+    check(contextualValueMap.containsKey(key)) {
+      "Contextual value $key not found, please ensure added it via setContextualValueIfAbsent."
+    }
+    val v = contextualValueMap[key]
+    @Suppress("UNCHECKED_CAST")
+    return v as T
+  }
+
   override fun <T : Any> getService(kClass: KClass<T>): T {
     return scopeModel.getService(kClass)
   }
@@ -54,6 +76,16 @@ internal class KiteDslScopeImpl(
 
 inline fun <reified T : Any> KiteDslScope.getService(): T {
   return getService(T::class)
+}
+
+inline fun <reified T : Any> KiteDslScope.setContextualValueIfAbsent(
+  noinline creator: () -> T
+): T {
+  return setContextualValueIfAbsent(T::class, creator)
+}
+
+inline fun <reified T : Any> KiteDslScope.getContextualValue(): T {
+  return getContextualValue(T::class)
 }
 
 fun kiteDsl(
