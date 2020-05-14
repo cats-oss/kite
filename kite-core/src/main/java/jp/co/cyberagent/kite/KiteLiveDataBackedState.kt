@@ -71,6 +71,6 @@ fun <T> KiteDslScope.state(liveData: MutableLiveData<T>): KiteProperty<T> {
 
 fun <T> KiteDslScope.state(initialValue: T): KiteProperty<T> {
   this as KiteDslScopeImpl
-  val liveData = scopeModel.createTagIfAbsent { MutableLiveData(initialValue) }
+  val liveData = scopeModel.createTagIfAbsent(createStateKey()) { MutableLiveData(initialValue) }
   return state(liveData)
 }

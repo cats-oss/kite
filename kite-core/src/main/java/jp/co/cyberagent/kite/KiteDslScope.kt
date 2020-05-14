@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicInteger
 
 @KiteDslMaker
 interface KiteDslScope {
@@ -40,7 +41,13 @@ internal class KiteDslScopeImpl(
   internal val scopeModel: KiteComponentScopeModel
 ) : KiteDslScope {
 
-  internal val stateDependencyManager = KiteStateSubscriberManager()
+  private val stateKeyGenerator = AtomicInteger(0)
+
+  val stateDependencyManager = KiteStateSubscriberManager()
+
+  fun createStateKey(): Any {
+    return "KiteDslScopeImpl_StateKey_${stateKeyGenerator.incrementAndGet()}"
+  }
 
   override fun launch(
     context: CoroutineContext,
@@ -67,5 +74,4 @@ fun kiteDsl(
     "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. Current state is $currentState"
   }
   KiteDslScopeImpl(lifecycleOwner, scopeModel).apply(body)
-  lifecycleOwner.lifecycle.addObserver(scopeModel.lifecycleObserver)
 }
