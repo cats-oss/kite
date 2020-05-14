@@ -23,17 +23,7 @@ interface KiteDslScope {
     block: suspend CoroutineScope.() -> Unit
   ): Job
 
-  fun <T : Any> addService(service: T, kClass: KClass<T>)
-
   fun <T : Any> getService(kClass: KClass<T>): T
-}
-
-inline fun <reified T : Any> KiteDslScope.addService(service: T) {
-  addService(service, T::class)
-}
-
-inline fun <reified T : Any> KiteDslScope.getService(): T {
-  return getService(T::class)
 }
 
 internal class KiteDslScopeImpl(
@@ -55,13 +45,13 @@ internal class KiteDslScopeImpl(
     block: suspend CoroutineScope.() -> Unit
   ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
 
-  override fun <T : Any> addService(service: T, kClass: KClass<T>) {
-    scopeModel.addService(service, kClass)
-  }
-
   override fun <T : Any> getService(kClass: KClass<T>): T {
     return scopeModel.getService(kClass)
   }
+}
+
+inline fun <reified T : Any> KiteDslScope.getService(): T {
+  return getService(T::class)
 }
 
 fun kiteDsl(
