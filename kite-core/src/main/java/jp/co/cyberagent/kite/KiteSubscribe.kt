@@ -4,5 +4,5 @@ fun KiteDslScope.subscribe(
   action: () -> Unit
 ) {
   this as KiteDslScopeImpl
-  stateDependencyManager.resolveAndRun(Runnable(action))
+  stateDependencyManager.runAndResolveDependentState(Runnable(action))
 }

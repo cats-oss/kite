@@ -2,7 +2,7 @@ package jp.co.cyberagent.kite
 
 private class KiteMemoState<T>(
   private val computation: () -> T,
-  private val dependencyManager: KiteStateDependencyManager
+  private val subscriberManager: KiteStateSubscriberManager
 ) : KiteGetter<T> {
 
   private var _value: Any? = Unset
@@ -10,14 +10,14 @@ private class KiteMemoState<T>(
   override val value: T
     get() {
       if (_value == Unset) {
-        dependencyManager.resolveAndRun(
+        subscriberManager.runAndResolveDependentState(
           Runnable {
             _value = computation.invoke()
-            dependencyManager.notifyDependencyChanged(this)
+            subscriberManager.notifyStateChanged(this)
           }
         )
       }
-      dependencyManager.registerDependency(this)
+      subscriberManager.subscribeTo(this)
       @Suppress("UNCHECKED_CAST")
       return _value as T
     }

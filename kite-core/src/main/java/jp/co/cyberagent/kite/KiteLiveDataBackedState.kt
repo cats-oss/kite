@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 
 private class KiteLiveDataBackedStateObserver<T>(
   private val state: KiteState,
-  private val dependencyManager: KiteStateDependencyManager
+  private val subscriberManager: KiteStateSubscriberManager
 ) : Observer<T> {
 
   private var preValue: Any? = Unset
@@ -15,19 +15,19 @@ private class KiteLiveDataBackedStateObserver<T>(
   override fun onChanged(t: T) {
     if (preValue != t) {
       preValue = t
-      dependencyManager.notifyDependencyChanged(state)
+      subscriberManager.notifyStateChanged(state)
     }
   }
 }
 
 private class KiteLiveDataBackedProperty<T>(
   private val liveData: MutableLiveData<T>,
-  private val dependencyManager: KiteStateDependencyManager
+  private val subscriberManager: KiteStateSubscriberManager
 ) : KiteProperty<T> {
 
   override var value: T
     get() {
-      dependencyManager.registerDependency(this)
+      subscriberManager.subscribeTo(this)
       @Suppress("UNCHECKED_CAST")
       return liveData.value as T
     }
@@ -42,12 +42,12 @@ private class KiteLiveDataBackedProperty<T>(
 
 private class KiteLiveDataBackedGetter<T>(
   private val liveData: LiveData<T>,
-  private val dependencyManager: KiteStateDependencyManager
+  private val subscriberManager: KiteStateSubscriberManager
 ) : KiteGetter<T> {
 
   override val value: T
     get() {
-      dependencyManager.registerDependency(this)
+      subscriberManager.subscribeTo(this)
       @Suppress("UNCHECKED_CAST")
       return liveData.value as T
     }

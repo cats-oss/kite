@@ -41,7 +41,7 @@ internal class KiteDslScopeImpl(
 
   internal val componentScopeModel: KiteComponentScopeModel by stateHolderLazy
 
-  internal val stateDependencyManager = KiteStateDependencyManager()
+  internal val stateDependencyManager = KiteStateSubscriberManager()
 
   override fun launch(
     context: CoroutineContext,
