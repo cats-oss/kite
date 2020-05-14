@@ -20,13 +20,6 @@ open class KiteComponentScopeModel : ViewModel() {
     }
   }
 
-  fun <T : Any> createTagIfAbsent(creator: () -> T): T {
-    val k = tagKeyGenerator.getAndIncrement()
-    val v = tagMap.getOrPut(k, creator)
-    @Suppress("UNCHECKED_CAST")
-    return v as T
-  }
-
   fun <T : Any> addService(service: T, kClass: KClass<T>) {
     check(kClass !in serviceMap.keys) {
       "Service $kClass already added."
@@ -40,5 +33,12 @@ open class KiteComponentScopeModel : ViewModel() {
     }
     @Suppress("UNCHECKED_CAST")
     return serviceMap[kClass] as T
+  }
+
+  internal fun <T : Any> createTagIfAbsent(creator: () -> T): T {
+    val k = tagKeyGenerator.getAndIncrement()
+    val v = tagMap.getOrPut(k, creator)
+    @Suppress("UNCHECKED_CAST")
+    return v as T
   }
 }
