@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteProperty
-import jp.co.cyberagent.kite.fragmentKiteDsl
+import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.databinding.FragmentCounterExampleBinding
 import jp.co.cyberagent.kite.sample.databinding.IncludeCounterBinding
@@ -16,7 +16,7 @@ import jp.co.cyberagent.kite.subscribe
 @SuppressLint("SetTextI18n")
 class CounterExampleFragment : Fragment(R.layout.fragment_counter_example) {
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) = fragmentKiteDsl {
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) = kiteDsl {
     val binding = FragmentCounterExampleBinding.bind(requireView())
 
     val count1 = state(0)

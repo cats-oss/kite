@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteGetter
 import jp.co.cyberagent.kite.epoxyDsl
-import jp.co.cyberagent.kite.fragmentKiteDsl
+import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.onStart
 import jp.co.cyberagent.kite.onStop
 import jp.co.cyberagent.kite.sample.R
@@ -31,7 +31,7 @@ class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) = fragmentKiteDsl(
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) = kiteDsl(
     scopeModelFactory = scopeModelFactory
   ) {
     val binding = FragmentTimelineExampleBinding.bind(requireView())
