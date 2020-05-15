@@ -24,6 +24,10 @@ open class KiteScopeModel : ViewModel() {
     serviceMap[kClass] = service
   }
 
+  protected inline fun <reified T : Any> addService(service: T) {
+    addService(service, T::class)
+  }
+
   internal fun <T : Any> createTagIfAbsent(key: Any, creator: () -> T): T {
     val v = tagMap.getOrPut(key, creator)
     @Suppress("UNCHECKED_CAST")
