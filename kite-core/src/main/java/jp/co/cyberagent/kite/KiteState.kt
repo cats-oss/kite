@@ -1,5 +1,7 @@
 package jp.co.cyberagent.kite
 
+import kotlin.reflect.KProperty
+
 interface KiteState
 
 interface KiteGetter<T> : KiteState {
@@ -12,4 +14,12 @@ interface KiteProperty<T> : KiteGetter<T> {
 
 fun <T> KiteProperty<T>.update(f: (prev: T) -> T) {
   value = f(value)
+}
+
+operator fun <T> KiteProperty<T>.setValue(thisRef: Nothing?, prop: KProperty<*>, value: T) {
+  this.value = value
+}
+
+operator fun <T> KiteGetter<T>.getValue(thisRef: Nothing?, prop: KProperty<*>): T {
+  return value
 }
