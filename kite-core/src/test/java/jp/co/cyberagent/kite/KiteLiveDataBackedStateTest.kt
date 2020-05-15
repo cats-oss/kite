@@ -3,6 +3,8 @@ package jp.co.cyberagent.kite
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.data.forAll
+import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,29 @@ class KiteLiveDataBackedStateTest : StringSpec({
     withContext(Dispatchers.IO) {
       state.value = 2
       state.value shouldBe 2
+    }
+  }
+
+  "State should be reused when scope model unchanged" {
+    forAll(
+      row(
+        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+          state { 3 } to state { "Kite" }
+        }
+      ),
+      row(
+        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+          state { 4 } to state { "Cat" }
+        }
+      ),
+      row(
+        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+          state { 5 } to state { "Dog" }
+        }
+      )
+    ) { (state1, state2) ->
+      state1.value shouldBe 3
+      state2.value shouldBe "Kite"
     }
   }
 })
