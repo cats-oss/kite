@@ -4,7 +4,6 @@ import jp.co.cyberagent.kite.Invoker0
 import jp.co.cyberagent.kite.Invoker2
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteGetter
-import jp.co.cyberagent.kite.Tuple3
 import jp.co.cyberagent.kite.getService
 import jp.co.cyberagent.kite.state
 import jp.co.cyberagent.kite.update
@@ -26,7 +25,13 @@ data class TimelineState(
   val error: Throwable? = null
 )
 
-fun KiteDslScope.useTimeline(): Tuple3<KiteGetter<TimelineState>, FetchTimeline, UpdateIsFavorite> {
+data class TimelineUseCase(
+  val timelineState: KiteGetter<TimelineState>,
+  val fetchTimeline: FetchTimeline,
+  val updateIsFavorite: UpdateIsFavorite
+)
+
+fun KiteDslScope.useTimeline(): TimelineUseCase {
   val repository = getService<TimelineRepository>()
 
   val timelineState = state(TimelineState())
@@ -80,5 +85,5 @@ fun KiteDslScope.useTimeline(): Tuple3<KiteGetter<TimelineState>, FetchTimeline,
     }
   }
 
-  return Tuple3(timelineState, fetchTimeline, updateFavorite)
+  return TimelineUseCase(timelineState, fetchTimeline, updateFavorite)
 }
