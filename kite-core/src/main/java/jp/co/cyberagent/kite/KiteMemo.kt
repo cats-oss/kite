@@ -8,6 +8,7 @@ private class KiteMemoState<T>(
   private val subscriberManager: KiteStateSubscriberManager
 ) : KiteGetter<T> {
 
+  @Volatile
   private var _value: Any? = Unset
 
   override val value: T
