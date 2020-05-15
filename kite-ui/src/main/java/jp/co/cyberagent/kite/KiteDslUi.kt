@@ -1,5 +1,7 @@
 package jp.co.cyberagent.kite
 
+import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
@@ -14,7 +16,11 @@ fun AppCompatActivity.kiteDsl(
     this,
     scopeModelFactory ?: defaultViewModelProviderFactory
   )[KiteComponentScopeModel::class.java]
-  kiteDsl(this, scopeModel, body)
+  kiteDsl(this, scopeModel) {
+    setContextualValueIfAbsent<Activity> { this@kiteDsl }
+    setContextualValueIfAbsent<Context> { this@kiteDsl }
+    body.invoke(this)
+  }
 }
 
 fun Fragment.kiteDsl(
@@ -28,5 +34,10 @@ fun Fragment.kiteDsl(
     scopeModelOwner,
     scopeModelFactory ?: factory
   )[KiteComponentScopeModel::class.java]
-  kiteDsl(viewLifecycleOwner, scopeModel, body)
+  kiteDsl(viewLifecycleOwner, scopeModel) {
+    setContextualValueIfAbsent<Activity> { requireActivity() }
+    setContextualValueIfAbsent { requireContext() }
+    setContextualValueIfAbsent { this@kiteDsl }
+    body.invoke(this)
+  }
 }
