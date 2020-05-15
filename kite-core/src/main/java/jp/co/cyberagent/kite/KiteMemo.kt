@@ -1,6 +1,7 @@
 package jp.co.cyberagent.kite
 
 import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
+import jp.co.cyberagent.kite.internal.subscriberManager
 
 private class KiteMemoState<T>(
   private val computation: () -> T,
@@ -29,5 +30,5 @@ fun <T> KiteDslScope.memo(
   computation: () -> T
 ): KiteGetter<T> {
   this as KiteDslScopeImpl
-  return KiteMemoState(computation, stateDependencyManager)
+  return KiteMemoState(computation, subscriberManager)
 }

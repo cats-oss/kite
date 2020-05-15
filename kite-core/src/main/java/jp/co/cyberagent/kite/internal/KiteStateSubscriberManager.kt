@@ -1,9 +1,11 @@
 package jp.co.cyberagent.kite.internal
 
+import java.util.ArrayDeque
+import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteState
 import jp.co.cyberagent.kite.checkIsMainThread
 import jp.co.cyberagent.kite.isMainThread
-import java.util.ArrayDeque
+import jp.co.cyberagent.kite.setContextualValueIfAbsent
 
 internal class KiteStateSubscriberManager {
 
@@ -32,3 +34,6 @@ internal class KiteStateSubscriberManager {
     stateSubscriberMap[state]?.forEach { runAndResolveDependentState(it) }
   }
 }
+
+internal val KiteDslScope.subscriberManager: KiteStateSubscriberManager
+  get() = setContextualValueIfAbsent { KiteStateSubscriberManager() }

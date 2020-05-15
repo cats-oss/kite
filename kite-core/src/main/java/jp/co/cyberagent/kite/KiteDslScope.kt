@@ -3,7 +3,7 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
 
 @KiteDslMaker
 interface KiteDslScope {
@@ -37,9 +36,6 @@ internal class KiteDslScopeImpl(
 ) : KiteDslScope {
 
   private val contextualValueMap = ConcurrentHashMap<Any, Any>()
-
-  val stateDependencyManager =
-    KiteStateSubscriberManager()
 
   override fun launch(
     context: CoroutineContext,
@@ -88,7 +84,8 @@ fun kiteDsl(
 ) {
   val currentState = lifecycleOwner.lifecycle.currentState
   check(currentState == Lifecycle.State.INITIALIZED) {
-    "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. Current state is $currentState"
+    "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. " +
+      "Current state is $currentState"
   }
   KiteDslScopeImpl(lifecycleOwner, scopeModel).apply(body)
 }

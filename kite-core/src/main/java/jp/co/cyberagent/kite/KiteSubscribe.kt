@@ -1,8 +1,10 @@
 package jp.co.cyberagent.kite
 
+import jp.co.cyberagent.kite.internal.subscriberManager
+
 fun KiteDslScope.subscribe(
   action: () -> Unit
 ) {
   this as KiteDslScopeImpl
-  stateDependencyManager.runAndResolveDependentState(Runnable(action))
+  subscriberManager.runAndResolveDependentState(Runnable(action))
 }

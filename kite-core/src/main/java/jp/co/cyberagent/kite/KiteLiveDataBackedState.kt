@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.internal.createStateKey
+import jp.co.cyberagent.kite.internal.subscriberManager
 
 private class KiteLiveDataBackedStateObserver<T>(
   private val state: KiteState,
@@ -57,16 +58,16 @@ private class KiteLiveDataBackedGetter<T>(
 
 fun <T> KiteDslScope.state(liveData: LiveData<T>): KiteGetter<T> {
   this as KiteDslScopeImpl
-  val state = KiteLiveDataBackedGetter(liveData, stateDependencyManager)
-  val observer = KiteLiveDataBackedStateObserver<T>(state, stateDependencyManager)
+  val state = KiteLiveDataBackedGetter(liveData, subscriberManager)
+  val observer = KiteLiveDataBackedStateObserver<T>(state, subscriberManager)
   liveData.observe(lifecycleOwner, observer)
   return state
 }
 
 fun <T> KiteDslScope.state(liveData: MutableLiveData<T>): KiteProperty<T> {
   this as KiteDslScopeImpl
-  val state = KiteLiveDataBackedProperty(liveData, stateDependencyManager)
-  val observer = KiteLiveDataBackedStateObserver<T>(state, stateDependencyManager)
+  val state = KiteLiveDataBackedProperty(liveData, subscriberManager)
+  val observer = KiteLiveDataBackedStateObserver<T>(state, subscriberManager)
   liveData.observe(lifecycleOwner, observer)
   return state
 }
