@@ -2,13 +2,13 @@ package jp.co.cyberagent.kite
 
 import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 
-fun AppCompatActivity.kiteDsl(
+fun ComponentActivity.kiteDsl(
   scopeModelFactory: ViewModelProvider.Factory? = null,
   body: KiteDslScope.() -> Unit
 ) {

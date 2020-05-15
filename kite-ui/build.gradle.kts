@@ -7,14 +7,12 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":kite-core"))
+  api(project(":kite-core"))
 
   implementation(Kotlin.stdlib.jdk8)
 
-  implementation(AndroidX.appCompat)
-  implementation(AndroidX.coreKtx)
-  implementation(AndroidX.fragmentKtx)
-  implementation(AndroidX.activityKtx)
+  api(AndroidX.fragmentKtx)
+  api(AndroidX.activityKtx)
 
   testImplementation(Testing.junit4)
 }

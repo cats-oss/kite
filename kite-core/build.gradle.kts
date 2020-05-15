@@ -8,11 +8,8 @@ plugins {
 
 dependencies {
   implementation(Kotlin.stdlib.jdk8)
+  api(KotlinX.coroutines.core)
 
-  implementation(AndroidX.appCompat)
-  implementation(AndroidX.coreKtx)
-  implementation(AndroidX.fragmentKtx)
-  implementation(AndroidX.activityKtx)
   implementation(AndroidX.lifecycle.viewModelKtx)
   implementation(AndroidX.lifecycle.liveDataKtx)
   implementation(AndroidX.lifecycle.runtimeKtx)
