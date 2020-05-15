@@ -1,6 +1,5 @@
 package jp.co.cyberagent.kite
 
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -35,7 +34,7 @@ private class KiteLiveDataBackedProperty<T>(
       return liveData.value as T
     }
     set(value) {
-      if (Looper.getMainLooper() === Looper.myLooper()) {
+      if (isMainThread) {
         liveData.value = value
       } else {
         liveData.postValue(value)
