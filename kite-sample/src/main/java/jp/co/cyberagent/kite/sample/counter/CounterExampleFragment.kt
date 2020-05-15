@@ -24,7 +24,7 @@ class CounterExampleFragment : Fragment(R.layout.fragment_counter_example) {
 }
 
 fun KiteDslScope.createCounterState(): Tuple2<KiteProperty<Int>, KiteProperty<Int>> {
-  return state(0) to state(0)
+  return state { 0 } to state { 0 }
 }
 
 fun KiteDslScope.bindCounterExampleFragmentUi(

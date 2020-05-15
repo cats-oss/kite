@@ -36,7 +36,7 @@ data class TimelineUseCase(
 fun KiteDslScope.useTimeline(): TimelineUseCase {
   val repository = getService<TimelineRepository>()
 
-  val timelineState = state(TimelineState())
+  val timelineState = state { TimelineState() }
 
   val fetchTimeline: FetchTimeline = {
     launch(Dispatchers.IO) {
