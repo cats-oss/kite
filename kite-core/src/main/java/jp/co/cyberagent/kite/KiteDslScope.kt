@@ -3,9 +3,8 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
+import java.util.concurrent.ConcurrentHashMap
 
 @KiteDslMaker
 interface KiteDslScope : CoroutineScope {
@@ -17,8 +16,6 @@ interface KiteDslScope : CoroutineScope {
   fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T
 
   fun <T> getContextualValue(key: Any): T
-
-  fun <T : Any> getService(kClass: KClass<T>): T
 }
 
 internal class KiteDslScopeImpl(
@@ -43,14 +40,6 @@ internal class KiteDslScopeImpl(
     @Suppress("UNCHECKED_CAST")
     return v as T
   }
-
-  override fun <T : Any> getService(kClass: KClass<T>): T {
-    return scopeModel.getService(kClass)
-  }
-}
-
-inline fun <reified T : Any> KiteDslScope.getService(): T {
-  return getService(T::class)
 }
 
 inline fun <reified T : Any> KiteDslScope.setContextualValueIfAbsent(

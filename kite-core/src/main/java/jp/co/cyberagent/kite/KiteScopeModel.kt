@@ -17,6 +17,10 @@ open class KiteScopeModel : ViewModel() {
     return serviceMap[kClass] as T
   }
 
+  inline fun <reified T : Any> getService(): T {
+    return getService(T::class)
+  }
+
   protected fun <T : Any> addService(service: T, kClass: KClass<T>) {
     check(kClass !in serviceMap) {
       "Service $kClass already added."
@@ -33,4 +37,8 @@ open class KiteScopeModel : ViewModel() {
     @Suppress("UNCHECKED_CAST")
     return v as T
   }
+}
+
+inline fun <reified T : Any> KiteDslScope.getService(): T {
+  return scopeModel.getService()
 }
