@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.sample.timeline.ui
 
+import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteDslScope
@@ -15,6 +16,7 @@ fun KiteDslScope.bindTimelineExampleFragmentUi(
   val binding = FragmentTimelineExampleBinding.bind(
     getContextualValue<Fragment>().requireView()
   )
+  val context = getContextualValue<Context>()
 
   binding.swipeRefreshLayout.setOnRefreshListener {
     timelineUseCase.fetchTimeline.invoke()
@@ -26,7 +28,7 @@ fun KiteDslScope.bindTimelineExampleFragmentUi(
 
   subscribe {
     timelineUseCase.timelineState.value.error?.let {
-      Toast.makeText(getContextualValue(), it.message, Toast.LENGTH_SHORT).show()
+      Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
     }
   }
 

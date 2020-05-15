@@ -3,6 +3,9 @@ package jp.co.cyberagent.kite
 import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.internal.subscriberManager
 
+@KiteDslMaker
+object KiteMemoScope
+
 private class KiteMemoState<T>(
   private val computation: () -> T,
   private val subscriberManager: KiteStateSubscriberManager
@@ -10,17 +13,23 @@ private class KiteMemoState<T>(
 
   @Volatile
   private var _value: Any? = Unset
+    set(value) {
+      if (field != value) {
+        field = value
+        subscriberManager.notifyStateChanged(this)
+      }
+    }
+
+  private val runnable = Runnable {
+    _value = computation.invoke()
+  }
+
+  init {
+    subscriberManager.runAndResolveDependentState(runnable)
+  }
 
   override val value: T
     get() {
-      if (_value == Unset) {
-        subscriberManager.runAndResolveDependentState(
-          Runnable {
-            _value = computation.invoke()
-            subscriberManager.notifyStateChanged(this)
-          }
-        )
-      }
       subscriberManager.subscribeTo(this)
       @Suppress("UNCHECKED_CAST")
       return _value as T
@@ -28,7 +37,8 @@ private class KiteMemoState<T>(
 }
 
 fun <T> KiteDslScope.memo(
-  computation: () -> T
+  computation: KiteMemoScope.() -> T
 ): KiteGetter<T> {
-  return KiteMemoState(computation, subscriberManager)
+  checkIsMainThread("memo")
+  return KiteMemoState({ KiteMemoScope.run(computation) }, subscriberManager)
 }
