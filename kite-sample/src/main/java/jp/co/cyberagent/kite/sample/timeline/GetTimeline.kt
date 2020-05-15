@@ -9,6 +9,7 @@ import jp.co.cyberagent.kite.getService
 import jp.co.cyberagent.kite.state
 import jp.co.cyberagent.kite.update
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 typealias FetchTimeline = Invoker0
 

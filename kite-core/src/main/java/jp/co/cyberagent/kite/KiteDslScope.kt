@@ -4,26 +4,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 @KiteDslMaker
-interface KiteDslScope {
+interface KiteDslScope : CoroutineScope {
 
   val lifecycleOwner: LifecycleOwner
 
   val scopeModel: KiteComponentScopeModel
-
-  fun launch(
-    context: CoroutineContext = EmptyCoroutineContext,
-    start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
-  ): Job
 
   fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T
 
@@ -35,15 +24,10 @@ interface KiteDslScope {
 internal class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
   override val scopeModel: KiteComponentScopeModel
-) : KiteDslScope {
+) : KiteDslScope,
+  CoroutineScope by lifecycleOwner.lifecycleScope {
 
   private val contextualValueMap = ConcurrentHashMap<Any, Any>()
-
-  override fun launch(
-    context: CoroutineContext,
-    start: CoroutineStart,
-    block: suspend CoroutineScope.() -> Unit
-  ) = lifecycleOwner.lifecycleScope.launch(context, start, block)
 
   override fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T {
     val v = contextualValueMap.getOrPut(key, creator)
