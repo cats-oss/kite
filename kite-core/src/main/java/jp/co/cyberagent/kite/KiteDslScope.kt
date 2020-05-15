@@ -17,6 +17,8 @@ interface KiteDslScope {
 
   val lifecycleOwner: LifecycleOwner
 
+  val scopeModel: KiteComponentScopeModel
+
   fun launch(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -32,7 +34,7 @@ interface KiteDslScope {
 
 internal class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
-  internal val scopeModel: KiteComponentScopeModel
+  override val scopeModel: KiteComponentScopeModel
 ) : KiteDslScope {
 
   private val contextualValueMap = ConcurrentHashMap<Any, Any>()

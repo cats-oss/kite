@@ -29,6 +29,5 @@ private class KiteMemoState<T>(
 fun <T> KiteDslScope.memo(
   computation: () -> T
 ): KiteGetter<T> {
-  this as KiteDslScopeImpl
   return KiteMemoState(computation, subscriberManager)
 }
