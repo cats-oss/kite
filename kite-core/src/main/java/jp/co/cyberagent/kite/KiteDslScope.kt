@@ -3,8 +3,8 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CoroutineScope
 
 @KiteDslMaker
 interface KiteDslScope : CoroutineScope {

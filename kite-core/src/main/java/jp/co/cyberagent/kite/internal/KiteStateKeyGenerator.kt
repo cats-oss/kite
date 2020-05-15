@@ -1,8 +1,8 @@
 package jp.co.cyberagent.kite.internal
 
+import java.util.concurrent.atomic.AtomicInteger
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.setContextualValueIfAbsent
-import java.util.concurrent.atomic.AtomicInteger
 
 internal class KiteStateKeyGenerator {
 

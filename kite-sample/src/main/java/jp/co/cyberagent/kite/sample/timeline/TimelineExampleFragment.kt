@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
-import jp.co.cyberagent.kite.sample.timeline.ui.bindTimelineExampleFragmentUi
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.state.useTimeline
+import jp.co.cyberagent.kite.sample.timeline.ui.bindTimelineExampleFragmentUi
 
 class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
 

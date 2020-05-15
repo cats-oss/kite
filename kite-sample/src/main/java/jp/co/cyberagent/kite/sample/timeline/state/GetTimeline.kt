@@ -45,10 +45,13 @@ fun KiteDslScope.useTimeline(): TimelineUseCase {
         val contents = repository.getTimelineContent()
         val isFavorite = repository.checkFavorite(contents.map { it.id })
         timelineState.update {
-          it.copy(timeline = Timeline(
-            contents,
-            isFavorite
-          ), isLoading = false)
+          it.copy(
+            timeline = Timeline(
+              contents,
+              isFavorite
+            ),
+            isLoading = false
+          )
         }
       }.onFailure { e ->
         timelineState.update { it.copy(isLoading = false, error = e) }
