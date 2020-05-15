@@ -13,9 +13,9 @@ interface KiteDslScope : CoroutineScope {
 
   val scopeModel: KiteScopeModel
 
-  fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T
+  fun <T : Any> setContextualValueIfAbsent(key: Any, creator: () -> T): T
 
-  fun <T> getContextualValue(key: Any): T
+  fun <T : Any> getContextualValue(key: Any): T
 }
 
 internal class KiteDslScopeImpl(
@@ -26,13 +26,13 @@ internal class KiteDslScopeImpl(
 
   private val contextualValueMap = ConcurrentHashMap<Any, Any>()
 
-  override fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T {
+  override fun <T : Any> setContextualValueIfAbsent(key: Any, creator: () -> T): T {
     val v = contextualValueMap.getOrPut(key, creator)
     @Suppress("UNCHECKED_CAST")
     return v as T
   }
 
-  override fun <T> getContextualValue(key: Any): T {
+  override fun <T : Any> getContextualValue(key: Any): T {
     check(contextualValueMap.containsKey(key)) {
       "Contextual value $key not found, please ensure added it via setContextualValueIfAbsent."
     }
