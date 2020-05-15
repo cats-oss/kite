@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
+import jp.co.cyberagent.kite.sample.timeline.ui.bindTimelineExampleFragmentUi
+import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
+import jp.co.cyberagent.kite.sample.timeline.state.useTimeline
 
 class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
 
@@ -17,7 +20,9 @@ class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
     scopeModelFactory = object : ViewModelProvider.Factory {
       override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return TimelineExampleScopeModel(TimelineRepository()) as T
+        return TimelineExampleScopeModel(
+          TimelineRepository()
+        ) as T
       }
     }
   }

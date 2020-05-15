@@ -1,10 +1,12 @@
-package jp.co.cyberagent.kite.sample.timeline
+package jp.co.cyberagent.kite.sample.timeline.state
 
 import jp.co.cyberagent.kite.Invoker0
 import jp.co.cyberagent.kite.Invoker2
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteGetter
 import jp.co.cyberagent.kite.getService
+import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
+import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import jp.co.cyberagent.kite.state
 import jp.co.cyberagent.kite.update
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +45,10 @@ fun KiteDslScope.useTimeline(): TimelineUseCase {
         val contents = repository.getTimelineContent()
         val isFavorite = repository.checkFavorite(contents.map { it.id })
         timelineState.update {
-          it.copy(timeline = Timeline(contents, isFavorite), isLoading = false)
+          it.copy(timeline = Timeline(
+            contents,
+            isFavorite
+          ), isLoading = false)
         }
       }.onFailure { e ->
         timelineState.update { it.copy(isLoading = false, error = e) }
@@ -85,5 +90,9 @@ fun KiteDslScope.useTimeline(): TimelineUseCase {
     }
   }
 
-  return TimelineUseCase(timelineState, fetchTimeline, updateFavorite)
+  return TimelineUseCase(
+    timelineState,
+    fetchTimeline,
+    updateFavorite
+  )
 }

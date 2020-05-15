@@ -1,4 +1,4 @@
-package jp.co.cyberagent.kite.sample.timeline
+package jp.co.cyberagent.kite.sample.timeline.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.cyberagent.kite.KiteDslScope
@@ -6,6 +6,9 @@ import jp.co.cyberagent.kite.KiteGetter
 import jp.co.cyberagent.kite.epoxyDsl
 import jp.co.cyberagent.kite.onStart
 import jp.co.cyberagent.kite.onStop
+import jp.co.cyberagent.kite.sample.timeline.state.TimelineState
+import jp.co.cyberagent.kite.sample.timeline.state.UpdateIsFavorite
+import jp.co.cyberagent.kite.sample.timeline.epoxymodel.ContentModel
 
 fun KiteDslScope.bindTimeline(
   recyclerView: RecyclerView,

@@ -1,4 +1,4 @@
-package jp.co.cyberagent.kite.sample.timeline
+package jp.co.cyberagent.kite.sample.timeline.epoxymodel
 
 import android.content.res.ColorStateList
 import android.graphics.Color

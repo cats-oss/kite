@@ -1,5 +1,6 @@
-package jp.co.cyberagent.kite.sample.timeline
+package jp.co.cyberagent.kite.sample.timeline.data
 
+import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 import java.util.UUID
@@ -19,7 +20,9 @@ class TimelineRepository {
     val newContents = List(random.nextInt(1, 10)) {
       val text =
         "Content: Hello World!\nDateTime: ${getDateTimeInstance().format(Date())}"
-      Content(UUID.randomUUID().toString(), text)
+      Content(
+        UUID.randomUUID().toString(), text
+      )
     }
     contents.addAll(0, newContents)
     return contents.toList()
