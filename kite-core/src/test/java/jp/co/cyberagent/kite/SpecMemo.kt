@@ -4,7 +4,7 @@ import io.kotlintest.Spec
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-fun <T : Any> Spec.memo(init: () -> T): ReadOnlyProperty<Nothing?, T> {
+fun <T : Any> Spec.memoize(init: () -> T): ReadOnlyProperty<Nothing?, T> {
   var value: T? = null
 
   beforeTest {

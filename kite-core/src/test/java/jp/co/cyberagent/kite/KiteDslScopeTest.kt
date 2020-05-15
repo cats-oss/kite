@@ -14,8 +14,8 @@ import io.kotest.property.exhaustive.exhaustive
 @RobolectricTest
 class KiteDslScopeTest : StringSpec({
 
-  val owner by memo { TestLifecycleOwner() }
-  val kiteScopeModel by memo { KiteScopeModel() }
+  val owner by memoize { TestLifecycleOwner() }
+  val kiteScopeModel by memoize { KiteScopeModel() }
 
   "Initialize kiteDsl at INITIALIZED should success" {
     owner.lifecycle.currentState = State.INITIALIZED

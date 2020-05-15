@@ -36,7 +36,7 @@ private class KiteMemoState<T>(
     }
 }
 
-fun <T> KiteDslScope.memo(
+fun <T> KiteDslScope.memoize(
   computation: KiteMemoScope.() -> T
 ): KiteGetter<T> {
   checkIsMainThread("memo")
