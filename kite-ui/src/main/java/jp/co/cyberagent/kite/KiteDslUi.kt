@@ -15,7 +15,7 @@ fun ComponentActivity.kiteDsl(
   val scopeModel = ViewModelProvider(
     this,
     scopeModelFactory ?: defaultViewModelProviderFactory
-  )[KiteComponentScopeModel::class.java]
+  )[KiteScopeModel::class.java]
   kiteDsl(this, scopeModel) {
     setContextualValueIfAbsent<Activity> { this@kiteDsl }
     setContextualValueIfAbsent<Context> { this@kiteDsl }
@@ -33,7 +33,7 @@ fun Fragment.kiteDsl(
   val scopeModel = ViewModelProvider(
     scopeModelOwner,
     scopeModelFactory ?: factory
-  )[KiteComponentScopeModel::class.java]
+  )[KiteScopeModel::class.java]
   kiteDsl(viewLifecycleOwner, scopeModel) {
     setContextualValueIfAbsent<Activity> { requireActivity() }
     setContextualValueIfAbsent { requireContext() }

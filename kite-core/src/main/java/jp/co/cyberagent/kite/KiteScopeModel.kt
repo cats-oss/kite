@@ -3,7 +3,7 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.ViewModel
 import kotlin.reflect.KClass
 
-open class KiteComponentScopeModel : ViewModel() {
+open class KiteScopeModel : ViewModel() {
 
   private val tagMap = mutableMapOf<Any, Any>()
 

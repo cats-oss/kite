@@ -12,7 +12,7 @@ interface KiteDslScope : CoroutineScope {
 
   val lifecycleOwner: LifecycleOwner
 
-  val scopeModel: KiteComponentScopeModel
+  val scopeModel: KiteScopeModel
 
   fun <T> setContextualValueIfAbsent(key: Any, creator: () -> T): T
 
@@ -23,7 +23,7 @@ interface KiteDslScope : CoroutineScope {
 
 internal class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
-  override val scopeModel: KiteComponentScopeModel
+  override val scopeModel: KiteScopeModel
 ) : KiteDslScope,
   CoroutineScope by lifecycleOwner.lifecycleScope {
 
@@ -65,7 +65,7 @@ inline fun <reified T : Any> KiteDslScope.getContextualValue(): T {
 
 fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
-  scopeModel: KiteComponentScopeModel,
+  scopeModel: KiteScopeModel,
   body: KiteDslScope.() -> Unit
 ) {
   val currentState = lifecycleOwner.lifecycle.currentState
