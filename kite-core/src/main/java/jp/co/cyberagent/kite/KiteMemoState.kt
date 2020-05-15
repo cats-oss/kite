@@ -3,9 +3,6 @@ package jp.co.cyberagent.kite
 import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.internal.subscriberManager
 
-@KiteDslMaker
-object KiteMemoScope
-
 private class KiteMemoState<T>(
   private val computation: () -> T,
   private val subscriberManager: KiteStateSubscriberManager
@@ -35,6 +32,9 @@ private class KiteMemoState<T>(
       return _value as T
     }
 }
+
+@KiteDslMaker
+object KiteMemoScope
 
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
