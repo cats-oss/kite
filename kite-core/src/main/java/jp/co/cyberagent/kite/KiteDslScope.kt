@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
 
 @KiteDslMaker
 interface KiteDslScope {
@@ -39,14 +38,8 @@ internal class KiteDslScopeImpl(
 
   private val contextualValueMap = ConcurrentHashMap<Any, Any>()
 
-  private val stateKeyGenerator = AtomicInteger(0)
-
   val stateDependencyManager =
     KiteStateSubscriberManager()
-
-  fun createStateKey(): Any {
-    return "KiteDslScopeImpl_StateKey_${stateKeyGenerator.incrementAndGet()}"
-  }
 
   override fun launch(
     context: CoroutineContext,
