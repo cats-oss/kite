@@ -16,7 +16,8 @@ android {
     disable(
       "HardcodedText",
       "VectorRaster",
-      "ContentDescription"
+      "ContentDescription",
+      "SetTextI18n"
     )
   }
 }
