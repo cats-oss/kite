@@ -3,8 +3,8 @@ package jp.co.cyberagent.kite.sample.timeline
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import jp.co.cyberagent.kite.KiteScopeModelFactory
+import jp.co.cyberagent.kite.SimpleKiteScopeModelFactory
 import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
@@ -13,17 +13,12 @@ import jp.co.cyberagent.kite.sample.timeline.ui.bindTimelineExampleFragmentUi
 
 class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
 
-  private lateinit var scopeModelFactory: ViewModelProvider.Factory
+  private lateinit var scopeModelFactory: KiteScopeModelFactory
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    scopeModelFactory = object : ViewModelProvider.Factory {
-      override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        return TimelineExampleScopeModel(
-          TimelineRepository()
-        ) as T
-      }
+    scopeModelFactory = SimpleKiteScopeModelFactory().apply {
+      addService(TimelineRepository())
     }
   }
 
