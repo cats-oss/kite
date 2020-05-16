@@ -30,6 +30,10 @@ fun KiteDslScope.bindTimeline(
   }
 
   epoxyDsl(recyclerView) {
+    config {
+      isDebugLoggingEnabled = true
+    }
+
     isReady {
       !timelineState.value.isLoading
     }

@@ -9,6 +9,8 @@ class KiteEpoxyDslScope {
 
   private val isReadyList = mutableListOf<KiteEpoxyIsReadyScope.() -> Boolean>()
 
+  private val configList = mutableListOf<KiteEpoxyController.() -> Unit>()
+
   private val builderList = mutableListOf<KiteEpoxyController.() -> Unit>()
 
   var modelBuildingHandler: Handler = EpoxyController.defaultModelBuildingHandler
@@ -19,17 +21,27 @@ class KiteEpoxyDslScope {
     isReadyList += f
   }
 
+  fun config(block: KiteEpoxyController.() -> Unit) {
+    configList += block
+  }
+
   fun buildModels(builder: KiteEpoxyController.() -> Unit) {
     builderList += builder
   }
 
   internal fun create(): KiteEpoxyController {
+    val isReadyList = isReadyList.toList()
     val isReady = { isReadyList.all { KiteEpoxyIsReadyScope.run(it) } }
+    val configList = configList.toList()
+    val config: KiteEpoxyController.() -> Unit = { configList.forEach { it.invoke(this) } }
+    val builderList = builderList.toList()
+    val builder: KiteEpoxyController.() -> Unit = { builderList.forEach { it.invoke(this) } }
     return KiteEpoxyController(
-      builderList,
-      isReady,
-      modelBuildingHandler,
-      diffingHandler
+      isReady = isReady,
+      config = config,
+      builder = builder,
+      modelBuildingHandler = modelBuildingHandler,
+      diffingHandler = diffingHandler
     )
   }
 }

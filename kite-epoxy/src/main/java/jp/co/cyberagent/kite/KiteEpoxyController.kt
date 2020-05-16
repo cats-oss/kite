@@ -5,14 +5,19 @@ import com.airbnb.epoxy.EpoxyController
 
 @KiteDslMaker
 class KiteEpoxyController internal constructor(
-  private val builderList: List<KiteEpoxyController.() -> Unit>,
   private val isReady: () -> Boolean,
+  config: KiteEpoxyController.() -> Unit,
+  private val builder: KiteEpoxyController.() -> Unit,
   modelBuildingHandler: Handler = defaultModelBuildingHandler,
   diffingHandler: Handler = defaultDiffingHandler
 ) : EpoxyController(modelBuildingHandler, diffingHandler) {
 
+  init {
+    config.invoke(this)
+  }
+
   override fun buildModels() {
-    builderList.forEach { it.invoke(this) }
+    builder.invoke(this)
   }
 
   internal fun requestModelBuildIfReady() {
