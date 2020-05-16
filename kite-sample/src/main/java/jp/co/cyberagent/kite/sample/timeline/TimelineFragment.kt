@@ -11,7 +11,7 @@ import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.state.useTimeline
 import jp.co.cyberagent.kite.sample.timeline.ui.bindTimelineExampleFragmentUi
 
-class TimelineExampleFragment : Fragment(R.layout.fragment_timeline_example) {
+class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
   private lateinit var scopeModelFactory: KiteScopeModelFactory
 

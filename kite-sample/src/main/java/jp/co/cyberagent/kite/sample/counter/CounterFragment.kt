@@ -9,12 +9,12 @@ import jp.co.cyberagent.kite.Tuple2
 import jp.co.cyberagent.kite.getContextualValue
 import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
-import jp.co.cyberagent.kite.sample.databinding.FragmentCounterExampleBinding
+import jp.co.cyberagent.kite.sample.databinding.FragmentCounterBinding
 import jp.co.cyberagent.kite.sample.databinding.IncludeCounterBinding
 import jp.co.cyberagent.kite.state
 import jp.co.cyberagent.kite.subscribe
 
-class CounterExampleFragment : Fragment(R.layout.fragment_counter_example) {
+class CounterFragment : Fragment(R.layout.fragment_counter) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) = kiteDsl {
     val (counter1, counter2) = createCounterState()
@@ -31,7 +31,7 @@ fun KiteDslScope.bindCounterExampleFragmentUi(
   counter1: KiteProperty<Int>,
   counter2: KiteProperty<Int>
 ) {
-  val binding = FragmentCounterExampleBinding.bind(
+  val binding = FragmentCounterBinding.bind(
     getContextualValue<Fragment>().requireView()
   )
 

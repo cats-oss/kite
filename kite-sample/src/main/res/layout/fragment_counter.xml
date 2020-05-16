@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:gravity="center"
+  android:gravity="center_horizontal"
   android:orientation="vertical"
-  android:padding="32dp"
-  >
+  android:padding="32dp">
 
   <TextView
     android:id="@+id/text_sum"
@@ -15,21 +13,18 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="32dp"
     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-    tools:text="1"
-    />
+    tools:text="1" />
 
   <include
     android:id="@+id/counter_1"
     layout="@layout/include_counter"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    />
+    android:layout_height="wrap_content" />
 
   <include
     android:id="@+id/counter_2"
     layout="@layout/include_counter"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    />
+    android:layout_height="wrap_content" />
 
 </LinearLayout>
