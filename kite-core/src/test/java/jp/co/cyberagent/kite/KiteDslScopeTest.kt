@@ -36,53 +36,12 @@ class KiteDslScopeTest : StringSpec({
     }
   }
 
-  "Set contextual value with key then get with same key should return same value" {
-    kiteDsl(owner, kiteScopeModel) {
-      setContextualValueIfAbsent("value") { 4 } shouldBe 4
-      getContextualValue<Int>("value") shouldBe 4
-    }
-  }
-
-  "Set contextual value then get should return same value" {
-    kiteDsl(owner, kiteScopeModel) {
-      setContextualValueIfAbsent { "Kite" } shouldBe "Kite"
-      getContextualValue<String>() shouldBe "Kite"
-    }
-  }
-
-  "Set contextual value multiple times with same key " +
-    "then get with same key should return old value" {
-      kiteDsl(owner, kiteScopeModel) {
-        setContextualValueIfAbsent("value") { 3 } shouldBe 3
-        setContextualValueIfAbsent("value") { 4 } shouldBe 3
-        getContextualValue<Int>("value") shouldBe 3
-      }
-    }
-
-  "Set contextual value multiple times then get should return old value" {
-    kiteDsl(owner, kiteScopeModel) {
-      setContextualValueIfAbsent { "Kite" } shouldBe "Kite"
-      setContextualValueIfAbsent { "Cats" } shouldBe "Kite"
-      getContextualValue<String>() shouldBe "Kite"
-    }
-  }
-
-  "Get no existing contextual value should throw exception" {
-    kiteDsl(owner, kiteScopeModel) {
-      shouldThrow<IllegalStateException> {
-        getContextualValue<String>()
-      }
-      shouldThrow<IllegalStateException> {
-        getContextualValue<Int>("value")
-      }
-    }
-  }
-
   "Check properties should be same instance as parameters" {
     kiteDsl(owner, kiteScopeModel) {
       lifecycleOwner shouldBeSameInstanceAs owner
       kiteScopeModel shouldBeSameInstanceAs kiteScopeModel
       coroutineContext shouldBeSameInstanceAs owner.lifecycleScope.coroutineContext
+      ctx.keys.isEmpty() shouldBe true
     }
   }
 })

@@ -2,18 +2,18 @@ package jp.co.cyberagent.kite.internal
 
 import java.util.concurrent.atomic.AtomicInteger
 import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.setContextualValueIfAbsent
+import jp.co.cyberagent.kite.setIfAbsent
 
 internal class KiteStateKeyGenerator {
 
   private val stateKeyGenerator = AtomicInteger(0)
 
   fun createStateKey(): String {
-    return "KiteDslScopeImpl_StateKey_${stateKeyGenerator.incrementAndGet()}"
+    return "KiteStateKeyGenerator_${stateKeyGenerator.incrementAndGet()}"
   }
 }
 
 internal fun KiteDslScope.createStateKey(): String {
-  val generator = setContextualValueIfAbsent { KiteStateKeyGenerator() }
+  val generator = setIfAbsent(KiteStateKeyGenerator::class) { KiteStateKeyGenerator() }
   return generator.createStateKey()
 }

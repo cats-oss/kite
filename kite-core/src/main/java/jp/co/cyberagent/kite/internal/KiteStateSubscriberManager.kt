@@ -5,7 +5,7 @@ import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteState
 import jp.co.cyberagent.kite.checkIsMainThread
 import jp.co.cyberagent.kite.isMainThread
-import jp.co.cyberagent.kite.setContextualValueIfAbsent
+import jp.co.cyberagent.kite.setIfAbsent
 
 internal class KiteStateSubscriberManager {
 
@@ -36,4 +36,4 @@ internal class KiteStateSubscriberManager {
 }
 
 internal val KiteDslScope.subscriberManager: KiteStateSubscriberManager
-  get() = setContextualValueIfAbsent { KiteStateSubscriberManager() }
+  get() = setIfAbsent(KiteStateSubscriberManager::class) { KiteStateSubscriberManager() }

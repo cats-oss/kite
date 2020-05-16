@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.getContextualValue
 import jp.co.cyberagent.kite.onStart
+import jp.co.cyberagent.kite.requireByType
 import jp.co.cyberagent.kite.sample.databinding.FragmentTimelineBinding
 import jp.co.cyberagent.kite.sample.timeline.state.TimelineUseCase
 import jp.co.cyberagent.kite.subscribe
@@ -14,9 +14,9 @@ fun KiteDslScope.bindTimelineExampleFragmentUi(
   timelineUseCase: TimelineUseCase
 ) {
   val binding = FragmentTimelineBinding.bind(
-    getContextualValue<Fragment>().requireView()
+    requireByType<Fragment>().requireView()
   )
-  val context = getContextualValue<Context>()
+  val context = requireByType<Context>()
 
   binding.swipeRefreshLayout.setOnRefreshListener {
     timelineUseCase.fetchTimeline.invoke()

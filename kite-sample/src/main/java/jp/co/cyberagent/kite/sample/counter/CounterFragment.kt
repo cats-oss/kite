@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteProperty
 import jp.co.cyberagent.kite.Tuple2
-import jp.co.cyberagent.kite.getContextualValue
 import jp.co.cyberagent.kite.kiteDsl
+import jp.co.cyberagent.kite.requireByType
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.databinding.FragmentCounterBinding
 import jp.co.cyberagent.kite.sample.databinding.IncludeCounterBinding
@@ -32,7 +32,7 @@ fun KiteDslScope.bindCounterExampleFragmentUi(
   counter2: KiteProperty<Int>
 ) {
   val binding = FragmentCounterBinding.bind(
-    getContextualValue<Fragment>().requireView()
+    requireByType<Fragment>().requireView()
   )
 
   subscribe {

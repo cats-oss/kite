@@ -8,7 +8,7 @@ import jp.co.cyberagent.kite.KiteDslScopeImpl
 import jp.co.cyberagent.kite.KiteScopeModel
 import jp.co.cyberagent.kite.KiteState
 import jp.co.cyberagent.kite.TestLifecycleOwner
-import jp.co.cyberagent.kite.getContextualValue
+import jp.co.cyberagent.kite.requireByType
 import jp.co.cyberagent.kite.state
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
     }
   }
 
-  "Resolve dependency" {
+  "Resolve dependency should success" {
     val kite = KiteDslScopeImpl(TestLifecycleOwner(), KiteScopeModel())
     val state1 = kite.state { 0 }
     val state2 = kite.state { 0 }
@@ -44,7 +44,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
       invokedCnt++
     }
 
-    val subscribeManager = kite.getContextualValue<KiteStateSubscriberManager>()
+    val subscribeManager = kite.requireByType<KiteStateSubscriberManager>()
     subscribeManager.runAndResolveDependentState(runnable)
     invokedCnt shouldBe 1
     subscribeManager.notifyStateChanged(state1)

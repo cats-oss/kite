@@ -14,9 +14,10 @@ fun ComponentActivity.kiteDsl(
     this,
     scopeModelFactory ?: SimpleKiteScopeModelFactory()
   )[KiteScopeModel::class.java]
+  val activity = this
   kiteDsl(this, scopeModel) {
-    setContextualValueIfAbsent<Activity> { this@kiteDsl }
-    setContextualValueIfAbsent<Context> { this@kiteDsl }
+    ctx += activity as Activity
+    ctx += activity as Context
     body.invoke(this)
   }
 }
@@ -30,10 +31,11 @@ fun Fragment.kiteDsl(
     scopeModelOwner,
     scopeModelFactory ?: SimpleKiteScopeModelFactory()
   )[KiteScopeModel::class.java]
+  val fragment = this
   kiteDsl(viewLifecycleOwner, scopeModel) {
-    setContextualValueIfAbsent<Activity> { requireActivity() }
-    setContextualValueIfAbsent { requireContext() }
-    setContextualValueIfAbsent { this@kiteDsl }
+    ctx += requireActivity() as Activity
+    ctx += requireContext()
+    ctx += fragment
     body.invoke(this)
   }
 }
