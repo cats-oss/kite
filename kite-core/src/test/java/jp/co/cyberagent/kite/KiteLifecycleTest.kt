@@ -3,12 +3,10 @@ package jp.co.cyberagent.kite
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.Lifecycle.State
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.data.blocking.forAll
+import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
-import io.mockk.spyk
-import io.mockk.verify
 
 @RobolectricTest
 class KiteLifecycleTest : StringSpec({
@@ -17,8 +15,7 @@ class KiteLifecycleTest : StringSpec({
     val owner = TestLifecycleOwner()
     val kiteScopeModel = KiteScopeModel()
     val kite = KiteDslScopeImpl(owner, kiteScopeModel)
-    val callback = spyk<() -> Unit>()
-    var cnt = 0
+    var invoked: Boolean
 
     forAll(
       row<Event, KiteDslScope.() -> Unit>(
@@ -26,7 +23,7 @@ class KiteLifecycleTest : StringSpec({
         {
           onCreate {
             currentState shouldBe State.CREATED
-            callback.invoke()
+            invoked = true
           }
         }
       ),
@@ -35,7 +32,7 @@ class KiteLifecycleTest : StringSpec({
         {
           onStart {
             currentState shouldBe State.STARTED
-            callback.invoke()
+            invoked = true
           }
         }
       ),
@@ -44,7 +41,7 @@ class KiteLifecycleTest : StringSpec({
         {
           onResume {
             currentState shouldBe State.RESUMED
-            callback.invoke()
+            invoked = true
           }
         }
       ),
@@ -53,7 +50,7 @@ class KiteLifecycleTest : StringSpec({
         {
           onPause {
             currentState shouldBe State.STARTED
-            callback.invoke()
+            invoked = true
           }
         }
       ),
@@ -62,7 +59,7 @@ class KiteLifecycleTest : StringSpec({
         {
           onStop {
             currentState shouldBe State.CREATED
-            callback.invoke()
+            invoked = true
           }
         }
       ),
@@ -71,15 +68,15 @@ class KiteLifecycleTest : StringSpec({
         {
           onDestroy {
             currentState shouldBe State.DESTROYED
-            callback.invoke()
+            invoked = true
           }
         }
       )
     ) { event, block ->
+      invoked = false
       kite.apply(block)
       owner.lifecycle.handleLifecycleEvent(event)
-      cnt++
-      verify(exactly = cnt) { callback.invoke() }
+      invoked shouldBe true
     }
   }
 })

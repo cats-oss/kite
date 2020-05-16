@@ -31,5 +31,4 @@ dependencies {
   testImplementation(Kotest.assertionsCore)
   testImplementation(Kotest.property)
   testImplementation(Kotest.robolectric)
-  testImplementation(Testing.mockK.mockK)
 }
