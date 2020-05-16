@@ -6,6 +6,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
+import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -57,5 +58,36 @@ class KiteSubscribeScopeTest : StringSpec({
     result shouldBe "A2"
     state.value = 3
     result shouldBe "A3"
+  }
+
+  "Subscribe action should not run when state changed with same value" {
+    owner.lifecycle.currentState = State.RESUMED
+    val state = kite.state { "A" }
+    var invokeCnt = 0
+    kite.subscribe {
+      state.value
+      invokeCnt++
+    }
+    invokeCnt shouldBe 1
+    state.value = "A"
+    invokeCnt shouldBe 1
+    state.value = "B"
+    invokeCnt shouldBe 2
+  }
+
+  "Subscribe action should not run when memo state changed with same value" {
+    owner.lifecycle.currentState = State.RESUMED
+    val state = kite.state { 1 }
+    val memo = kite.memo { min(state.value, 0) }
+    var invokeCnt = 0
+    kite.subscribe {
+      memo.value
+      invokeCnt++
+    }
+    invokeCnt shouldBe 1
+    state.value = 2
+    invokeCnt shouldBe 1
+    state.value = -1
+    invokeCnt shouldBe 2
   }
 })
