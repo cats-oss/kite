@@ -21,7 +21,7 @@ open class KiteScopeModel : ViewModel() {
     return getService(T::class)
   }
 
-  protected fun <T : Any> addService(service: T, kClass: KClass<T>) {
+  protected fun <T : Any> addService(kClass: KClass<T>, service: T) {
     check(kClass !in serviceMap) {
       "Service $kClass already added."
     }
@@ -29,7 +29,7 @@ open class KiteScopeModel : ViewModel() {
   }
 
   protected inline fun <reified T : Any> addService(service: T) {
-    addService(service, T::class)
+    addService(T::class, service)
   }
 
   internal fun <T : Any> createTagIfAbsent(key: Any, creator: () -> T): T {

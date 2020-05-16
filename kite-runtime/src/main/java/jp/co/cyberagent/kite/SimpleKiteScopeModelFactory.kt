@@ -9,7 +9,7 @@ private class SimpleKiteScopeViewModel(
   init {
     serviceMap.forEach { (k, v) ->
       @Suppress("UNCHECKED_CAST")
-      addService(v, k as KClass<Any>)
+      addService(k as KClass<Any>, v)
     }
   }
 }
