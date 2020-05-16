@@ -90,4 +90,28 @@ class KiteSubscribeScopeTest : StringSpec({
     state.value = -1
     invokeCnt shouldBe 2
   }
+
+  "Subscribe action should only run when its dependent changed" {
+    owner.lifecycle.currentState = State.RESUMED
+    val state1 = kite.state { "" }
+    val state2 = kite.state { "" }
+    var invokeCnt1 = 0
+    var invokeCnt2 = 0
+    kite.subscribe {
+      state1.value
+      invokeCnt1++
+    }
+    kite.subscribe {
+      state2.value
+      invokeCnt2++
+    }
+    invokeCnt1 shouldBe 1
+    invokeCnt2 shouldBe 1
+    state1.value = "Kite"
+    invokeCnt1 shouldBe 2
+    invokeCnt2 shouldBe 1
+    state2.value = "Kite"
+    invokeCnt1 shouldBe 2
+    invokeCnt2 shouldBe 2
+  }
 })
