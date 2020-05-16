@@ -24,7 +24,7 @@ android {
 
 dependencies {
   implementation(project(":kite-core"))
-  implementation(project(":kite-ui"))
+  implementation(project(":kite-runtime"))
   implementation(project(":kite-epoxy"))
 
   implementation(Kotlin.stdlib.jdk8)
