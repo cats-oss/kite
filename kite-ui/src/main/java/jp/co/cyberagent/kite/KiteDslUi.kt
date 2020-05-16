@@ -6,10 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 
 fun ComponentActivity.kiteDsl(
-  scopeModelFactory: ViewModelProvider.Factory? = null,
+  scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ) {
   val scopeModel = ViewModelProvider(
@@ -24,8 +23,8 @@ fun ComponentActivity.kiteDsl(
 }
 
 fun Fragment.kiteDsl(
-  scopeModelOwner: ViewModelStoreOwner = this,
-  scopeModelFactory: ViewModelProvider.Factory? = null,
+  scopeModelOwner: KiteScopeModelStoreOwner = this,
+  scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ) {
   val factory = scopeModelFactory
