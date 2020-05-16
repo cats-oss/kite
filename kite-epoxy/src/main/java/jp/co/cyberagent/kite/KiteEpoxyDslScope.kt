@@ -7,24 +7,24 @@ import com.airbnb.epoxy.EpoxyController
 @KiteDslMaker
 class KiteEpoxyDslScope {
 
-  private val isReadyList = mutableListOf<IsReady>()
+  private val isReadyList = mutableListOf<KiteEpoxyIsReadyScope.() -> Boolean>()
 
-  private val builderList = mutableListOf<EpoxyControllerBuildModelScope>()
+  private val builderList = mutableListOf<KiteEpoxyController.() -> Unit>()
 
   var modelBuildingHandler: Handler = EpoxyController.defaultModelBuildingHandler
 
   var diffingHandler: Handler = EpoxyController.defaultDiffingHandler
 
-  fun isReady(f: () -> Boolean) {
+  fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean) {
     isReadyList += f
   }
 
-  fun buildModels(builder: EpoxyController.() -> Unit) {
+  fun buildModels(builder: KiteEpoxyController.() -> Unit) {
     builderList += builder
   }
 
-  fun create(): KiteEpoxyController {
-    val isReady = { isReadyList.all { it.invoke() } }
+  internal fun create(): KiteEpoxyController {
+    val isReady = { isReadyList.all { KiteEpoxyIsReadyScope.run(it) } }
     return KiteEpoxyController(
       builderList,
       isReady,

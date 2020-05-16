@@ -3,9 +3,10 @@ package jp.co.cyberagent.kite
 import android.os.Handler
 import com.airbnb.epoxy.EpoxyController
 
-class KiteEpoxyController(
-  private val builderList: List<EpoxyControllerBuildModelScope>,
-  private val isReady: IsReady,
+@KiteDslMaker
+class KiteEpoxyController internal constructor(
+  private val builderList: List<KiteEpoxyController.() -> Unit>,
+  private val isReady: () -> Boolean,
   modelBuildingHandler: Handler = defaultModelBuildingHandler,
   diffingHandler: Handler = defaultDiffingHandler
 ) : EpoxyController(modelBuildingHandler, diffingHandler) {
@@ -14,7 +15,7 @@ class KiteEpoxyController(
     builderList.forEach { it.invoke(this) }
   }
 
-  fun requestModelBuildIfReady() {
+  internal fun requestModelBuildIfReady() {
     if (isReady.invoke()) {
       requestModelBuild()
     }
