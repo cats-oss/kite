@@ -45,7 +45,7 @@ class KiteMemoStateTest : StringSpec({
     memo.value shouldBe "B2"
   }
 
-  "Memo should recomputed when nested dependent state changed" {
+  "Memo should recompute when nested dependent state changed" {
     owner.lifecycle.currentState = State.RESUMED
     val state = kite.state { 1 }
     val memo1 = kite.memo { state.value }

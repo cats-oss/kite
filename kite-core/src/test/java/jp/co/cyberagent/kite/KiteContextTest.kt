@@ -7,6 +7,8 @@ import io.kotest.data.blocking.forAll
 import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
 @RobolectricTest
@@ -52,8 +54,7 @@ class KiteContextTest : StringSpec({
   "Get same key with different type should throw exception" {
     shouldThrow<ClassCastException> {
       ctx["key"] = 1
-      val v: String? = ctx["key"]
-      Unit
+      ctx.get<String>("key")
     }
   }
 
@@ -85,13 +86,14 @@ class KiteContextTest : StringSpec({
   }
 
   "KiteContextOf should create correct context" {
-    val context = kiteContextOf(
+    kiteContextOf(
       "key" to 1,
       String::class to "Kite"
-    )
-    context.keys shouldContainExactly listOf("key", String::class)
-    context.get<Int>("key") shouldBe 1
-    context.getByType<String>() shouldBe "Kite"
+    ) should {
+      it.keys shouldContainExactlyInAnyOrder listOf("key", String::class)
+      it.get<Int>("key") shouldBe 1
+      it.getByType<String>() shouldBe "Kite"
+    }
   }
 
   "WithKiteContext should create a merged context" {
