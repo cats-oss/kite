@@ -22,6 +22,8 @@ rootProject.name = ("kite")
 
 include(
   "kite-sample",
+  "kite-common",
+  "kite-testcommon",
   "kite-core",
   "kite-runtime",
   "kite-epoxy",
