@@ -35,8 +35,8 @@ private class KiteLiveDataBackedProperty<T>(
 
 fun <T> KiteDslScope.state(initialValue: () -> T): KiteProperty<T> {
   checkIsMainThread("state")
-  val liveData = scopeModel.createTagIfAbsent(createStateKey()) {
+  val liveData = requireByType<KiteScopeModel>().createTagIfAbsent(createStateKey()) {
     MutableLiveData(initialValue.invoke())
   }
-  return KiteLiveDataBackedProperty(lifecycleOwner, liveData, ctx)
+  return KiteLiveDataBackedProperty(requireByType(), liveData, ctx)
 }

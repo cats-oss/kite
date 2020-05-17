@@ -1,6 +1,5 @@
 package jp.co.cyberagent.kite
 
-import androidx.lifecycle.Lifecycle.State
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -12,11 +11,7 @@ import kotlinx.coroutines.withContext
 
 @RobolectricTest
 class KiteSubscribeScopeTest : StringSpec({
-  listener(ArchInstantTaskListener)
-
-  val scopeModel by memoize { KiteScopeModel() }
-  val owner by memoize { TestLifecycleOwner() }
-  val kite by memoize { KiteDslScope(owner, scopeModel) }
+  val kite by memoize { TestKiteDslScope() }
 
   "Subscribe in main thread should success" {
     shouldNotThrowAny { kite.subscribe { /* no op */ } }
@@ -35,9 +30,8 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should re run when any dependent state change" {
-    owner.lifecycle.currentState = State.RESUMED
-    val state1 = kite.state { "A" }
-    val state2 = kite.state { 1 }
+    val state1 = kite.testState { "A" }
+    val state2 = kite.testState { 1 }
     var result: Any? = null
     kite.subscribe { result = state1.value + state2.value }
     result shouldBe "A1"
@@ -48,8 +42,7 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should re run when any dependent memo state change" {
-    owner.lifecycle.currentState = State.RESUMED
-    val state = kite.state { 1 }
+    val state = kite.testState { 1 }
     val memo = kite.memo { "A" + state.value }
     var result: Any? = null
     kite.subscribe { result = memo.value }
@@ -60,24 +53,8 @@ class KiteSubscribeScopeTest : StringSpec({
     result shouldBe "A3"
   }
 
-  "Subscribe action should not run when state changed with same value" {
-    owner.lifecycle.currentState = State.RESUMED
-    val state = kite.state { "A" }
-    var invokeCnt = 0
-    kite.subscribe {
-      state.value
-      invokeCnt++
-    }
-    invokeCnt shouldBe 1
-    state.value = "A"
-    invokeCnt shouldBe 1
-    state.value = "B"
-    invokeCnt shouldBe 2
-  }
-
   "Subscribe action should not run when memo state changed with same value" {
-    owner.lifecycle.currentState = State.RESUMED
-    val state = kite.state { 1 }
+    val state = kite.testState { 1 }
     val memo = kite.memo { min(state.value, 0) }
     var invokeCnt = 0
     kite.subscribe {
@@ -92,9 +69,8 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should only run when its dependent changed" {
-    owner.lifecycle.currentState = State.RESUMED
-    val state1 = kite.state { "" }
-    val state2 = kite.state { "" }
+    val state1 = kite.testState { "" }
+    val state2 = kite.testState { "" }
     var invokeCnt1 = 0
     var invokeCnt2 = 0
     kite.subscribe {

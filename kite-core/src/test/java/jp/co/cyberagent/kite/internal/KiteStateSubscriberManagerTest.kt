@@ -4,12 +4,11 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
-import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.KiteScopeModel
 import jp.co.cyberagent.kite.KiteState
-import jp.co.cyberagent.kite.TestLifecycleOwner
+import jp.co.cyberagent.kite.TestKiteDslScope
+import jp.co.cyberagent.kite.plusAssign
 import jp.co.cyberagent.kite.requireByType
-import jp.co.cyberagent.kite.state
+import jp.co.cyberagent.kite.testState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -35,9 +34,10 @@ class KiteStateSubscriberManagerTest : StringSpec({
   }
 
   "Resolve dependency should success" {
-    val kite = KiteDslScope(TestLifecycleOwner(), KiteScopeModel())
-    val state1 = kite.state { 0 }
-    val state2 = kite.state { 0 }
+    val kite = TestKiteDslScope()
+    kite.ctx += KiteStateSubscriberManager()
+    val state1 = kite.testState { 0 }
+    val state2 = kite.testState { 0 }
     var invokedCnt = 0
     val runnable = Runnable {
       state1.value + state2.value

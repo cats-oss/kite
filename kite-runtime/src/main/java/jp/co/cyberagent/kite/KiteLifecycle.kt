@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 
 val KiteDslScope.currentState: Lifecycle.State
-  get() = lifecycleOwner.lifecycle.currentState
+  get() = requireByType<LifecycleOwner>().lifecycle.currentState
 
 inline fun KiteDslScope.onCreate(
   crossinline onCreate: () -> Unit
@@ -40,7 +40,7 @@ inline fun KiteDslScope.onLifecycleEvent(
   crossinline onStop: () -> Unit = {},
   crossinline onDestroy: () -> Unit = {}
 ) {
-  lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+  requireByType<LifecycleOwner>().lifecycle.addObserver(object : DefaultLifecycleObserver {
     override fun onCreate(owner: LifecycleOwner) {
       onCreate.invoke()
     }

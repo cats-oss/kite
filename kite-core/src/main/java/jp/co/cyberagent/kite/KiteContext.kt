@@ -96,5 +96,5 @@ fun KiteDslScope.withKiteContext(
   extraCtx: KiteContext,
   body: KiteDslScope.() -> Unit
 ) {
-  kiteDsl(lifecycleOwner, scopeModel, ctx + extraCtx, body)
+  KiteDslScope(this, ctx + extraCtx).apply(body)
 }

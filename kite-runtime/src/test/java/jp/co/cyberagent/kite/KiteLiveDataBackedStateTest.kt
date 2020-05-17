@@ -12,13 +12,11 @@ import kotlinx.coroutines.withContext
 
 @RobolectricTest
 class KiteLiveDataBackedStateTest : StringSpec({
-  listener(ArchInstantTaskListener)
+  addListener(ArchInstantTaskListener)
 
   val scopeModel by memoize { KiteScopeModel() }
-  val kite by memoize {
-    val owner = TestLifecycleOwner()
-    KiteDslScope(owner, scopeModel)
-  }
+  val owner by memoize { TestLifecycleOwner() }
+  val kite by memoize { kiteDsl(owner, scopeModel) { /* no op */ } }
 
   "Create state in main thread should success" {
     shouldNotThrowAny { kite.state { 0 } }
@@ -44,17 +42,17 @@ class KiteLiveDataBackedStateTest : StringSpec({
   "State should be reused when scope model unchanged" {
     forAll(
       row(
-        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
+        kiteDsl(owner, scopeModel, {}).run {
           state { 3 } to state { "Kite" }
         }
       ),
       row(
-        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
+        kiteDsl(owner, scopeModel, {}).run {
           state { 4 } to state { "Cat" }
         }
       ),
       row(
-        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
+        kiteDsl(owner, scopeModel, {}).run {
           state { 5 } to state { "Dog" }
         }
       )

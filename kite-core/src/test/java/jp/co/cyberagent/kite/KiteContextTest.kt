@@ -97,7 +97,7 @@ class KiteContextTest : StringSpec({
   }
 
   "WithKiteContext should create a merged context" {
-    kiteDsl(TestLifecycleOwner(), KiteScopeModel()) {
+    TestKiteDslScope().apply {
       setByType("Cat")
       getByType<String>() shouldBe "Cat"
 

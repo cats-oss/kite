@@ -9,9 +9,4 @@ plugins {
 dependencies {
   implementation(Kotlin.stdlib.jdk8)
   api(KotlinX.coroutines.core)
-
-  implementation(AndroidX.lifecycle.viewModelKtx)
-  implementation(AndroidX.lifecycle.liveDataKtx)
-  implementation(AndroidX.lifecycle.runtimeKtx)
-  implementation(AndroidX.lifecycle.commonJava8)
 }

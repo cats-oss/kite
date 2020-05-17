@@ -13,6 +13,10 @@ dependencies {
 
   api(AndroidX.fragmentKtx)
   api(AndroidX.activityKtx)
+  api(AndroidX.lifecycle.viewModelKtx)
+  api(AndroidX.lifecycle.liveDataKtx)
+  api(AndroidX.lifecycle.runtimeKtx)
+  api(AndroidX.lifecycle.commonJava8)
 
   testImplementation(Testing.junit4)
 }
