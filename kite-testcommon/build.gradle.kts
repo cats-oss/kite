@@ -15,5 +15,6 @@ dependencies {
   implementation(Kotlin.stdlib.jdk8)
   implementation(Kotest.runnerJunit5)
   implementation(Kotest.robolectric)
+  implementation(AndroidX.appCompat)
   implementation(AndroidX.lifecycle.extensions)
 }

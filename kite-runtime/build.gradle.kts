@@ -12,6 +12,7 @@ dependencies {
 
   implementation(Kotlin.stdlib.jdk8)
 
+  api(AndroidX.appCompat)
   api(AndroidX.fragmentKtx)
   api(AndroidX.activityKtx)
   api(AndroidX.lifecycle.viewModelKtx)
@@ -20,4 +21,6 @@ dependencies {
   api(AndroidX.lifecycle.commonJava8)
 
   testImplementation(project(":kite-testcommon"))
+  testImplementation(AndroidX.test.coreKtx)
+  testImplementation(AndroidX.fragmentTesting)
 }
