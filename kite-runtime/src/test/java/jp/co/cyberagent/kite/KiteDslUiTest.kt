@@ -40,6 +40,17 @@ class KiteDslUiTest : StringSpec({
     }
   }
 
+  "KiteDsl should add ScopeModel services to context" {
+    val factory = KiteScopeModelFactory().apply {
+      addService("Kite")
+      addService(2048)
+    }
+    kiteDsl(TestLifecycleOwner(), TestKiteScopeModelOwner(), factory) {
+      requireByType<String>() shouldBe "Kite"
+      requireByType<Int>() shouldBe 2048
+    }
+  }
+
   "Activity kiteDsl should initialized with correct KiteContext" {
     var invoked = false
     TestActivity.onCreateAction = { activity ->

@@ -8,7 +8,7 @@ open class KiteScopeModelFactory : ViewModelProvider.Factory {
 
   private val serviceMap = mutableMapOf<KClass<*>, Any>()
 
-  fun <T : Any> addService(service: T, kClass: KClass<T>) {
+  fun <T : Any> addService(kClass: KClass<T>, service: T) {
     check(kClass !in serviceMap) {
       "Service $kClass already added."
     }
@@ -16,7 +16,7 @@ open class KiteScopeModelFactory : ViewModelProvider.Factory {
   }
 
   inline fun <reified T : Any> addService(service: T) {
-    addService(service, T::class)
+    addService(T::class, service)
   }
 
   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
