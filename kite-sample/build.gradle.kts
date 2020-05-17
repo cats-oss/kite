@@ -38,7 +38,19 @@ dependencies {
 
   implementation(Google.android.material)
 
+  testImplementation(project(":kite-testing"))
   testImplementation(Testing.junit4)
+  testImplementation(AndroidX.test.ext.junitKtx)
+  testImplementation(AndroidX.test.ext.truth)
+  testImplementation(AndroidX.test.rules)
+  testImplementation(AndroidX.test.espresso.core)
+  testImplementation(AndroidX.test.espresso.contrib)
+  testImplementation(AndroidX.test.coreKtx)
+  testImplementation(AndroidX.fragmentTesting)
+  debugImplementation(AndroidX.fragmentTesting)
+  testImplementation(AndroidX.archCore.testing)
+  testImplementation(Testing.MockK.mockK)
+  testImplementation(Testing.roboElectric)
 
   androidTestImplementation(AndroidX.test.ext.junitKtx)
   androidTestImplementation(AndroidX.test.rules)

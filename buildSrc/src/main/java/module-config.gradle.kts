@@ -11,6 +11,7 @@ project.afterEvaluate {
         extensions.getByType<LibraryExtension>().androidLibraryConfig()
         extensions.getByType<TestedExtension>().androidCommonConfig(project.gradle.startParameter)
         commonTestImplementation()
+        libraryConfig()
       }
       is AppPlugin -> {
         extensions.getByType<BaseAppModuleExtension>().androidAppConfig()

@@ -58,7 +58,12 @@ fun TestedExtension.androidCommonConfig(startParameter: StartParameter) {
     isAbortOnError = true
   }
 
-  testOptions.animationsDisabled = true
+  testOptions {
+    animationsDisabled = true
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
 }
 
 fun BaseAppModuleExtension.androidAppConfig() {
@@ -75,12 +80,6 @@ fun LibraryExtension.androidLibraryConfig() {
   packagingOptions {
     exclude("META-INF/AL2.0")
     exclude("META-INF/LGPL2.1")
-  }
-
-  testOptions {
-    unitTests {
-      isIncludeAndroidResources = true
-    }
   }
 }
 
@@ -100,6 +99,11 @@ fun Project.commonConfig() {
     testLogging {
       events(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
     }
+  }
+}
+
+fun Project.libraryConfig() {
+  tasks.withType<Test>().configureEach {
     useJUnitPlatform()
   }
 }

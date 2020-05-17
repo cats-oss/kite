@@ -9,7 +9,6 @@ import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import jp.co.cyberagent.kite.state
 import jp.co.cyberagent.kite.update
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 typealias FetchTimeline = Invoker0
@@ -39,7 +38,7 @@ fun KiteDslScope.useTimeline(): TimelineUseCase {
   val timelineState = state { TimelineState() }
 
   val fetchTimeline: FetchTimeline = {
-    launch(Dispatchers.IO) {
+    launch {
       runCatching {
         timelineState.update { it.copy(isLoading = true, error = null) }
         val contents = repository.getTimelineContent()
@@ -60,7 +59,7 @@ fun KiteDslScope.useTimeline(): TimelineUseCase {
   }
 
   val updateFavorite: UpdateIsFavorite = { id, to ->
-    launch(Dispatchers.IO) {
+    launch {
       val from = timelineState.value.timeline.isFavorite[id] ?: return@launch
       if (from == to) return@launch
       runCatching {
