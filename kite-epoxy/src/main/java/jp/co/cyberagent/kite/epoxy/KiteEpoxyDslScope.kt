@@ -8,7 +8,16 @@ import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.subscribe
 
 @KiteDslMaker
-class KiteEpoxyDslScope {
+interface KiteEpoxyDslScope {
+
+  fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean)
+
+  fun config(block: KiteEpoxyController.() -> Unit)
+
+  fun buildModels(builder: KiteEpoxyController.() -> Unit)
+}
+
+private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
 
   private val isReadyList = mutableListOf<KiteEpoxyIsReadyScope.() -> Boolean>()
 
@@ -20,21 +29,21 @@ class KiteEpoxyDslScope {
 
   var diffingHandler: Handler = EpoxyController.defaultDiffingHandler
 
-  fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean) {
+  override fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean) {
     isReadyList += f
   }
 
-  fun config(block: KiteEpoxyController.() -> Unit) {
+  override fun config(block: KiteEpoxyController.() -> Unit) {
     configList += block
   }
 
-  fun buildModels(builder: KiteEpoxyController.() -> Unit) {
+  override fun buildModels(builder: KiteEpoxyController.() -> Unit) {
     builderList += builder
   }
 
-  internal fun create(): KiteEpoxyController {
+  fun create(): KiteEpoxyController {
     val isReadyList = isReadyList.toList()
-    val isReady = { isReadyList.all { KiteEpoxyIsReadyScope.run(it) } }
+    val isReady = { isReadyList.all { KiteEpoxyIsReadyScope().run(it) } }
     val configList = configList.toList()
     val config: KiteEpoxyController.() -> Unit = { configList.forEach { it.invoke(this) } }
     val builderList = builderList.toList()
@@ -53,7 +62,7 @@ fun KiteDslScope.epoxyDsl(
   recyclerView: RecyclerView,
   body: KiteEpoxyDslScope.() -> Unit
 ) {
-  val scope = KiteEpoxyDslScope().apply(body)
+  val scope = KiteEpoxyDslScopeImpl().apply(body)
   val controller = scope.create()
   recyclerView.adapter = controller.adapter
   subscribe {
