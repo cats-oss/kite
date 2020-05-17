@@ -12,10 +12,10 @@ fun ComponentActivity.kiteDsl(
 ) {
   val scopeModel = ViewModelProvider(
     this,
-    scopeModelFactory ?: SimpleKiteScopeModelFactory()
+    scopeModelFactory ?: KiteScopeModelFactory()
   )[KiteScopeModel::class.java]
   val activity = this
-  kiteDsl(this, scopeModel) {
+  kiteDsl(this, scopeModel, KiteContext()) {
     ctx += activity as Activity
     ctx += activity as Context
     body.invoke(this)
@@ -29,10 +29,10 @@ fun Fragment.kiteDsl(
 ) {
   val scopeModel = ViewModelProvider(
     scopeModelOwner,
-    scopeModelFactory ?: SimpleKiteScopeModelFactory()
+    scopeModelFactory ?: KiteScopeModelFactory()
   )[KiteScopeModel::class.java]
   val fragment = this
-  kiteDsl(viewLifecycleOwner, scopeModel) {
+  kiteDsl(viewLifecycleOwner, scopeModel, KiteContext()) {
     ctx += requireActivity() as Activity
     ctx += requireContext()
     ctx += fragment

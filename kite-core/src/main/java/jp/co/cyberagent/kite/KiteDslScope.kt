@@ -21,7 +21,12 @@ private class KiteDslScopeImpl(
   override val ctx: KiteContext
 ) : KiteDslScope,
   CoroutineScope by lifecycleOwner.lifecycleScope,
-  KiteContext by ctx
+  KiteContext by ctx {
+
+  init {
+    scopeModel.addServiceToContext(ctx)
+  }
+}
 
 @Suppress("FunctionName")
 internal fun KiteDslScope(
@@ -33,7 +38,7 @@ internal fun KiteDslScope(
 fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
   scopeModel: KiteScopeModel,
-  ctx: KiteContext = KiteContext(),
+  ctx: KiteContext,
   body: KiteDslScope.() -> Unit
 ) {
   val currentState = lifecycleOwner.lifecycle.currentState

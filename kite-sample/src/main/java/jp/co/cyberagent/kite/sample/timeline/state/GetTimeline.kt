@@ -4,7 +4,7 @@ import jp.co.cyberagent.kite.Invoker0
 import jp.co.cyberagent.kite.Invoker2
 import jp.co.cyberagent.kite.KiteDslScope
 import jp.co.cyberagent.kite.KiteGetter
-import jp.co.cyberagent.kite.getService
+import jp.co.cyberagent.kite.requireByType
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import jp.co.cyberagent.kite.state
@@ -34,7 +34,7 @@ data class TimelineUseCase(
 )
 
 fun KiteDslScope.useTimeline(): TimelineUseCase {
-  val repository = getService<TimelineRepository>()
+  val repository = requireByType<TimelineRepository>()
 
   val timelineState = state { TimelineState() }
 

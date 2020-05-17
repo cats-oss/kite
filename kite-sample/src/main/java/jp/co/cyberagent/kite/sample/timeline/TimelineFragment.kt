@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.KiteScopeModelFactory
-import jp.co.cyberagent.kite.SimpleKiteScopeModelFactory
 import jp.co.cyberagent.kite.kiteDsl
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
@@ -17,7 +16,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    scopeModelFactory = SimpleKiteScopeModelFactory().apply {
+    scopeModelFactory = KiteScopeModelFactory().apply {
       addService(TimelineRepository())
     }
   }
