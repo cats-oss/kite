@@ -16,7 +16,7 @@ class KiteSubscribeScopeTest : StringSpec({
 
   val scopeModel by memoize { KiteScopeModel() }
   val owner by memoize { TestLifecycleOwner() }
-  val kite by memoize { KiteDslScopeImpl(owner, scopeModel) }
+  val kite by memoize { KiteDslScope(owner, scopeModel) }
 
   "Subscribe in main thread should success" {
     shouldNotThrowAny { kite.subscribe { /* no op */ } }

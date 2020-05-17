@@ -15,13 +15,20 @@ interface KiteDslScope : CoroutineScope, KiteContext {
   val ctx: KiteContext
 }
 
-internal class KiteDslScopeImpl(
+private class KiteDslScopeImpl(
   override val lifecycleOwner: LifecycleOwner,
   override val scopeModel: KiteScopeModel,
-  override val ctx: KiteContext = KiteContext()
+  override val ctx: KiteContext
 ) : KiteDslScope,
   CoroutineScope by lifecycleOwner.lifecycleScope,
   KiteContext by ctx
+
+@Suppress("FunctionName")
+internal fun KiteDslScope(
+  lifecycleOwner: LifecycleOwner,
+  scopeModel: KiteScopeModel,
+  ctx: KiteContext = KiteContext()
+): KiteDslScope = KiteDslScopeImpl(lifecycleOwner, scopeModel, ctx)
 
 fun kiteDsl(
   lifecycleOwner: LifecycleOwner,

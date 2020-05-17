@@ -17,7 +17,7 @@ class KiteLiveDataBackedStateTest : StringSpec({
   val scopeModel by memoize { KiteScopeModel() }
   val kite by memoize {
     val owner = TestLifecycleOwner()
-    KiteDslScopeImpl(owner, scopeModel)
+    KiteDslScope(owner, scopeModel)
   }
 
   "Create state in main thread should success" {
@@ -44,17 +44,17 @@ class KiteLiveDataBackedStateTest : StringSpec({
   "State should be reused when scope model unchanged" {
     forAll(
       row(
-        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
           state { 3 } to state { "Kite" }
         }
       ),
       row(
-        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
           state { 4 } to state { "Cat" }
         }
       ),
       row(
-        KiteDslScopeImpl(TestLifecycleOwner(), scopeModel).run {
+        KiteDslScope(TestLifecycleOwner(), scopeModel).run {
           state { 5 } to state { "Dog" }
         }
       )

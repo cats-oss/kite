@@ -15,7 +15,7 @@ class KiteMemoScopeTest : StringSpec({
 
   val scopeModel by memoize { KiteScopeModel() }
   val owner by memoize { TestLifecycleOwner() }
-  val kite by memoize { KiteDslScopeImpl(owner, scopeModel) }
+  val kite by memoize { KiteDslScope(owner, scopeModel) }
 
   "Create memo in main thread should success" {
     shouldNotThrowAny { kite.memo { 0 } }
