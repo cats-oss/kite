@@ -1,7 +1,7 @@
 package jp.co.cyberagent.kite.internal
 
 import java.util.ArrayDeque
-import jp.co.cyberagent.kite.KiteDslScope
+import jp.co.cyberagent.kite.KiteContext
 import jp.co.cyberagent.kite.KiteState
 import jp.co.cyberagent.kite.checkIsMainThread
 import jp.co.cyberagent.kite.isMainThread
@@ -35,5 +35,5 @@ internal class KiteStateSubscriberManager {
   }
 }
 
-internal val KiteDslScope.subscriberManager: KiteStateSubscriberManager
+internal val KiteContext.subscriberManager: KiteStateSubscriberManager
   get() = setIfAbsent(KiteStateSubscriberManager::class) { KiteStateSubscriberManager() }

@@ -1,34 +1,20 @@
 package jp.co.cyberagent.kite
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
+import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.observe
 import jp.co.cyberagent.kite.internal.createStateKey
-import jp.co.cyberagent.kite.internal.subscriberManager
-
-private class KiteLiveDataBackedStateObserver<T>(
-  private val state: KiteState,
-  private val subscriberManager: KiteStateSubscriberManager
-) : Observer<T> {
-
-  private var preValue: Any? = Unset
-
-  override fun onChanged(t: T) {
-    if (preValue != t) {
-      preValue = t
-      subscriberManager.notifyStateChanged(state)
-    }
-  }
-}
 
 private class KiteLiveDataBackedProperty<T>(
+  lifecycleOwner: LifecycleOwner,
   private val liveData: MutableLiveData<T>,
-  private val subscriberManager: KiteStateSubscriberManager
-) : KiteProperty<T> {
+  ctx: KiteContext
+) : AbstractKiteProperty<T>(ctx) {
 
   override var value: T
     get() {
-      subscriberManager.subscribeTo(this)
+      subscribe()
       @Suppress("UNCHECKED_CAST")
       return liveData.value as T
     }
@@ -39,6 +25,12 @@ private class KiteLiveDataBackedProperty<T>(
         liveData.postValue(value)
       }
     }
+
+  init {
+    liveData.distinctUntilChanged().observe(lifecycleOwner) {
+      notifyChanged()
+    }
+  }
 }
 
 fun <T> KiteDslScope.state(initialValue: () -> T): KiteProperty<T> {
@@ -46,8 +38,5 @@ fun <T> KiteDslScope.state(initialValue: () -> T): KiteProperty<T> {
   val liveData = scopeModel.createTagIfAbsent(createStateKey()) {
     MutableLiveData(initialValue.invoke())
   }
-  val state = KiteLiveDataBackedProperty(liveData, subscriberManager)
-  val observer = KiteLiveDataBackedStateObserver<T>(state, subscriberManager)
-  liveData.observe(lifecycleOwner, observer)
-  return state
+  return KiteLiveDataBackedProperty(lifecycleOwner, liveData, ctx)
 }
