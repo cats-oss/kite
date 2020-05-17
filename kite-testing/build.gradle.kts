@@ -15,5 +15,6 @@ dependencies {
   implementation(AndroidX.appCompat)
   implementation(AndroidX.test.coreKtx)
 
+  testImplementation(project(":kite-testcommon"))
   testImplementation(AndroidX.fragmentTesting)
 }
