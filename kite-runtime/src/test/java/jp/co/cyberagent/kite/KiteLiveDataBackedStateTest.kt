@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite
 
+import androidx.lifecycle.Lifecycle.State
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -60,5 +61,44 @@ class KiteLiveDataBackedStateTest : StringSpec({
       state1.value shouldBe 3
       state2.value shouldBe "Kite"
     }
+  }
+
+  "Subscribe action should run when state changed with different value" {
+    owner.lifecycle.currentState = State.RESUMED
+    val state = kite.state { "Kite" }
+    var invokeCnt = 0
+    kite.subscribe {
+      state.value
+      invokeCnt++
+    }
+    invokeCnt shouldBe 1
+    state.value = "Kite"
+    invokeCnt shouldBe 1
+    state.value = "Cat"
+    invokeCnt shouldBe 2
+  }
+
+  "Subscribe action should only run when its state changed" {
+    owner.lifecycle.currentState = State.RESUMED
+    val state1 = kite.state { "" }
+    val state2 = kite.state { "" }
+    var invokeCnt1 = 0
+    var invokeCnt2 = 0
+    kite.subscribe {
+      state1.value
+      invokeCnt1++
+    }
+    kite.subscribe {
+      state2.value
+      invokeCnt2++
+    }
+    invokeCnt1 shouldBe 1
+    invokeCnt2 shouldBe 1
+    state1.value = "Kite"
+    invokeCnt1 shouldBe 2
+    invokeCnt2 shouldBe 1
+    state2.value = "Kite"
+    invokeCnt1 shouldBe 2
+    invokeCnt2 shouldBe 2
   }
 })
