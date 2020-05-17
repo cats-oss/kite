@@ -13,12 +13,8 @@ fun ComponentActivity.kiteDsl(
   scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ) {
-  val scopeModel = ViewModelProvider(
-    this,
-    scopeModelFactory ?: KiteScopeModelFactory()
-  )[KiteScopeModel::class.java]
   val activity = this
-  kiteDsl(this, scopeModel) {
+  kiteDsl(this, this, scopeModelFactory) {
     ctx += activity as Activity
     ctx += activity as Context
     body.invoke(this)
@@ -30,12 +26,8 @@ fun Fragment.kiteDsl(
   scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ) {
-  val scopeModel = ViewModelProvider(
-    scopeModelOwner,
-    scopeModelFactory ?: KiteScopeModelFactory()
-  )[KiteScopeModel::class.java]
   val fragment = this
-  kiteDsl(viewLifecycleOwner, scopeModel) {
+  kiteDsl(viewLifecycleOwner, scopeModelOwner, scopeModelFactory) {
     ctx += requireActivity() as Activity
     ctx += requireContext()
     ctx += fragment
@@ -45,7 +37,8 @@ fun Fragment.kiteDsl(
 
 internal fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
-  scopeModel: KiteScopeModel,
+  scopeModelOwner: KiteScopeModelStoreOwner,
+  scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ): KiteDslScope {
   val currentState = lifecycleOwner.lifecycle.currentState
@@ -53,6 +46,10 @@ internal fun kiteDsl(
     "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. " +
       "Current state is $currentState"
   }
+  val scopeModel = ViewModelProvider(
+    scopeModelOwner,
+    scopeModelFactory ?: KiteScopeModelFactory()
+  )[KiteScopeModel::class.java]
   return KiteDslScope(lifecycleOwner.lifecycleScope, KiteContext()).apply {
     scopeModel.addServiceToContext(ctx)
     ctx += lifecycleOwner

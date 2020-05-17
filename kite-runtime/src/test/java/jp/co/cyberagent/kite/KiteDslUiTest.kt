@@ -21,23 +21,21 @@ class KiteDslUiTest : StringSpec({
 
   "Initialize kiteDsl at INITIALIZED should success" {
     val owner = TestLifecycleOwner()
-    val kiteScopeModel = KiteScopeModel()
     owner.lifecycle.currentState = State.INITIALIZED
     shouldNotThrowAny {
-      kiteDsl(owner, kiteScopeModel) { /* no op */ }
+      kiteDsl(owner, TestKiteScopeModelOwner()) { /* no op */ }
     }
   }
 
   "Initialize kiteDsl not at INITIALIZED should throw exception" {
     val owner = TestLifecycleOwner()
-    val kiteScopeModel = KiteScopeModel()
     val states = listOf(
       State.CREATED, State.STARTED, State.RESUMED, State.DESTROYED
     ).exhaustive()
     checkAll(states) { s ->
       owner.lifecycle.currentState = s
       shouldThrow<IllegalStateException> {
-        kiteDsl(owner, kiteScopeModel) { /* no op */ }
+        kiteDsl(owner, TestKiteScopeModelOwner()) { /* no op */ }
       }
     }
   }

@@ -15,9 +15,9 @@ import kotlinx.coroutines.withContext
 class KiteLiveDataBackedStateTest : StringSpec({
   addListener(ArchInstantTaskListener)
 
-  val scopeModel by memoize { KiteScopeModel() }
-  val owner by memoize { TestLifecycleOwner() }
-  val kite by memoize { kiteDsl(owner, scopeModel) { /* no op */ } }
+  val lifecycleOwner by memoize { TestLifecycleOwner() }
+  val scopeModelOwner by memoize { TestKiteScopeModelOwner() }
+  val kite by memoize { kiteDsl(lifecycleOwner, scopeModelOwner) { /* no op */ } }
 
   "Create state in main thread should success" {
     shouldNotThrowAny { kite.state { 0 } }
@@ -41,19 +41,20 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "State should be reused when scope model unchanged" {
+    val kiteCreator = { kiteDsl(lifecycleOwner, scopeModelOwner, null, {}) }
     forAll(
       row(
-        kiteDsl(owner, scopeModel, {}).run {
+        kiteCreator().run {
           state { 3 } to state { "Kite" }
         }
       ),
       row(
-        kiteDsl(owner, scopeModel, {}).run {
+        kiteCreator().run {
           state { 4 } to state { "Cat" }
         }
       ),
       row(
-        kiteDsl(owner, scopeModel, {}).run {
+        kiteCreator().run {
           state { 5 } to state { "Dog" }
         }
       )
@@ -64,7 +65,7 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "Subscribe action should run when state changed with different value" {
-    owner.lifecycle.currentState = State.RESUMED
+    lifecycleOwner.lifecycle.currentState = State.RESUMED
     val state = kite.state { "Kite" }
     var invokeCnt = 0
     kite.subscribe {
@@ -79,7 +80,7 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "Subscribe action should only run when its state changed" {
-    owner.lifecycle.currentState = State.RESUMED
+    lifecycleOwner.lifecycle.currentState = State.RESUMED
     val state1 = kite.state { "" }
     val state2 = kite.state { "" }
     var invokeCnt1 = 0
