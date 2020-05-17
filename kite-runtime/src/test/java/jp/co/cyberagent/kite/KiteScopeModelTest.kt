@@ -7,7 +7,7 @@ import io.kotest.experimental.robolectric.RobolectricTest
 
 @RobolectricTest
 class KiteScopeModelTest : StringSpec({
-  val scopeModel by memoize { jp.co.cyberagent.kite.KiteScopeModel() }
+  val scopeModel by memoize { KiteScopeModel() }
 
   "Add absent type service should success" {
     shouldNotThrowAny {

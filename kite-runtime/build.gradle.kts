@@ -19,5 +19,5 @@ dependencies {
   api(AndroidX.lifecycle.runtimeKtx)
   api(AndroidX.lifecycle.commonJava8)
 
-  testImplementation(Testing.junit4)
+  testImplementation(project(":kite-testcommon"))
 }

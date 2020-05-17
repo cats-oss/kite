@@ -5,8 +5,15 @@ plugins {
   id("kotlin-android-extensions")
 }
 
+android {
+  lintOptions {
+    disable("RestrictedApi")
+  }
+}
+
 dependencies {
   implementation(Kotlin.stdlib.jdk8)
   implementation(Kotest.runnerJunit5)
   implementation(Kotest.robolectric)
+  implementation(AndroidX.lifecycle.extensions)
 }
