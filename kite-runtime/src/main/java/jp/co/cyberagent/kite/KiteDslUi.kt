@@ -22,12 +22,12 @@ fun ComponentActivity.kiteDsl(
 }
 
 fun Fragment.kiteDsl(
-  scopeModelOwner: KiteScopeModelStoreOwner = this,
+  scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
   scopeModelFactory: KiteScopeModelFactory? = null,
   body: KiteDslScope.() -> Unit
 ) {
   val fragment = this
-  kiteDsl(viewLifecycleOwner, scopeModelOwner, scopeModelFactory) {
+  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory) {
     ctx += requireActivity() as Activity
     ctx += requireContext()
     ctx += fragment

@@ -7,11 +7,13 @@ plugins {
 }
 
 dependencies {
+  implementation(project(":kite-core"))
+  implementation(project(":kite-runtime"))
   implementation(Kotlin.stdlib.jdk8)
-  api(KotlinX.coroutines.core)
+  api(KotlinX.coroutines.test)
 
-  implementation(AndroidX.lifecycle.viewModelKtx)
-  implementation(AndroidX.lifecycle.liveDataKtx)
-  implementation(AndroidX.lifecycle.runtimeKtx)
-  implementation(AndroidX.lifecycle.commonJava8)
+  implementation(AndroidX.appCompat)
+  implementation(AndroidX.test.coreKtx)
+
+  testImplementation(AndroidX.fragmentTesting)
 }

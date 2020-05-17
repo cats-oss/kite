@@ -1,3 +1,9 @@
-<manifest package="jp.co.cyberagent.kite.testing">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="jp.co.cyberagent.kite.testing">
 
+  <application>
+    <activity
+      android:name=".TestKiteActivity"
+      android:theme="@style/Theme.AppCompat" />
+  </application>
 </manifest>
