@@ -3,6 +3,14 @@ package jp.co.cyberagent.kite
 import jp.co.cyberagent.kite.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.internal.subscriberManager
 
+@KiteDslMaker
+interface KiteMemoScope
+
+private object KiteMemoScopeImpl : KiteMemoScope
+
+@Suppress("FunctionName")
+private fun KiteMemoScope(): KiteMemoScope = KiteMemoScopeImpl
+
 private class KiteMemoState<T>(
   private val computation: () -> T,
   private val subscriberManager: KiteStateSubscriberManager
@@ -33,12 +41,9 @@ private class KiteMemoState<T>(
     }
 }
 
-@KiteDslMaker
-object KiteMemoScope
-
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
 ): KiteGetter<T> {
   checkIsMainThread("memo")
-  return KiteMemoState({ KiteMemoScope.run(computation) }, subscriberManager)
+  return KiteMemoState({ KiteMemoScope().run(computation) }, subscriberManager)
 }

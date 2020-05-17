@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @RobolectricTest
-class KiteMemoStateTest : StringSpec({
+class KiteMemoScopeTest : StringSpec({
   listener(ArchInstantTaskListener)
 
   val scopeModel by memoize { KiteScopeModel() }
