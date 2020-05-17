@@ -15,7 +15,7 @@ internal class KiteStateSubscriberManager {
   private val runningSubscriberQueue: ArrayDeque<Runnable> = ArrayDeque()
 
   fun runAndResolveDependentState(runnable: Runnable) {
-    checkIsMainThread("resolveDependentStateAndRun")
+    checkIsMainThread("runAndResolveDependentState")
     runningSubscriberQueue.push(runnable)
     runnable.run()
     runningSubscriberQueue.pop()
