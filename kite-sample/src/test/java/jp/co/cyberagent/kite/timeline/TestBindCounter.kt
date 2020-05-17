@@ -28,8 +28,10 @@ class TestBindCounter {
         bindCounterExampleFragmentUi(counter1, counter2)
       }
     )
-    launchFragmentInContainer<TestKiteFragment>(factory = factory)
-      .moveToState(Lifecycle.State.RESUMED)
+    launchFragmentInContainer<TestKiteFragment>(
+      themeResId = R.style.AppTheme,
+      factory = factory
+    ).moveToState(Lifecycle.State.RESUMED)
     Espresso.onView(ViewMatchers.withText("3"))
       .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     Espresso.onView(ViewMatchers.withText("6"))
