@@ -3,7 +3,7 @@ package jp.co.cyberagent.kite.testing
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
-import jp.co.cyberagent.kite.subscribe
+import jp.co.cyberagent.kite.core.subscribe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

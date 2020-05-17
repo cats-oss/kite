@@ -5,7 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
-import jp.co.cyberagent.kite.requireByType
+import jp.co.cyberagent.kite.core.requireByType
 
 @RobolectricTest
 class TestTestKiteFragment : StringSpec({

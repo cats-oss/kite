@@ -3,12 +3,12 @@ package jp.co.cyberagent.kite.sample.timeline.ui
 import android.content.Context
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.onStart
-import jp.co.cyberagent.kite.requireByType
+import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.requireByType
+import jp.co.cyberagent.kite.core.subscribe
+import jp.co.cyberagent.kite.runtime.onStart
 import jp.co.cyberagent.kite.sample.databinding.FragmentTimelineBinding
 import jp.co.cyberagent.kite.sample.timeline.state.TimelineUseCase
-import jp.co.cyberagent.kite.subscribe
 
 fun KiteDslScope.bindTimelineExampleFragmentUi(
   timelineUseCase: TimelineUseCase

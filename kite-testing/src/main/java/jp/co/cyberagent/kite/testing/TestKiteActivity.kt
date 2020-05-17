@@ -7,9 +7,9 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import java.util.concurrent.ConcurrentHashMap
-import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.KiteScopeModelFactory
-import jp.co.cyberagent.kite.kiteDsl
+import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.runtime.KiteScopeModelFactory
+import jp.co.cyberagent.kite.runtime.kiteDsl
 
 class TestKiteActivity : AppCompatActivity() {
 

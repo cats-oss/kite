@@ -4,9 +4,9 @@ import androidx.lifecycle.LifecycleOwner
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
-import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.KiteScopeModel
-import jp.co.cyberagent.kite.requireByType
+import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.requireByType
+import jp.co.cyberagent.kite.runtime.KiteScopeModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

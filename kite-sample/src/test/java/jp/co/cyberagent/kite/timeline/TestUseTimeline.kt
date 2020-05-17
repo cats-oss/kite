@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
-import jp.co.cyberagent.kite.plusAssign
+import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import jp.co.cyberagent.kite.sample.timeline.state.Timeline

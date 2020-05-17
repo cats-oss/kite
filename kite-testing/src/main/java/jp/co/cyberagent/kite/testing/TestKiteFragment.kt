@@ -6,10 +6,10 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import java.util.concurrent.ConcurrentHashMap
-import jp.co.cyberagent.kite.KiteDslScope
-import jp.co.cyberagent.kite.KiteScopeModelFactory
-import jp.co.cyberagent.kite.KiteScopeModelStoreOwner
-import jp.co.cyberagent.kite.kiteDsl
+import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.runtime.KiteScopeModelFactory
+import jp.co.cyberagent.kite.runtime.KiteScopeModelStoreOwner
+import jp.co.cyberagent.kite.runtime.kiteDsl
 
 class TestKiteFragment private constructor(
   @LayoutRes val contentLayoutId: Int

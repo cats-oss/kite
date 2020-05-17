@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.core.widget.ImageViewCompat
 import com.airbnb.epoxy.EpoxyModel
-import jp.co.cyberagent.kite.Invoker2
+import jp.co.cyberagent.kite.core.Invoker2
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.databinding.ModelItemBinding
 
