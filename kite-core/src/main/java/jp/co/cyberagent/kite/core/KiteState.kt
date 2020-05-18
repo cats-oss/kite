@@ -4,7 +4,7 @@ import kotlin.reflect.KProperty
 
 interface KiteState
 
-interface KiteGetter<T> : KiteState {
+interface KiteGetter<out T> : KiteState {
   val value: T
 }
 
