@@ -2,8 +2,8 @@ plugins {
   `module-config`
   id("com.android.library")
   kotlin("android")
-  id("kotlin-android-extensions")
   id("com.vanniktech.maven.publish")
+  `bintray-publish-config`
 }
 
 dependencies {
