@@ -8,7 +8,6 @@ plugins {
 
 dependencies {
   api(project(":kite-core"))
-  implementation(project(":kite-common"))
 
   implementation(Kotlin.stdlib.jdk8)
 

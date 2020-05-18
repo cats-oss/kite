@@ -1,10 +1,10 @@
 package jp.co.cyberagent.kite.core.internal
 
 import java.util.ArrayDeque
-import jp.co.cyberagent.kite.common.MainThreadChecker
-import jp.co.cyberagent.kite.common.checkIsMainThread
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteState
+import jp.co.cyberagent.kite.core.MainThreadChecker
+import jp.co.cyberagent.kite.core.checkIsMainThread
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.setIfAbsent
 

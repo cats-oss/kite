@@ -1,4 +1,4 @@
-package jp.co.cyberagent.kite.common
+package jp.co.cyberagent.kite.core
 
 interface MainThreadChecker {
   val isMainThread: Boolean

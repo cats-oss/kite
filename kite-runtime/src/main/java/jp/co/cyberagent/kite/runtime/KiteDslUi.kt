@@ -8,10 +8,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import jp.co.cyberagent.kite.common.MainThreadChecker
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteStateCreator
+import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.runtime.internal.AndroidMainThreadChecker
 import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator

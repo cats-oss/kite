@@ -4,12 +4,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
-import jp.co.cyberagent.kite.common.MainThreadChecker
-import jp.co.cyberagent.kite.common.checkIsMainThread
 import jp.co.cyberagent.kite.core.AbstractKiteProperty
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteProperty
 import jp.co.cyberagent.kite.core.KiteStateCreator
+import jp.co.cyberagent.kite.core.MainThreadChecker
+import jp.co.cyberagent.kite.core.checkIsMainThread
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.runtime.KiteScopeModel
 

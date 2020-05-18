@@ -1,10 +1,10 @@
 package jp.co.cyberagent.kite.testing
 
-import jp.co.cyberagent.kite.common.MainThreadChecker
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteCoroutineDispatchers
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteStateCreator
+import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.core.setIfAbsent
 import kotlin.coroutines.ContinuationInterceptor

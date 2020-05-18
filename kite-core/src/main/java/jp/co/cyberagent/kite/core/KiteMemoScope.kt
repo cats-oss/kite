@@ -1,7 +1,5 @@
 package jp.co.cyberagent.kite.core
 
-import jp.co.cyberagent.kite.common.MainThreadChecker
-import jp.co.cyberagent.kite.common.checkIsMainThread
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.core.internal.subscriberManager
 
