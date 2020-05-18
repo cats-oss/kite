@@ -3,13 +3,11 @@ package jp.co.cyberagent.kite.core
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
 import jp.co.cyberagent.kite.testcommon.memoize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@RobolectricTest
 class KiteMemoScopeTest : StringSpec({
   val kite by memoize { TestKiteDslScope() }
 

@@ -5,14 +5,12 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.data.blocking.forAll
 import io.kotest.data.row
-import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import jp.co.cyberagent.kite.testcommon.memoize
 
-@RobolectricTest
 class KiteContextTest : StringSpec({
   val kiteContext by memoize { KiteContext() }
 
