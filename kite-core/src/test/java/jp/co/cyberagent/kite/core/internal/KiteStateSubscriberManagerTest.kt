@@ -6,17 +6,20 @@ import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
 import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.TestKiteDslScope
+import jp.co.cyberagent.kite.core.TestMainThreadChecker
 import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.state
+import jp.co.cyberagent.kite.testcommon.memoize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @RobolectricTest
 class KiteStateSubscriberManagerTest : StringSpec({
 
+  val subscriberManager by memoize { KiteStateSubscriberManager(TestMainThreadChecker()) }
+
   "Invoke runAndResolveDependentState in background thread should throw exception" {
-    val subscriberManager = KiteStateSubscriberManager()
     shouldThrow<IllegalStateException> {
       withContext(Dispatchers.IO) {
         subscriberManager.runAndResolveDependentState(Runnable {})
@@ -25,7 +28,6 @@ class KiteStateSubscriberManagerTest : StringSpec({
   }
 
   "Invoke notifyStateChanged in background thread should throw exception" {
-    val subscriberManager = KiteStateSubscriberManager()
     shouldThrow<IllegalStateException> {
       withContext(Dispatchers.IO) {
         subscriberManager.notifyStateChanged(object : KiteState {})
@@ -35,7 +37,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
 
   "Resolve dependency should success" {
     val kite = TestKiteDslScope()
-    kite.kiteContext += KiteStateSubscriberManager()
+    kite.kiteContext += subscriberManager
     val state1 = kite.state { 0 }
     val state2 = kite.state { 0 }
     var invokedCnt = 0

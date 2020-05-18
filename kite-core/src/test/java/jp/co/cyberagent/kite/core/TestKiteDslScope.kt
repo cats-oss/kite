@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.core
 
+import jp.co.cyberagent.kite.common.MainThreadChecker
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 
@@ -24,5 +25,8 @@ private class TestKiteStateCreator(
 @Suppress("TestFunctionName")
 fun TestKiteDslScope() = KiteDslScope(
   CoroutineScope(EmptyCoroutineContext),
-  KiteContext().apply { setByType<KiteStateCreator>(TestKiteStateCreator(this)) }
+  KiteContext().apply {
+    setByType<KiteStateCreator>(TestKiteStateCreator(this))
+    setByType<MainThreadChecker>(TestMainThreadChecker())
+  }
 )

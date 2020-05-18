@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.core
 
+import jp.co.cyberagent.kite.common.MainThreadChecker
 import jp.co.cyberagent.kite.common.checkIsMainThread
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.core.internal.subscriberManager
@@ -45,6 +46,6 @@ private class KiteMemoState<T>(
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
 ): KiteGetter<T> {
-  checkIsMainThread("memo")
+  requireByType<MainThreadChecker>().checkIsMainThread("memo")
   return KiteMemoState({ KiteMemoScope().run(computation) }, subscriberManager)
 }
