@@ -1,24 +1,22 @@
 package jp.co.cyberagent.kite.testing
 
-import androidx.lifecycle.LifecycleOwner
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.setIfAbsent
-import jp.co.cyberagent.kite.runtime.KiteScopeModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScope
 
 @ExperimentalCoroutinesApi
 class TestKiteDslScope(
-  val testCoroutineScope: TestCoroutineScope = TestCoroutineScope(),
-  override val kiteContext: KiteContext = KiteContext()
+  override val kiteContext: KiteContext = KiteContext(),
+  private val testCoroutineScope: TestCoroutineScope = TestCoroutineScope()
 ) : KiteDslScope,
   KiteContext by kiteContext,
   TestCoroutineScope by testCoroutineScope {
 
   init {
-    setIfAbsent(LifecycleOwner::class) { TestLifecycleOwner() }
-    setIfAbsent(KiteScopeModel::class) { KiteScopeModel() }
+    setIfAbsent(KiteStateCreator::class) { ThreadUnsafeKiteStateCreator(kiteContext) }
   }
 }
 

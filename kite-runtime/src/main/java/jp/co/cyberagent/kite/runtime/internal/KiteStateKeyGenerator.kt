@@ -1,7 +1,7 @@
 package jp.co.cyberagent.kite.runtime.internal
 
 import java.util.concurrent.atomic.AtomicInteger
-import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.setIfAbsent
 
 private data class KiteStateKey(val num: Int)
@@ -15,7 +15,7 @@ internal class KiteStateKeyGenerator {
   }
 }
 
-internal fun KiteDslScope.createStateKey(): Any {
+internal fun KiteContext.createStateKey(): Any {
   val generator = setIfAbsent(KiteStateKeyGenerator::class) { KiteStateKeyGenerator() }
   return generator.createStateKey()
 }

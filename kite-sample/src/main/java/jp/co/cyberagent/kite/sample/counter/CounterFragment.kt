@@ -7,9 +7,9 @@ import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteProperty
 import jp.co.cyberagent.kite.core.Tuple2
 import jp.co.cyberagent.kite.core.requireByType
+import jp.co.cyberagent.kite.core.state
 import jp.co.cyberagent.kite.core.subscribe
 import jp.co.cyberagent.kite.runtime.kiteDsl
-import jp.co.cyberagent.kite.runtime.state
 import jp.co.cyberagent.kite.sample.R
 import jp.co.cyberagent.kite.sample.databinding.FragmentCounterBinding
 import jp.co.cyberagent.kite.sample.databinding.IncludeCounterBinding

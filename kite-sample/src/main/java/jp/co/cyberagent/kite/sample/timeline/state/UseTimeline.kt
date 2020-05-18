@@ -5,8 +5,8 @@ import jp.co.cyberagent.kite.core.Invoker2
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteGetter
 import jp.co.cyberagent.kite.core.requireByType
+import jp.co.cyberagent.kite.core.state
 import jp.co.cyberagent.kite.core.update
-import jp.co.cyberagent.kite.runtime.state
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import kotlinx.coroutines.launch

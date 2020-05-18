@@ -1,12 +1,10 @@
 package jp.co.cyberagent.kite.testing
 
-import androidx.lifecycle.LifecycleOwner
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.experimental.robolectric.RobolectricTest
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.core.requireByType
-import jp.co.cyberagent.kite.runtime.KiteScopeModel
+import jp.co.cyberagent.kite.core.state
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,8 +23,7 @@ class TestTestKiteDslScope : StringSpec({
     shouldNotThrowAny {
       runTestKiteDsl {
         delay100Ms()
-        requireByType<KiteScopeModel>()
-        requireByType<LifecycleOwner>()
+        state { "Kite" }
       }
     }
   }

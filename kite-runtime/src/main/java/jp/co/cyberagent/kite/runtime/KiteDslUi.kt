@@ -10,38 +10,38 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.plusAssign
 
 fun ComponentActivity.kiteDsl(
   scopeModelFactory: KiteScopeModelFactory? = null,
+  kiteContext: KiteContext = KiteContext(),
   body: KiteDslScope.() -> Unit
 ) {
   val activity = this
-  kiteDsl(this, this, scopeModelFactory) {
-    kiteContext += activity as Activity
-    kiteContext += activity as Context
-    body.invoke(this)
-  }
+  kiteContext += activity as Activity
+  kiteContext += activity as Context
+  kiteDsl(this, this, scopeModelFactory, kiteContext, body)
 }
 
 fun Fragment.kiteDsl(
   scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
   scopeModelFactory: KiteScopeModelFactory? = null,
+  kiteContext: KiteContext = KiteContext(),
   body: KiteDslScope.() -> Unit
 ) {
   val fragment = this
-  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory) {
-    kiteContext += requireActivity() as Activity
-    kiteContext += requireContext()
-    kiteContext += fragment
-    body.invoke(this)
-  }
+  kiteContext += requireActivity() as Activity
+  kiteContext += requireContext()
+  kiteContext += fragment
+  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, kiteContext, body)
 }
 
 internal fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
   scopeModelOwner: KiteScopeModelStoreOwner,
   scopeModelFactory: KiteScopeModelFactory? = null,
+  kiteContext: KiteContext = KiteContext(),
   body: KiteDslScope.() -> Unit
 ): KiteDslScope {
   val currentState = lifecycleOwner.lifecycle.currentState
@@ -53,10 +53,9 @@ internal fun kiteDsl(
     scopeModelOwner,
     scopeModelFactory ?: KiteScopeModelFactory()
   )[KiteScopeModel::class.java]
-  return KiteDslScope(lifecycleOwner.lifecycleScope, KiteContext()).apply {
-    scopeModel.addServiceToContext(kiteContext)
-    kiteContext += lifecycleOwner
-    kiteContext += scopeModel
-    body.invoke(this)
-  }
+  kiteContext += LiveDataBackedKiteStateCreator(kiteContext) as KiteStateCreator
+  kiteContext += lifecycleOwner
+  kiteContext += scopeModel
+  scopeModel.addServiceToContext(kiteContext)
+  return KiteDslScope(lifecycleOwner.lifecycleScope, kiteContext).apply(body)
 }

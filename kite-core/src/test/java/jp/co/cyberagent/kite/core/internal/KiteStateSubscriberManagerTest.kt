@@ -8,7 +8,7 @@ import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.TestKiteDslScope
 import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.core.requireByType
-import jp.co.cyberagent.kite.core.testState
+import jp.co.cyberagent.kite.core.state
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -36,8 +36,8 @@ class KiteStateSubscriberManagerTest : StringSpec({
   "Resolve dependency should success" {
     val kite = TestKiteDslScope()
     kite.kiteContext += KiteStateSubscriberManager()
-    val state1 = kite.testState { 0 }
-    val state2 = kite.testState { 0 }
+    val state1 = kite.state { 0 }
+    val state2 = kite.state { 0 }
     var invokedCnt = 0
     val runnable = Runnable {
       state1.value + state2.value

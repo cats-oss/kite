@@ -10,10 +10,11 @@ import jp.co.cyberagent.kite.core.AbstractKiteProperty
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteProperty
+import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.runtime.internal.createStateKey
 
-private class KiteLiveDataBackedProperty<T>(
+private class LiveDataBackedKiteProperty<T>(
   lifecycleOwner: LifecycleOwner,
   private val liveData: MutableLiveData<T>,
   kiteContext: KiteContext
@@ -40,10 +41,16 @@ private class KiteLiveDataBackedProperty<T>(
   }
 }
 
-fun <T> KiteDslScope.state(initialValue: () -> T): KiteProperty<T> {
-  checkIsMainThread("state")
-  val liveData = requireByType<KiteScopeModel>().createTagIfAbsent(createStateKey()) {
-    MutableLiveData(initialValue.invoke())
+internal class LiveDataBackedKiteStateCreator(
+  private val kiteContext: KiteContext
+) : KiteStateCreator {
+
+  override fun <T> create(initialValue: () -> T): KiteProperty<T> {
+    checkIsMainThread("state")
+    val key = kiteContext.createStateKey()
+    val liveData = kiteContext.requireByType<KiteScopeModel>().createTagIfAbsent(key) {
+      MutableLiveData(initialValue.invoke())
+    }
+    return LiveDataBackedKiteProperty(kiteContext.requireByType(), liveData, kiteContext)
   }
-  return KiteLiveDataBackedProperty(requireByType(), liveData, kiteContext)
 }

@@ -31,8 +31,8 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should re run when any dependent state change" {
-    val state1 = kite.testState { "A" }
-    val state2 = kite.testState { 1 }
+    val state1 = kite.state { "A" }
+    val state2 = kite.state { 1 }
     var result: Any? = null
     kite.subscribe { result = state1.value + state2.value }
     result shouldBe "A1"
@@ -43,7 +43,7 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should re run when any dependent memo state change" {
-    val state = kite.testState { 1 }
+    val state = kite.state { 1 }
     val memo = kite.memo { "A" + state.value }
     var result: Any? = null
     kite.subscribe { result = memo.value }
@@ -55,7 +55,7 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should not run when memo state changed with same value" {
-    val state = kite.testState { 1 }
+    val state = kite.state { 1 }
     val memo = kite.memo { min(state.value, 0) }
     var invokeCnt = 0
     kite.subscribe {
@@ -70,8 +70,8 @@ class KiteSubscribeScopeTest : StringSpec({
   }
 
   "Subscribe action should only run when its dependent changed" {
-    val state1 = kite.testState { "" }
-    val state2 = kite.testState { "" }
+    val state1 = kite.state { "" }
+    val state2 = kite.state { "" }
     var invokeCnt1 = 0
     var invokeCnt2 = 0
     kite.subscribe {

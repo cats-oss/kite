@@ -8,6 +8,7 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
+import jp.co.cyberagent.kite.core.state
 import jp.co.cyberagent.kite.core.subscribe
 import jp.co.cyberagent.kite.testcommon.ArchInstantTaskListener
 import jp.co.cyberagent.kite.testcommon.TestLifecycleOwner
@@ -45,7 +46,7 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "State should be reused when scope model unchanged" {
-    val kiteCreator = { kiteDsl(lifecycleOwner, scopeModelOwner, null, {}) }
+    val kiteCreator = { kiteDsl(lifecycleOwner, scopeModelOwner) { /* no op */ } }
     forAll(
       row(
         kiteCreator().run {
