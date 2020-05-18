@@ -12,7 +12,12 @@ private class KiteDsScopeImpl(
   override val kiteContext: KiteContext
 ) : KiteDslScope,
   CoroutineScope by coroutineScope,
-  KiteContext by kiteContext
+  KiteContext by kiteContext {
+
+  init {
+    setIfAbsent(KiteCoroutineDispatchers::class) { KiteCoroutineDispatchers() }
+  }
+}
 
 @Suppress("FunctionName")
 fun KiteDslScope(
