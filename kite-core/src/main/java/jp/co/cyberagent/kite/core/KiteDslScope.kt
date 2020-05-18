@@ -4,18 +4,18 @@ import kotlinx.coroutines.CoroutineScope
 
 @KiteDslMaker
 interface KiteDslScope : CoroutineScope, KiteContext {
-  val ctx: KiteContext
+  val kiteContext: KiteContext
 }
 
 private class KiteDsScopeImpl(
   coroutineScope: CoroutineScope,
-  override val ctx: KiteContext
+  override val kiteContext: KiteContext
 ) : KiteDslScope,
   CoroutineScope by coroutineScope,
-  KiteContext by ctx
+  KiteContext by kiteContext
 
 @Suppress("FunctionName")
 fun KiteDslScope(
   coroutineScope: CoroutineScope,
-  ctx: KiteContext
-): KiteDslScope = KiteDsScopeImpl(coroutineScope, ctx)
+  kiteContext: KiteContext
+): KiteDslScope = KiteDsScopeImpl(coroutineScope, kiteContext)

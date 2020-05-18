@@ -16,8 +16,8 @@ import jp.co.cyberagent.kite.runtime.internal.createStateKey
 private class KiteLiveDataBackedProperty<T>(
   lifecycleOwner: LifecycleOwner,
   private val liveData: MutableLiveData<T>,
-  ctx: KiteContext
-) : AbstractKiteProperty<T>(ctx) {
+  kiteContext: KiteContext
+) : AbstractKiteProperty<T>(kiteContext) {
 
   override var value: T
     get() {
@@ -45,5 +45,5 @@ fun <T> KiteDslScope.state(initialValue: () -> T): KiteProperty<T> {
   val liveData = requireByType<KiteScopeModel>().createTagIfAbsent(createStateKey()) {
     MutableLiveData(initialValue.invoke())
   }
-  return KiteLiveDataBackedProperty(requireByType(), liveData, ctx)
+  return KiteLiveDataBackedProperty(requireByType(), liveData, kiteContext)
 }

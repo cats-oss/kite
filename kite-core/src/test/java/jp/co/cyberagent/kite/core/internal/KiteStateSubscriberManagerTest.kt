@@ -35,7 +35,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
 
   "Resolve dependency should success" {
     val kite = TestKiteDslScope()
-    kite.ctx += KiteStateSubscriberManager()
+    kite.kiteContext += KiteStateSubscriberManager()
     val state1 = kite.testState { 0 }
     val state2 = kite.testState { 0 }
     var invokedCnt = 0

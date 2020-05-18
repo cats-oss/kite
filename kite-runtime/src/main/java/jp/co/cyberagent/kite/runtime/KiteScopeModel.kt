@@ -23,7 +23,7 @@ class KiteScopeModel : ViewModel() {
     return v as T
   }
 
-  internal fun addServiceToContext(ctx: KiteContext) {
-    serviceMap.forEach { (k, v) -> ctx[k] = v }
+  internal fun addServiceToContext(kiteContext: KiteContext) {
+    serviceMap.forEach { (k, v) -> kiteContext[k] = v }
   }
 }

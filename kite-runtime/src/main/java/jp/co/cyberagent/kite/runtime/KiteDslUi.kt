@@ -18,8 +18,8 @@ fun ComponentActivity.kiteDsl(
 ) {
   val activity = this
   kiteDsl(this, this, scopeModelFactory) {
-    ctx += activity as Activity
-    ctx += activity as Context
+    kiteContext += activity as Activity
+    kiteContext += activity as Context
     body.invoke(this)
   }
 }
@@ -31,9 +31,9 @@ fun Fragment.kiteDsl(
 ) {
   val fragment = this
   kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory) {
-    ctx += requireActivity() as Activity
-    ctx += requireContext()
-    ctx += fragment
+    kiteContext += requireActivity() as Activity
+    kiteContext += requireContext()
+    kiteContext += fragment
     body.invoke(this)
   }
 }
@@ -54,9 +54,9 @@ internal fun kiteDsl(
     scopeModelFactory ?: KiteScopeModelFactory()
   )[KiteScopeModel::class.java]
   return KiteDslScope(lifecycleOwner.lifecycleScope, KiteContext()).apply {
-    scopeModel.addServiceToContext(ctx)
-    ctx += lifecycleOwner
-    ctx += scopeModel
+    scopeModel.addServiceToContext(kiteContext)
+    kiteContext += lifecycleOwner
+    kiteContext += scopeModel
     body.invoke(this)
   }
 }

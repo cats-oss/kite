@@ -14,7 +14,7 @@ import jp.co.cyberagent.kite.testcommon.memoize
 
 @RobolectricTest
 class KiteContextTest : StringSpec({
-  val ctx by memoize { KiteContext() }
+  val kiteContext by memoize { KiteContext() }
 
   "Set non exiting contextual value should success" {
     forAll(
@@ -23,67 +23,67 @@ class KiteContextTest : StringSpec({
       row(3, "cat")
     ) { k, v ->
       shouldNotThrowAny {
-        ctx[k] = v
+        kiteContext[k] = v
       }
     }
   }
 
   "Set exiting contextual value should throw exception" {
-    ctx["key"] = 1
+    kiteContext["key"] = 1
     shouldThrow<IllegalStateException> {
-      ctx["key"] = 2
+      kiteContext["key"] = 2
       Unit
     }
   }
 
   "Set value then get with same key should return same value" {
-    ctx["key"] = 1
-    ctx.require<Int>("key") shouldBe 1
-    ctx.get<Int>("key") shouldBe 1
+    kiteContext["key"] = 1
+    kiteContext.require<Int>("key") shouldBe 1
+    kiteContext.get<Int>("key") shouldBe 1
   }
 
   "Get non existing value should should return null" {
-    ctx.get<Int>("key") shouldBe null
+    kiteContext.get<Int>("key") shouldBe null
   }
 
   "Get non existing value should should throw exception" {
     shouldThrow<IllegalArgumentException> {
-      ctx.require<Int>("key")
+      kiteContext.require<Int>("key")
     }
   }
 
   "Get same key with different type should throw exception" {
     shouldThrow<ClassCastException> {
-      ctx["key"] = 1
-      ctx.get<String>("key")
+      kiteContext["key"] = 1
+      kiteContext.get<String>("key")
     }
   }
 
   "SetByType should use type as key" {
-    ctx.setByType("Kite")
-    ctx.requireByType<String>() shouldBe "Kite"
-    ctx.getByType<String>() shouldBe "Kite"
-    ctx.require<String>(String::class) shouldBe "Kite"
+    kiteContext.setByType("Kite")
+    kiteContext.requireByType<String>() shouldBe "Kite"
+    kiteContext.getByType<String>() shouldBe "Kite"
+    kiteContext.require<String>(String::class) shouldBe "Kite"
   }
 
   "SetIfAbsent multiple times with same key then get with same key should return old value" {
-    ctx.setIfAbsent("key") { 1 } shouldBe 1
-    ctx.setIfAbsent("key") { 2 } shouldBe 1
+    kiteContext.setIfAbsent("key") { 1 } shouldBe 1
+    kiteContext.setIfAbsent("key") { 2 } shouldBe 1
   }
 
   "Plus context should prefer latter context" {
-    ctx["key1"] = 1
-    ctx["commonKey"] = 2
+    kiteContext["key1"] = 1
+    kiteContext["commonKey"] = 2
 
-    val extraCtx = KiteContext()
-    extraCtx["key2"] = 3
-    extraCtx["commonKey"] = 4
+    val extraKiteContext = KiteContext()
+    extraKiteContext["key2"] = 3
+    extraKiteContext["commonKey"] = 4
 
-    val newCtx = ctx + extraCtx
-    newCtx.keys shouldContainExactly listOf("key1", "key2", "commonKey")
-    newCtx.get<Int>("key1") shouldBe 1
-    newCtx.get<Int>("key2") shouldBe 3
-    newCtx.get<Int>("commonKey") shouldBe 4
+    val newKiteContext = kiteContext + extraKiteContext
+    newKiteContext.keys shouldContainExactly listOf("key1", "key2", "commonKey")
+    newKiteContext.get<Int>("key1") shouldBe 1
+    newKiteContext.get<Int>("key2") shouldBe 3
+    newKiteContext.get<Int>("commonKey") shouldBe 4
   }
 
   "KiteContextOf should create correct context" {
@@ -103,7 +103,7 @@ class KiteContextTest : StringSpec({
       getByType<String>() shouldBe "Cat"
 
       withKiteContext(
-        extraCtx = kiteContextOf(String::class to "Kite")
+        extraKiteContext = kiteContextOf(String::class to "Kite")
       ) {
         getByType<String>() shouldBe "Kite"
       }

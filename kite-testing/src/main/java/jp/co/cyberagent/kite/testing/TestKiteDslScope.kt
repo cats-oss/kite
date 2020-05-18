@@ -11,9 +11,9 @@ import kotlinx.coroutines.test.TestCoroutineScope
 @ExperimentalCoroutinesApi
 class TestKiteDslScope(
   val testCoroutineScope: TestCoroutineScope = TestCoroutineScope(),
-  override val ctx: KiteContext = KiteContext()
+  override val kiteContext: KiteContext = KiteContext()
 ) : KiteDslScope,
-  KiteContext by ctx,
+  KiteContext by kiteContext,
   TestCoroutineScope by testCoroutineScope {
 
   init {

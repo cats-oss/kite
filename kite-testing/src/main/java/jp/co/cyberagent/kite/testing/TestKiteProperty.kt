@@ -5,7 +5,7 @@ import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteProperty
 
 fun <T> KiteDslScope.testState(initialValue: T): KiteProperty<T> {
-  return object : AbstractKiteProperty<T>(ctx) {
+  return object : AbstractKiteProperty<T>(kiteContext) {
     override var value: T = initialValue
       get() {
         subscribe()

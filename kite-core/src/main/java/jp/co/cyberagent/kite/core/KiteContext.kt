@@ -10,7 +10,7 @@ interface KiteContext {
 
   operator fun <T : Any> get(key: Any): T?
 
-  operator fun plus(ctx: KiteContext): KiteContext
+  operator fun plus(kiteContext: KiteContext): KiteContext
 }
 
 private class KiteContextImpl : KiteContext {
@@ -32,17 +32,17 @@ private class KiteContextImpl : KiteContext {
     return map[key] as T?
   }
 
-  override fun plus(ctx: KiteContext): KiteContext {
-    if (this == ctx) return this
-    val ctxKeys = ctx.keys
-    val combinedCtx = KiteContext()
-    ctxKeys.forEach { k ->
-      combinedCtx[k] = ctx.require<Any>(k)
+  override fun plus(kiteContext: KiteContext): KiteContext {
+    if (this == kiteContext) return this
+    val kiteContextKeys = kiteContext.keys
+    val combinedKiteContext = KiteContext()
+    kiteContextKeys.forEach { k ->
+      combinedKiteContext[k] = kiteContext.require<Any>(k)
     }
-    map.filterKeys { it !in ctxKeys }.forEach { (k, v) ->
-      combinedCtx[k] = v
+    map.filterKeys { it !in kiteContextKeys }.forEach { (k, v) ->
+      combinedKiteContext[k] = v
     }
-    return combinedCtx
+    return combinedKiteContext
   }
 }
 
@@ -69,9 +69,9 @@ inline operator fun <reified T : Any> KiteContext.plusAssign(value: T) {
 }
 
 inline operator fun <reified T : Any> KiteContext.plus(value: T): KiteContext {
-  val ctx = KiteContext()
-  ctx += value
-  return this + ctx
+  val kiteContext = KiteContext()
+  kiteContext += value
+  return this + kiteContext
 }
 
 inline fun <reified T : Any> KiteContext.setByType(value: T) {
@@ -87,14 +87,14 @@ inline fun <reified T : Any> KiteContext.requireByType(): T {
 }
 
 fun kiteContextOf(vararg pair: Pair<Any, Any>): KiteContext {
-  val ctx = KiteContext()
-  pair.forEach { (k, v) -> ctx[k] = v }
-  return ctx
+  val kiteContext = KiteContext()
+  pair.forEach { (k, v) -> kiteContext[k] = v }
+  return kiteContext
 }
 
 fun KiteDslScope.withKiteContext(
-  extraCtx: KiteContext,
+  extraKiteContext: KiteContext,
   body: KiteDslScope.() -> Unit
 ) {
-  KiteDslScope(this, ctx + extraCtx).apply(body)
+  KiteDslScope(this, kiteContext + extraKiteContext).apply(body)
 }

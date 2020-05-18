@@ -30,7 +30,7 @@ class TestUseTimeline {
 
   @Test
   fun testGetTimeline() = runTestKiteDsl {
-    ctx += repository
+    kiteContext += repository
     val contents = listOf(Content("id", "text"))
     val favorite = mapOf("id" to true)
     val timeline = Timeline(contents, favorite)
