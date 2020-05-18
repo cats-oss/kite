@@ -110,8 +110,10 @@ subscribe {
 val count = state { 0 }
 
 button.setOnClickListener {
-  delay(1000)
-  count1.value++
+  launch {
+    delay(1000)
+    count1.value++
+  }
 }
 ```
 
@@ -157,7 +159,7 @@ kiteDsl(scopeModelFactory = scopeModelFactory) {
 }
 ```
 
-### Testing
+### Test
 
 It's better not to directly write Kite DSL inside `Activity/Fragment`.
 Instead, separate your business logic and UI binding into separate extension functions of `KiteDslScope`:
@@ -184,12 +186,12 @@ fun KiteDslScope.bindCounter(counterUseCase: CounterUseCase) {
     binding.textView.text = counterUseCase.count.toString()
   }
 
-  incrementButton.setOnClickListener {
-    binding.counterUseCase.increment.invoke()
+  binding.incrementButton.setOnClickListener {
+    counterUseCase.increment.invoke()
   }
 
-  decrementButton.setOnClickListener {
-    binding.counterUseCase.decrement.invoke()
+  binding.decrementButton.setOnClickListener {
+    counterUseCase.decrement.invoke()
   }
 }
 ```
