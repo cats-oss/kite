@@ -34,7 +34,7 @@ class TestKiteFragment private constructor(
   class Config(
     val kiteScopeModelFactory: KiteScopeModelFactory? = null,
     val storeOwner: StoreOwner = StoreOwner.SELF,
-    val kiteDslBody: (KiteDslScope.() -> Unit)? = null
+    val kiteDslBody: (KiteDslScope.(Fragment) -> Unit)? = null
   ) {
     enum class StoreOwner {
       SELF,
@@ -58,7 +58,7 @@ class TestKiteFragment private constructor(
       scopeModelStoreOwner = scopeModelStoreOwner,
       scopeModelFactory = config.kiteScopeModelFactory
     ) {
-      config.kiteDslBody?.invoke(this)
+      config.kiteDslBody?.invoke(this, this@TestKiteFragment)
     }
   }
 }

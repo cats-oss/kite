@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.testing
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -39,7 +40,7 @@ class TestKiteActivity : AppCompatActivity() {
 
   class Config(
     var kiteScopeModelFactory: KiteScopeModelFactory? = null,
-    var kiteDslBody: (KiteDslScope.() -> Unit)? = null
+    var kiteDslBody: (KiteDslScope.(Activity) -> Unit)? = null
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,7 @@ class TestKiteActivity : AppCompatActivity() {
       "KiteDsl config for layout $layoutName not found."
     }
     kiteDsl(scopeModelFactory = config.kiteScopeModelFactory) {
-      config.kiteDslBody?.invoke(this)
+      config.kiteDslBody?.invoke(this, this@TestKiteActivity)
     }
   }
 }
