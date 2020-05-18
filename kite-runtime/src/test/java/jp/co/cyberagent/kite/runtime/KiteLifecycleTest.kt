@@ -7,8 +7,8 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
+import jp.co.cyberagent.kite.androidtestcommon.TestLifecycleOwner
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.testcommon.TestLifecycleOwner
 
 @RobolectricTest
 class KiteLifecycleTest : StringSpec({

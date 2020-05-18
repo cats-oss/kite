@@ -8,10 +8,10 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.experimental.robolectric.RobolectricTest
 import io.kotest.matchers.shouldBe
+import jp.co.cyberagent.kite.androidtestcommon.ArchInstantTaskListener
+import jp.co.cyberagent.kite.androidtestcommon.TestLifecycleOwner
 import jp.co.cyberagent.kite.core.state
 import jp.co.cyberagent.kite.core.subscribe
-import jp.co.cyberagent.kite.testcommon.ArchInstantTaskListener
-import jp.co.cyberagent.kite.testcommon.TestLifecycleOwner
 import jp.co.cyberagent.kite.testcommon.memoize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

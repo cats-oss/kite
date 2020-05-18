@@ -20,7 +20,7 @@ dependencies {
   api(AndroidX.lifecycle.runtimeKtx)
   api(AndroidX.lifecycle.commonJava8)
 
-  testImplementation(project(":kite-testcommon"))
+  testImplementation(project(":kite-androidtestcommon"))
   testImplementation(AndroidX.test.coreKtx)
   testImplementation(AndroidX.fragmentTesting)
 }

@@ -24,6 +24,7 @@ include(
   "kite-sample",
   "kite-common",
   "kite-testcommon",
+  "kite-androidtestcommon",
   "kite-core",
   "kite-runtime",
   "kite-epoxy",

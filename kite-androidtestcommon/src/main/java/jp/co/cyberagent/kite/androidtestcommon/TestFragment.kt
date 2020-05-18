@@ -1,4 +1,4 @@
-package jp.co.cyberagent.kite.testcommon
+package jp.co.cyberagent.kite.androidtestcommon
 
 import android.os.Bundle
 import android.view.LayoutInflater

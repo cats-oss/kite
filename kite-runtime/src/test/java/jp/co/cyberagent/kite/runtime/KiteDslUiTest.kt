@@ -15,10 +15,10 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.exhaustive
+import jp.co.cyberagent.kite.androidtestcommon.TestActivity
+import jp.co.cyberagent.kite.androidtestcommon.TestFragment
+import jp.co.cyberagent.kite.androidtestcommon.TestLifecycleOwner
 import jp.co.cyberagent.kite.core.requireByType
-import jp.co.cyberagent.kite.testcommon.TestActivity
-import jp.co.cyberagent.kite.testcommon.TestFragment
-import jp.co.cyberagent.kite.testcommon.TestLifecycleOwner
 
 @RobolectricTest
 class KiteDslUiTest : StringSpec({
