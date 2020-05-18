@@ -1,8 +1,7 @@
 plugins {
   `module-config`
-  id("com.android.library")
-  kotlin("android")
-  id("kotlin-android-extensions")
+  id("java-library")
+  kotlin("jvm")
 }
 
 dependencies {
