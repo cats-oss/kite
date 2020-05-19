@@ -3,6 +3,7 @@ plugins {
   id("java-library")
   kotlin("jvm")
   id("com.vanniktech.maven.publish")
+  `artifactory-publish-config`
   `bintray-publish-config`
 }
 

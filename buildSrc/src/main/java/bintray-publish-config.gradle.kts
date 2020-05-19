@@ -18,7 +18,7 @@ bintray {
     websiteUrl = extra["POM_URL"].toString()
     setLicenses("Apache-2.0")
     version(closureOf<BintrayExtension.VersionConfig> {
-      name = extra["VERSION_NAME"].toString()
+      name = project.version.toString()
       released = Date().toString()
     })
   })

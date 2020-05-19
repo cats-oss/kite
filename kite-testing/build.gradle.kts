@@ -4,6 +4,7 @@ plugins {
   kotlin("android")
   id("kotlin-android-extensions")
   id("com.vanniktech.maven.publish")
+  `artifactory-publish-config`
   `bintray-publish-config`
 }
 
