@@ -23,3 +23,12 @@ bintray {
     })
   })
 }
+
+project.afterEvaluate {
+  tasks.named("publishMavenPublicationToMavenLocal") {
+    // Let bintray publication depend on artifact tasks created by 'com.vanniktech.maven.publish'
+    tasks.getByName("publishMavenPublicationToLocalRepository").dependsOn.forEach {
+      dependsOn(it)
+    }
+  }
+}
