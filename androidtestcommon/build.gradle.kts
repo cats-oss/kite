@@ -12,7 +12,7 @@ android {
 }
 
 dependencies {
-  api(project(":kite-testcommon"))
+  api(project(":testcommon"))
   implementation(Kotlin.stdlib.jdk8)
   implementation(AndroidX.appCompat)
   implementation(AndroidX.lifecycle.extensions)

@@ -22,10 +22,10 @@ rootProject.name = ("kite")
 
 include(
   "kite-sample",
-  "kite-testcommon",
-  "kite-androidtestcommon",
   "kite-core",
   "kite-runtime",
   "kite-epoxy",
-  "kite-testing"
+  "kite-testing",
+  "testcommon",
+  "androidtestcommon"
 )
