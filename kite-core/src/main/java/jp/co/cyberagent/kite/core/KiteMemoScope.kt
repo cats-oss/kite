@@ -1,6 +1,7 @@
 package jp.co.cyberagent.kite.core
 
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
+import jp.co.cyberagent.kite.core.internal.Unset
 import jp.co.cyberagent.kite.core.internal.subscriberManager
 
 @KiteDslMaker

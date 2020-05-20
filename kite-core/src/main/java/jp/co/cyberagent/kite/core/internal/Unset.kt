@@ -1,3 +1,3 @@
-package jp.co.cyberagent.kite.core
+package jp.co.cyberagent.kite.core.internal
 
 internal object Unset
