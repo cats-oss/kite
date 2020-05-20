@@ -4,18 +4,20 @@ import kotlinx.coroutines.CoroutineScope
 
 /**
  * Define a scope for kite DSL. All kite DSL (like [state], [memo], etc) is an extension
- * on [KiteDslScope]. [KiteDslScope] inherits [CoroutineScope] so you start coroutine via [launch],
- * and [async]. [KiteDslScope] also inherits [KiteContext] and usually the behavior of [KiteContext]
- * should delegate to the property [KiteDslScope.kiteContext].
+ * on [KiteDslScope]. [KiteDslScope] implements [CoroutineScope] so you can start coroutine via
+ * [launch], and [async]. [KiteDslScope] also implements [KiteContext] by delegating to the
+ * property [kiteContext].
  */
 @KiteDslMaker
 interface KiteDslScope : CoroutineScope, KiteContext {
+  /**
+   * The context of this scope.
+   */
   val kiteContext: KiteContext
 }
 
 /**
- * A simple implementation for [KiteDslScope] with using delegate pattern. A default
- * [KiteCoroutineDispatchers] instance will be set into the [KiteContext] if absent.
+ * A simple implementation for [KiteDslScope].
  */
 private class KiteDsScopeImpl(
   coroutineScope: CoroutineScope,
@@ -30,11 +32,12 @@ private class KiteDsScopeImpl(
 }
 
 /**
- * Create a simple [KiteDslScope] from [coroutineScope] and [kiteContext].
+ * Create a simple [KiteDslScope] from [coroutineScope] and [kiteContext]. A default
+ * [KiteCoroutineDispatchers] instance will be set into the [KiteContext] if absent.
  *
- * It's not recommend directly use this method to write kite DSL. Instead, you can use
- * [Fragment.kiteDsl] or [ComponetntActivity.kiteDsl] in production code. And use [TestKiteDslScope]
- * or [runTestKiteDsl] in test code.
+ * It's not recommend to use the method to construct a [KiteDslScope] and write kite DSL.
+ * Instead, you should use [Fragment.kiteDsl] or [ComponetntActivity.kiteDsl] in production code.
+ * And use [TestKiteDslScope] or [runTestKiteDsl] in test code.
  */
 @Suppress("FunctionName")
 fun KiteDslScope(

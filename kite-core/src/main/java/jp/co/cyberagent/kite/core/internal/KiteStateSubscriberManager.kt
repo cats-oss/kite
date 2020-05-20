@@ -8,6 +8,9 @@ import jp.co.cyberagent.kite.core.checkIsMainThread
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.setIfAbsent
 
+/**
+ * Helper class to auto detect the dependent [KiteState] of a [Runnable].
+ */
 internal class KiteStateSubscriberManager(
   private val mainThreadChecker: MainThreadChecker
 ) {

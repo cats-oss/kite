@@ -42,6 +42,30 @@ private class KiteMemoState<T>(
     }
 }
 
+/**
+ * Evaluate the [computation] immediately and re evaluate when one of its dependencies changed.
+ * If the getter of any [KiteState] was referenced inside the [computation] during the
+ * [computation] running, then that [KiteState] will become one dependency of the [computation].
+ * The evaluation result will be cached into a [KiteState].
+ *
+ * ## Usage:
+ *
+ * ```
+ * val myState = state { 0 }
+ *
+ * launch {
+ *   for(i in 0..10) {
+ *     delay(1000)
+ *     myState.value++
+ *   }
+ * }
+ *
+ * // myMemo value will changed with 0, 2, 4, ..., 20
+ * val myMemo = memo {
+ *   myState.value * 2
+ * }
+ * ```
+ */
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
 ): KiteState<T> {

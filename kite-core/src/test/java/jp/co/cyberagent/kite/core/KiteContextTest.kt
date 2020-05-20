@@ -101,7 +101,7 @@ class KiteContextTest : StringSpec({
       getByType<String>() shouldBe "Cat"
 
       withKiteContext(
-        extraKiteContext = kiteContextOf(String::class to "Kite")
+        context = kiteContextOf(String::class to "Kite")
       ) {
         getByType<String>() shouldBe "Kite"
       }
