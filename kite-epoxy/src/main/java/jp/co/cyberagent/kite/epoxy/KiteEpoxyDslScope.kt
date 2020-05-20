@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import jp.co.cyberagent.kite.core.KiteDslMaker
 import jp.co.cyberagent.kite.core.KiteDslScope
+import jp.co.cyberagent.kite.core.MainThreadChecker
+import jp.co.cyberagent.kite.core.checkIsMainThread
+import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.subscribe
 
 @KiteDslMaker
@@ -62,6 +65,7 @@ fun KiteDslScope.epoxyDsl(
   recyclerView: RecyclerView,
   body: KiteEpoxyDslScope.() -> Unit
 ) {
+  requireByType<MainThreadChecker>().checkIsMainThread("epoxyDsl")
   val scope = KiteEpoxyDslScopeImpl().apply(body)
   val controller = scope.create()
   recyclerView.adapter = controller.adapter
