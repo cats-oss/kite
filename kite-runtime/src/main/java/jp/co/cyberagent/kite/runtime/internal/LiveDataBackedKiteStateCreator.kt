@@ -4,20 +4,20 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
-import jp.co.cyberagent.kite.core.AbstractKiteProperty
+import jp.co.cyberagent.kite.core.AbstractKiteMutableState
 import jp.co.cyberagent.kite.core.KiteContext
-import jp.co.cyberagent.kite.core.KiteProperty
+import jp.co.cyberagent.kite.core.KiteMutableState
 import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.runtime.KiteScopeModel
 
-private class LiveDataBackedKiteProperty<T>(
+private class LiveDataBackedKiteMutableState<T>(
   lifecycleOwner: LifecycleOwner,
   private val liveData: MutableLiveData<T>,
   kiteContext: KiteContext
-) : AbstractKiteProperty<T>(kiteContext) {
+) : AbstractKiteMutableState<T>(kiteContext) {
 
   private val mainThreadChecker: MainThreadChecker = kiteContext.requireByType()
 
@@ -46,13 +46,13 @@ internal class LiveDataBackedKiteStateCreator(
   private val kiteContext: KiteContext
 ) : KiteStateCreator {
 
-  override fun <T> create(initialValue: () -> T): KiteProperty<T> {
+  override fun <T> create(initialValue: () -> T): KiteMutableState<T> {
     kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("state")
     val key = kiteContext.createStateKey()
     val liveData = kiteContext.requireByType<KiteScopeModel>().createTagIfAbsent(key) {
       MutableLiveData(initialValue.invoke())
     }
-    return LiveDataBackedKiteProperty(
+    return LiveDataBackedKiteMutableState(
       kiteContext.requireByType(),
       liveData,
       kiteContext

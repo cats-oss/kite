@@ -6,8 +6,8 @@ import kotlinx.coroutines.CoroutineScope
 private class TestKiteStateCreator(
   private val kiteContext: KiteContext
 ) : KiteStateCreator {
-  override fun <T> create(initialValue: () -> T): KiteProperty<T> {
-    return object : AbstractKiteProperty<T>(kiteContext) {
+  override fun <T> create(initialValue: () -> T): KiteMutableState<T> {
+    return object : AbstractKiteMutableState<T>(kiteContext) {
       override var value: T = initialValue()
         get() {
           subscribe()

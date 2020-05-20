@@ -3,7 +3,7 @@ package jp.co.cyberagent.kite.sample.timeline.state
 import jp.co.cyberagent.kite.core.Invoker0
 import jp.co.cyberagent.kite.core.Invoker2
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.core.KiteGetter
+import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.ioDispatcher
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.state
@@ -28,7 +28,7 @@ data class TimelineState(
 )
 
 data class TimelineUseCase(
-  val timelineState: KiteGetter<TimelineState>,
+  val timelineState: KiteState<TimelineState>,
   val fetchTimeline: FetchTimeline,
   val updateIsFavorite: UpdateIsFavorite
 )

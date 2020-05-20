@@ -129,8 +129,8 @@ fun KiteDslScope.setCount() {
 
 fun KiteDslScope.getCount() {
   setCount()
-  val count = get<KiteProperty<Int>>("count") // nullable
-  val count = require<KiteProperty<Int>>("count") // non null
+  val count = get<KiteMutableState<Int>>("count") // nullable
+  val count = require<KiteMutableState<Int>>("count") // non null
 }
 ```
 
@@ -166,7 +166,7 @@ Instead, separate your business logic and UI binding into separate extension fun
 
 ```kotlin
 data class CounterUseCase(
-  val count: KiteGetter<Int>,
+  val count: KiteState<Int>,
   val increment: () -> Unit,
   val decrement: () -> Unit
 )

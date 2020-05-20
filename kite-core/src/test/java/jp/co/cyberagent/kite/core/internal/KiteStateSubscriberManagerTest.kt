@@ -28,7 +28,9 @@ class KiteStateSubscriberManagerTest : StringSpec({
   "Invoke notifyStateChanged in background thread should throw exception" {
     shouldThrow<IllegalStateException> {
       withContext(Dispatchers.IO) {
-        subscriberManager.notifyStateChanged(object : KiteState {})
+        subscriberManager.notifyStateChanged(object : KiteState<Any> {
+          override val value: Any = Any()
+        })
       }
     }
   }

@@ -2,7 +2,7 @@ package jp.co.cyberagent.kite.sample.timeline.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.core.KiteGetter
+import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.epoxy.epoxyDsl
 import jp.co.cyberagent.kite.runtime.onStart
 import jp.co.cyberagent.kite.runtime.onStop
@@ -12,7 +12,7 @@ import jp.co.cyberagent.kite.sample.timeline.state.UpdateIsFavorite
 
 fun KiteDslScope.bindTimeline(
   recyclerView: RecyclerView,
-  timelineState: KiteGetter<TimelineState>,
+  timelineState: KiteState<TimelineState>,
   updateIsFavorite: UpdateIsFavorite
 ) {
   val observer = object : RecyclerView.AdapterDataObserver() {

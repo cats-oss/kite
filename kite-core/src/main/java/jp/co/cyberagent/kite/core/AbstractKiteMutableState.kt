@@ -2,9 +2,9 @@ package jp.co.cyberagent.kite.core
 
 import jp.co.cyberagent.kite.core.internal.subscriberManager
 
-abstract class AbstractKiteProperty<T>(
+abstract class AbstractKiteMutableState<T>(
   private val kiteContext: KiteContext
-) : KiteProperty<T> {
+) : KiteMutableState<T> {
 
   protected fun subscribe() {
     kiteContext.subscriberManager.subscribeTo(this)

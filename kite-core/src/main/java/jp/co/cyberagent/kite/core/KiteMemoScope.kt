@@ -15,7 +15,7 @@ private fun KiteMemoScope(): KiteMemoScope = KiteMemoScopeImpl
 private class KiteMemoState<T>(
   private val computation: () -> T,
   private val subscriberManager: KiteStateSubscriberManager
-) : KiteGetter<T> {
+) : KiteState<T> {
 
   @Volatile
   private var _value: Any? = Unset
@@ -44,7 +44,7 @@ private class KiteMemoState<T>(
 
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
-): KiteGetter<T> {
+): KiteState<T> {
   requireByType<MainThreadChecker>().checkIsMainThread("memo")
   return KiteMemoState({ KiteMemoScope().run(computation) }, subscriberManager)
 }

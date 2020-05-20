@@ -12,7 +12,7 @@ internal class KiteStateSubscriberManager(
   private val mainThreadChecker: MainThreadChecker
 ) {
 
-  private val stateSubscriberMap: MutableMap<KiteState, LinkedHashSet<Runnable>> =
+  private val stateSubscriberMap: MutableMap<KiteState<*>, LinkedHashSet<Runnable>> =
     mutableMapOf()
 
   private val runningSubscriberQueue: ArrayDeque<Runnable> = ArrayDeque()
@@ -24,7 +24,7 @@ internal class KiteStateSubscriberManager(
     runningSubscriberQueue.pop()
   }
 
-  fun subscribeTo(state: KiteState) {
+  fun subscribeTo(state: KiteState<*>) {
     if (mainThreadChecker.isMainThread) {
       val runnable = runningSubscriberQueue.peek() ?: return
       val depSet = stateSubscriberMap.getOrPut(state) { linkedSetOf() }
@@ -32,7 +32,7 @@ internal class KiteStateSubscriberManager(
     }
   }
 
-  fun notifyStateChanged(state: KiteState) {
+  fun notifyStateChanged(state: KiteState<*>) {
     mainThreadChecker.checkIsMainThread("notifyStateChanged")
     stateSubscriberMap[state]?.forEach { runAndResolveDependentState(it) }
   }
