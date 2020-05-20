@@ -3,11 +3,14 @@ plugins {
 }
 
 artifactory {
-  setContextUrl("http://oss.jfrog.org")
+  setContextUrl("https://oss.jfrog.org/artifactory")
   withGroovyBuilder {
     "resolve" {
       "repository" {
-        setProperty("repoKey", "jcenter")
+        setProperty("repoKey", "libs-release")
+        setProperty("username", System.getProperty("artifactoryUser"))
+        setProperty("password", System.getProperty("artifactoryPassword"))
+        setProperty("maven", true)
       }
     }
 
@@ -19,8 +22,9 @@ artifactory {
           setProperty("repoKey", "oss-release-local")
         }
 
-        setProperty("username", System.getProperty("bintrayUser"))
-        setProperty("password", System.getProperty("bintrayKey"))
+        setProperty("username", System.getProperty("artifactoryUser"))
+        setProperty("password", System.getProperty("artifactoryPassword"))
+        setProperty("maven", true)
       }
 
       "defaults" {

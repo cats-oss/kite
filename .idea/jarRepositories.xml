@@ -36,5 +36,15 @@
       <option name="name" value="artifactory-maven-resolver" />
       <option name="url" value="http://oss.jfrog.org/jcenter" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://oss.jfrog.org/artifactory/jcenter" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="artifactory-maven-resolver" />
+      <option name="name" value="artifactory-maven-resolver" />
+      <option name="url" value="https://oss.jfrog.org/artifactory/libs-release" />
+    </remote-repository>
   </component>
 </project>
