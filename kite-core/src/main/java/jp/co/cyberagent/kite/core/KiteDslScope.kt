@@ -5,13 +5,12 @@ import kotlinx.coroutines.CoroutineScope
 /**
  * Define a scope for kite DSL. All kite DSL (like [state], [memo], etc) is an extension
  * on [KiteDslScope]. [KiteDslScope] implements [CoroutineScope] so you can start coroutine via
- * [launch], and [async]. [KiteDslScope] also implements [KiteContext] by delegating to the
- * property [kiteContext].
+ * [launch], and [async].
  */
 @KiteDslMaker
-interface KiteDslScope : CoroutineScope, KiteContext {
+interface KiteDslScope : CoroutineScope {
   /**
-   * The context of this scope.
+   * The [KiteContext] of this scope.
    */
   val kiteContext: KiteContext
 }
@@ -23,17 +22,16 @@ private class KiteDsScopeImpl(
   coroutineScope: CoroutineScope,
   override val kiteContext: KiteContext
 ) : KiteDslScope,
-  CoroutineScope by coroutineScope,
-  KiteContext by kiteContext {
+  CoroutineScope by coroutineScope {
 
   init {
-    setIfAbsent(KiteCoroutineDispatchers::class) { KiteCoroutineDispatchers() }
+    kiteContext.setIfAbsent(KiteCoroutineDispatchers::class) { KiteCoroutineDispatchers() }
   }
 }
 
 /**
  * Create a simple [KiteDslScope] from [coroutineScope] and [kiteContext]. A default
- * [KiteCoroutineDispatchers] instance will be set into the [KiteContext] if absent.
+ * [KiteCoroutineDispatchers] instance will be set into the [kiteContext] if absent.
  *
  * It's not recommend to use the method to construct a [KiteDslScope] and write kite DSL.
  * Instead, you should use [Fragment.kiteDsl] or [ComponetntActivity.kiteDsl] in production code.

@@ -14,19 +14,19 @@ class KiteCoroutineDispatchers(
 )
 
 /**
- * Returns the [KiteCoroutineDispatchers.default] in this [KiteContext].
+ * Returns the [KiteCoroutineDispatchers.default] in current context.
  */
-val KiteContext.defaultDispatcher: CoroutineDispatcher
-  get() = requireByType<KiteCoroutineDispatchers>().default
+val KiteDslScope.defaultDispatcher: CoroutineDispatcher
+  get() = kiteContext.requireByType<KiteCoroutineDispatchers>().default
 
 /**
- * Returns the [KiteCoroutineDispatchers.main] in this [KiteContext].
+ * Returns the [KiteCoroutineDispatchers.main] in current context.
  */
-val KiteContext.mainDispatcher: CoroutineDispatcher
-  get() = requireByType<KiteCoroutineDispatchers>().main
+val KiteDslScope.mainDispatcher: CoroutineDispatcher
+  get() = kiteContext.requireByType<KiteCoroutineDispatchers>().main
 
 /**
- * Returns the [KiteCoroutineDispatchers.io] in this [KiteContext].
+ * Returns the [KiteCoroutineDispatchers.io] in this current context.
  */
-val KiteContext.ioDispatcher: CoroutineDispatcher
-  get() = requireByType<KiteCoroutineDispatchers>().io
+val KiteDslScope.ioDispatcher: CoroutineDispatcher
+  get() = kiteContext.requireByType<KiteCoroutineDispatchers>().io

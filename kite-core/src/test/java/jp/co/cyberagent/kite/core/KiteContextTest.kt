@@ -97,16 +97,16 @@ class KiteContextTest : StringSpec({
 
   "WithKiteContext should create a merged context" {
     TestKiteDslScope().apply {
-      setByType("Cat")
-      getByType<String>() shouldBe "Cat"
+      this.kiteContext.setByType("Cat")
+      this.kiteContext.getByType<String>() shouldBe "Cat"
 
       withKiteContext(
         context = kiteContextOf(String::class to "Kite")
       ) {
-        getByType<String>() shouldBe "Kite"
+        this.kiteContext.getByType<String>() shouldBe "Kite"
       }
 
-      getByType<String>() shouldBe "Cat"
+      this.kiteContext.getByType<String>() shouldBe "Cat"
     }
   }
 })

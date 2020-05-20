@@ -50,8 +50,8 @@ class KiteDslUiTest : StringSpec({
       addService(2048)
     }
     kiteDsl(TestLifecycleOwner(), TestKiteScopeModelOwner(), factory) {
-      requireByType<String>() shouldBe "Kite"
-      requireByType<Int>() shouldBe 2048
+      kiteContext.requireByType<String>() shouldBe "Kite"
+      kiteContext.requireByType<Int>() shouldBe 2048
     }
   }
 
@@ -59,9 +59,9 @@ class KiteDslUiTest : StringSpec({
     var invoked = false
     TestActivity.onCreateAction = { activity ->
       activity.kiteDsl {
-        requireByType<Activity>() shouldBeSameInstanceAs activity
-        requireByType<Context>() shouldBeSameInstanceAs activity
-        requireByType<LifecycleOwner>() shouldBeSameInstanceAs activity
+        kiteContext.requireByType<Activity>() shouldBeSameInstanceAs activity
+        kiteContext.requireByType<Context>() shouldBeSameInstanceAs activity
+        kiteContext.requireByType<LifecycleOwner>() shouldBeSameInstanceAs activity
         invoked = true
       }
     }
@@ -75,10 +75,11 @@ class KiteDslUiTest : StringSpec({
     var invoked = false
     TestFragment.onCreateAction = { fragment ->
       fragment.kiteDsl {
-        requireByType<Activity>() shouldBeSameInstanceAs fragment.requireActivity()
-        requireByType<Context>() shouldBeSameInstanceAs fragment.requireContext()
-        requireByType<LifecycleOwner>() shouldBeSameInstanceAs fragment.viewLifecycleOwner
-        requireByType<Fragment>() shouldBeSameInstanceAs fragment
+        kiteContext.requireByType<Activity>() shouldBeSameInstanceAs fragment.requireActivity()
+        kiteContext.requireByType<Context>() shouldBeSameInstanceAs fragment.requireContext()
+        kiteContext.requireByType<LifecycleOwner>() shouldBeSameInstanceAs
+          fragment.viewLifecycleOwner
+        kiteContext.requireByType<Fragment>() shouldBeSameInstanceAs fragment
         invoked = true
       }
     }

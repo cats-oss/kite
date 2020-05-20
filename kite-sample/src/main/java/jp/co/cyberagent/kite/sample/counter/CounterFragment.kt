@@ -32,7 +32,7 @@ fun KiteDslScope.bindCounterExampleFragmentUi(
   counter2: KiteMutableState<Int>
 ) {
   val binding = FragmentCounterBinding.bind(
-    requireByType<Fragment>().requireView()
+    kiteContext.requireByType<Fragment>().requireView()
   )
 
   subscribe {

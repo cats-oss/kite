@@ -15,7 +15,7 @@ class TestTestKiteFragment : StringSpec({
     val factory = TestKiteFragment.makeFactory(
       R.layout.layout_kite_test,
       TestKiteFragment.Config {
-        requireByType<Fragment>()
+        kiteContext.requireByType<Fragment>()
         invoked = true
       }
     )

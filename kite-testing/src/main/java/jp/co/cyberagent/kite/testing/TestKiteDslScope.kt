@@ -18,16 +18,15 @@ class TestKiteDslScope(
   override val kiteContext: KiteContext = KiteContext(),
   private val testCoroutineScope: TestCoroutineScope = TestCoroutineScope()
 ) : KiteDslScope,
-  KiteContext by kiteContext,
   TestCoroutineScope by testCoroutineScope {
 
   init {
-    setIfAbsent(KiteCoroutineDispatchers::class) {
+    kiteContext.setIfAbsent(KiteCoroutineDispatchers::class) {
       val dispatcher = coroutineContext[ContinuationInterceptor] as TestCoroutineDispatcher
       KiteCoroutineDispatchers(dispatcher, dispatcher, dispatcher)
     }
-    setIfAbsent(KiteStateCreator::class) { ThreadUnsafeKiteStateCreator(kiteContext) }
-    setIfAbsent(MainThreadChecker::class) { AlwaysTrueMainThreadChecker() }
+    kiteContext.setIfAbsent(KiteStateCreator::class) { ThreadUnsafeKiteStateCreator(kiteContext) }
+    kiteContext.setIfAbsent(MainThreadChecker::class) { AlwaysTrueMainThreadChecker() }
   }
 }
 

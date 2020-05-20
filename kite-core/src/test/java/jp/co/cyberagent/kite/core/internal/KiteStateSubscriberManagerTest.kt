@@ -46,7 +46,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
       invokedCnt++
     }
 
-    val subscribeManager = kite.requireByType<KiteStateSubscriberManager>()
+    val subscribeManager = kite.kiteContext.requireByType<KiteStateSubscriberManager>()
     subscribeManager.runAndResolveDependentState(runnable)
     invokedCnt shouldBe 1
     subscribeManager.notifyStateChanged(state1)

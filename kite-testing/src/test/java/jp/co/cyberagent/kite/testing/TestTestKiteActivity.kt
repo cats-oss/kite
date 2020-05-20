@@ -15,7 +15,7 @@ class TestTestKiteActivity : StringSpec({
     val intent = TestKiteActivity.makeIntent(
       R.layout.layout_kite_test,
       TestKiteActivity.Config {
-        requireByType<Activity>()
+        kiteContext.requireByType<Activity>()
         invoked = true
       }
     )

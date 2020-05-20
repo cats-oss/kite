@@ -14,9 +14,9 @@ fun KiteDslScope.bindTimelineExampleFragmentUi(
   timelineUseCase: TimelineUseCase
 ) {
   val binding = FragmentTimelineBinding.bind(
-    requireByType<Fragment>().requireView()
+    kiteContext.requireByType<Fragment>().requireView()
   )
-  val context = requireByType<Context>()
+  val context = kiteContext.requireByType<Context>()
 
   binding.swipeRefreshLayout.setOnRefreshListener {
     timelineUseCase.fetchTimeline.invoke()

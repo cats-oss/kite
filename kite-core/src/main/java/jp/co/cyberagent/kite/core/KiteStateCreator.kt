@@ -12,5 +12,5 @@ interface KiteStateCreator {
  * a [KiteState] with [initialValue].
  */
 fun <T> KiteDslScope.state(initialValue: () -> T): KiteMutableState<T> {
-  return requireByType<KiteStateCreator>().create(initialValue)
+  return kiteContext.requireByType<KiteStateCreator>().create(initialValue)
 }

@@ -36,6 +36,10 @@ private fun KiteSubscribeScope(): KiteSubscribeScope = KiteSubscribeImpl
 fun KiteDslScope.subscribe(
   action: KiteSubscribeScope.() -> Unit
 ) {
-  requireByType<MainThreadChecker>().checkIsMainThread("subscribe")
-  subscriberManager.runAndResolveDependentState(Runnable { KiteSubscribeScope().run(action) })
+  kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("subscribe")
+  kiteContext.subscriberManager.runAndResolveDependentState(
+    Runnable {
+      KiteSubscribeScope().run(action)
+    }
+  )
 }

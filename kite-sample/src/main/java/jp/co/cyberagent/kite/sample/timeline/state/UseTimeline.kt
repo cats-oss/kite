@@ -34,7 +34,7 @@ data class TimelineUseCase(
 )
 
 fun KiteDslScope.useTimeline(): TimelineUseCase {
-  val repository = requireByType<TimelineRepository>()
+  val repository = kiteContext.requireByType<TimelineRepository>()
 
   val timelineState = state { TimelineState() }
 

@@ -69,6 +69,6 @@ private class KiteMemoState<T>(
 fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
 ): KiteState<T> {
-  requireByType<MainThreadChecker>().checkIsMainThread("memo")
-  return KiteMemoState({ KiteMemoScope().run(computation) }, subscriberManager)
+  kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("memo")
+  return KiteMemoState({ KiteMemoScope().run(computation) }, kiteContext.subscriberManager)
 }

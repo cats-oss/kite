@@ -153,5 +153,5 @@ fun KiteDslScope.withKiteContext(
   context: KiteContext,
   block: KiteDslScope.() -> Unit
 ) {
-  KiteDslScope(this, this.kiteContext + context).apply(block)
+  KiteDslScope(this, kiteContext + context).apply(block)
 }

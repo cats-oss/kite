@@ -65,7 +65,7 @@ fun KiteDslScope.epoxyDsl(
   recyclerView: RecyclerView,
   body: KiteEpoxyDslScope.() -> Unit
 ) {
-  requireByType<MainThreadChecker>().checkIsMainThread("epoxyDsl")
+  kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("epoxyDsl")
   val scope = KiteEpoxyDslScopeImpl().apply(body)
   val controller = scope.create()
   recyclerView.adapter = controller.adapter

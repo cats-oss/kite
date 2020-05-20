@@ -7,7 +7,7 @@ import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.requireByType
 
 val KiteDslScope.currentState: Lifecycle.State
-  get() = requireByType<LifecycleOwner>().lifecycle.currentState
+  get() = kiteContext.requireByType<LifecycleOwner>().lifecycle.currentState
 
 inline fun KiteDslScope.onCreate(
   crossinline onCreate: () -> Unit
@@ -42,7 +42,8 @@ inline fun KiteDslScope.onLifecycleEvent(
   crossinline onStop: () -> Unit = {},
   crossinline onDestroy: () -> Unit = {}
 ) {
-  requireByType<LifecycleOwner>().lifecycle.addObserver(object : DefaultLifecycleObserver {
+  val lifecycleOwner = kiteContext.requireByType<LifecycleOwner>()
+  lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
     override fun onCreate(owner: LifecycleOwner) {
       onCreate.invoke()
     }
