@@ -5,8 +5,9 @@ import jp.co.cyberagent.kite.core.KiteCoroutineDispatchers
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
-import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.core.setIfAbsent
+import jp.co.cyberagent.kite.testing.internal.AlwaysTrueMainThreadChecker
+import jp.co.cyberagent.kite.testing.internal.ThreadUnsafeKiteStateCreator
 import kotlin.coroutines.ContinuationInterceptor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -26,7 +27,7 @@ class TestKiteDslScope(
       KiteCoroutineDispatchers(dispatcher, dispatcher, dispatcher)
     }
     setIfAbsent(KiteStateCreator::class) { ThreadUnsafeKiteStateCreator(kiteContext) }
-    setByType<MainThreadChecker>(AlwaysMainThreadChecker())
+    setIfAbsent(MainThreadChecker::class) { AlwaysTrueMainThreadChecker() }
   }
 }
 

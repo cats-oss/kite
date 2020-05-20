@@ -1,4 +1,4 @@
-package jp.co.cyberagent.kite.testing
+package jp.co.cyberagent.kite.testing.internal
 
 import jp.co.cyberagent.kite.core.AbstractKiteProperty
 import jp.co.cyberagent.kite.core.KiteContext
