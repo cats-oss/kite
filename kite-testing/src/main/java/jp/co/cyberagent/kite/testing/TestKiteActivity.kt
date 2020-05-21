@@ -40,7 +40,7 @@ class TestKiteActivity : AppCompatActivity() {
 
   class Config(
     var kiteScopeModelFactory: KiteScopeModelFactory? = null,
-    var kiteDslBody: (KiteDslScope.(Activity) -> Unit)? = null
+    var kiteDslBlock: (KiteDslScope.(Activity) -> Unit)? = null
   )
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class TestKiteActivity : AppCompatActivity() {
       "KiteDsl config for layout $layoutName not found."
     }
     kiteDsl(scopeModelFactory = config.kiteScopeModelFactory) {
-      config.kiteDslBody?.invoke(this, this@TestKiteActivity)
+      config.kiteDslBlock?.invoke(this, this@TestKiteActivity)
     }
   }
 }

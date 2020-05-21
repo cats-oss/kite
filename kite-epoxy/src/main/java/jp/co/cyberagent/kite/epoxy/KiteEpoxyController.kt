@@ -8,7 +8,7 @@ import jp.co.cyberagent.kite.core.KiteDslMaker
 class KiteEpoxyController internal constructor(
   private val isReady: () -> Boolean,
   config: KiteEpoxyController.() -> Unit,
-  private val builder: KiteEpoxyController.() -> Unit,
+  private val modelBuilder: KiteEpoxyController.() -> Unit,
   modelBuildingHandler: Handler = defaultModelBuildingHandler,
   diffingHandler: Handler = defaultDiffingHandler
 ) : EpoxyController(modelBuildingHandler, diffingHandler) {
@@ -18,7 +18,7 @@ class KiteEpoxyController internal constructor(
   }
 
   override fun buildModels() {
-    builder.invoke(this)
+    modelBuilder.invoke(this)
   }
 
   internal fun requestModelBuildIfReady() {

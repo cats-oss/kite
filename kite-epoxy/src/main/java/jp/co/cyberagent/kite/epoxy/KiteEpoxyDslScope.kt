@@ -17,7 +17,7 @@ interface KiteEpoxyDslScope {
 
   fun config(block: KiteEpoxyController.() -> Unit)
 
-  fun buildModels(builder: KiteEpoxyController.() -> Unit)
+  fun buildModels(modelBuilder: KiteEpoxyController.() -> Unit)
 }
 
 private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
@@ -26,7 +26,7 @@ private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
 
   private val configList = mutableListOf<KiteEpoxyController.() -> Unit>()
 
-  private val builderList = mutableListOf<KiteEpoxyController.() -> Unit>()
+  private val modelBuilderList = mutableListOf<KiteEpoxyController.() -> Unit>()
 
   var modelBuildingHandler: Handler = EpoxyController.defaultModelBuildingHandler
 
@@ -40,8 +40,8 @@ private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
     configList += block
   }
 
-  override fun buildModels(builder: KiteEpoxyController.() -> Unit) {
-    builderList += builder
+  override fun buildModels(modelBuilder: KiteEpoxyController.() -> Unit) {
+    modelBuilderList += modelBuilder
   }
 
   fun create(): KiteEpoxyController {
@@ -49,12 +49,12 @@ private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
     val isReady = { isReadyList.all { KiteEpoxyIsReadyScope().run(it) } }
     val configList = configList.toList()
     val config: KiteEpoxyController.() -> Unit = { configList.forEach { it.invoke(this) } }
-    val builderList = builderList.toList()
-    val builder: KiteEpoxyController.() -> Unit = { builderList.forEach { it.invoke(this) } }
+    val modelBuilderList = modelBuilderList.toList()
+    val builder: KiteEpoxyController.() -> Unit = { modelBuilderList.forEach { it.invoke(this) } }
     return KiteEpoxyController(
       isReady = isReady,
       config = config,
-      builder = builder,
+      modelBuilder = builder,
       modelBuildingHandler = modelBuildingHandler,
       diffingHandler = diffingHandler
     )
@@ -63,10 +63,10 @@ private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
 
 fun KiteDslScope.epoxyDsl(
   recyclerView: RecyclerView,
-  body: KiteEpoxyDslScope.() -> Unit
+  block: KiteEpoxyDslScope.() -> Unit
 ) {
   kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("epoxyDsl")
-  val scope = KiteEpoxyDslScopeImpl().apply(body)
+  val scope = KiteEpoxyDslScopeImpl().apply(block)
   val controller = scope.create()
   recyclerView.adapter = controller.adapter
   subscribe {

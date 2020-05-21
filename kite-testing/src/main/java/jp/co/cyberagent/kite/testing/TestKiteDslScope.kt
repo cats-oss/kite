@@ -34,10 +34,10 @@ class TestKiteDslScope(
 fun runTestKiteDsl(
   kiteContext: KiteContext = KiteContext(),
   testCoroutineScope: TestCoroutineScope = TestCoroutineScope(),
-  body: TestKiteDslScope.() -> Unit
+  block: TestKiteDslScope.() -> Unit
 ) {
   TestKiteDslScope(
     kiteContext = kiteContext,
     testCoroutineScope = testCoroutineScope
-  ).run(body)
+  ).run(block)
 }

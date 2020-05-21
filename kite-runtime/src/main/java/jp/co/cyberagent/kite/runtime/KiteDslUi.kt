@@ -19,25 +19,25 @@ import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
 fun ComponentActivity.kiteDsl(
   scopeModelFactory: KiteScopeModelFactory? = null,
   kiteContext: KiteContext = KiteContext(),
-  body: KiteDslScope.() -> Unit
+  block: KiteDslScope.() -> Unit
 ) {
   val activity = this
   kiteContext += activity as Activity
   kiteContext += activity as Context
-  kiteDsl(this, this, scopeModelFactory, kiteContext, body)
+  kiteDsl(this, this, scopeModelFactory, kiteContext, block)
 }
 
 fun Fragment.kiteDsl(
   scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
   scopeModelFactory: KiteScopeModelFactory? = null,
   kiteContext: KiteContext = KiteContext(),
-  body: KiteDslScope.() -> Unit
+  block: KiteDslScope.() -> Unit
 ) {
   val fragment = this
   kiteContext += requireActivity() as Activity
   kiteContext += requireContext()
   kiteContext += fragment
-  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, kiteContext, body)
+  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, kiteContext, block)
 }
 
 internal fun kiteDsl(
@@ -45,7 +45,7 @@ internal fun kiteDsl(
   scopeModelOwner: KiteScopeModelStoreOwner,
   scopeModelFactory: KiteScopeModelFactory? = null,
   kiteContext: KiteContext = KiteContext(),
-  body: KiteDslScope.() -> Unit
+  block: KiteDslScope.() -> Unit
 ): KiteDslScope {
   val currentState = lifecycleOwner.lifecycle.currentState
   check(currentState == Lifecycle.State.INITIALIZED) {
@@ -61,5 +61,5 @@ internal fun kiteDsl(
   kiteContext += scopeModel
   kiteContext += AndroidMainThreadChecker() as MainThreadChecker
   scopeModel.addServiceToContext(kiteContext)
-  return KiteDslScope(lifecycleOwner.lifecycleScope, kiteContext).apply(body)
+  return KiteDslScope(lifecycleOwner.lifecycleScope, kiteContext).apply(block)
 }
