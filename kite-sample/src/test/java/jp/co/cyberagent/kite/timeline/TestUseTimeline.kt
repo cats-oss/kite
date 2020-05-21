@@ -3,6 +3,7 @@ package jp.co.cyberagent.kite.timeline
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.mockk
+import jp.co.cyberagent.kite.core.asKiteContextElement
 import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.sample.timeline.data.TimelineRepository
 import jp.co.cyberagent.kite.sample.timeline.entity.Content
@@ -20,7 +21,7 @@ class TestUseTimeline {
 
   @Test
   fun testGetTimeline() = runTestKiteDsl {
-    kiteContext += repository
+    kiteContext += repository.asKiteContextElement()
     val contents = listOf(Content("id", "text"))
     val favorite = mapOf("id" to true)
     val timeline = Timeline(contents, favorite)

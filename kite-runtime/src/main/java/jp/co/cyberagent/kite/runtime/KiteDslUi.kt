@@ -12,7 +12,9 @@ import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
-import jp.co.cyberagent.kite.core.plusAssign
+import jp.co.cyberagent.kite.core.asKiteContextElement
+import jp.co.cyberagent.kite.core.kiteContextOf
+import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.runtime.internal.AndroidMainThreadChecker
 import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
 
@@ -22,9 +24,11 @@ fun ComponentActivity.kiteDsl(
   block: KiteDslScope.() -> Unit
 ) {
   val activity = this
-  kiteContext += activity as Activity
-  kiteContext += activity as Context
-  kiteDsl(this, this, scopeModelFactory, kiteContext, block)
+  val mergedContext = kiteContext + kiteContextOf(
+    activity.asKiteContextElement<Activity>(),
+    activity.asKiteContextElement<Context>()
+  )
+  kiteDsl(this, this, scopeModelFactory, mergedContext, block)
 }
 
 fun Fragment.kiteDsl(
@@ -34,10 +38,12 @@ fun Fragment.kiteDsl(
   block: KiteDslScope.() -> Unit
 ) {
   val fragment = this
-  kiteContext += requireActivity() as Activity
-  kiteContext += requireContext()
-  kiteContext += fragment
-  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, kiteContext, block)
+  val mergedContext = kiteContext + kiteContextOf(
+    requireActivity().asKiteContextElement<Activity>(),
+    requireContext().asKiteContextElement(),
+    fragment.asKiteContextElement()
+  )
+  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, mergedContext, block)
 }
 
 internal fun kiteDsl(
@@ -56,10 +62,13 @@ internal fun kiteDsl(
     scopeModelOwner,
     scopeModelFactory ?: KiteScopeModelFactory()
   )[KiteScopeModel::class.java]
-  kiteContext += LiveDataBackedKiteStateCreator(kiteContext) as KiteStateCreator
-  kiteContext += lifecycleOwner
-  kiteContext += scopeModel
-  kiteContext += AndroidMainThreadChecker() as MainThreadChecker
+  // Since kiteContext is provided internally, we modified it directly here.
+  val stateCreator: KiteStateCreator = LiveDataBackedKiteStateCreator(kiteContext)
+  val mainThreadChecker: MainThreadChecker = AndroidMainThreadChecker()
+  kiteContext.setByType(stateCreator)
+  kiteContext.setByType(mainThreadChecker)
+  kiteContext.setByType(lifecycleOwner)
+  kiteContext.setByType(scopeModel)
   scopeModel.addServiceToContext(kiteContext)
   return KiteDslScope(lifecycleOwner.lifecycleScope, kiteContext).apply(block)
 }
