@@ -125,6 +125,10 @@ fun KiteDslScope.withKiteContext(
 
 private class KiteContextImpl : KiteContext {
 
+  companion object {
+    private const val KOTLIN_REFLECTION_WARNING = "(Kotlin reflection is not available)"
+  }
+
   private val map = ConcurrentHashMap<Any, Any>()
 
   override val keys: List<Any>
@@ -153,5 +157,19 @@ private class KiteContextImpl : KiteContext {
       combinedKiteContext[k] = v
     }
     return combinedKiteContext
+  }
+
+  override fun toString(): String {
+    return buildString {
+      appendln("KiteContext Element:")
+      map
+        .mapKeys { (key, _) ->
+          key.toString().replace(KOTLIN_REFLECTION_WARNING, "").trim()
+        }
+        .toSortedMap()
+        .forEach { (key, value) ->
+          appendln("\t$key = $value")
+        }
+    }
   }
 }

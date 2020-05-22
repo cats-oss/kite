@@ -1,6 +1,7 @@
 package jp.co.cyberagent.kite.sample.timeline
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.core.KiteContext
@@ -28,5 +29,6 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
   ) {
     val timelineUseCase = useTimeline()
     bindTimelineExampleFragmentUi(timelineUseCase)
+    Log.d("Timeline", kiteContext.toString())
   }
 }
