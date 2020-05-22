@@ -8,8 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import java.util.concurrent.ConcurrentHashMap
+import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.runtime.KiteScopeModelFactory
 import jp.co.cyberagent.kite.runtime.kiteDsl
 
 class TestKiteActivity : AppCompatActivity() {
@@ -39,7 +39,7 @@ class TestKiteActivity : AppCompatActivity() {
   }
 
   class Config(
-    var kiteScopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
+    val kiteContext: KiteContext = KiteContext(),
     var kiteDslBlock: (KiteDslScope.(Activity) -> Unit)? = null
   )
 
@@ -50,7 +50,7 @@ class TestKiteActivity : AppCompatActivity() {
       val layoutName = resources.getResourceName(contentLayoutId)
       "KiteDsl config for layout $layoutName not found."
     }
-    kiteDsl(scopeModelFactory = config.kiteScopeModelFactory) {
+    kiteDsl(kiteContext = config.kiteContext) {
       config.kiteDslBlock?.invoke(this, this@TestKiteActivity)
     }
   }

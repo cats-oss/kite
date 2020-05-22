@@ -16,6 +16,8 @@ import jp.co.cyberagent.kite.core.asKiteContextElement
 import jp.co.cyberagent.kite.core.kiteContextOf
 import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.runtime.internal.AndroidMainThreadChecker
+import jp.co.cyberagent.kite.runtime.internal.KiteScopeModel
+import jp.co.cyberagent.kite.runtime.internal.KiteScopeModelFactory
 import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
 
 /**
@@ -30,15 +32,10 @@ import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
  *
  * These elements can be retrieved via their type as the key.
  *
- * All services added into the [scopeModelFactory] and extra context elements
- * provided by [kiteContext] will be set into the [KiteDslScope.kiteContext] context of this scope.
- *
- * @param scopeModelFactory the factory which creates [KiteScopeModel] and provides services.
  * @param kiteContext additional to context of the the scope.
  * @param block the DSL which will be invoked in the scope.
  */
 fun ComponentActivity.kiteDsl(
-  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ) {
@@ -47,7 +44,7 @@ fun ComponentActivity.kiteDsl(
     activity.asKiteContextElement<Activity>(),
     activity.asKiteContextElement<Context>()
   )
-  kiteDsl(this, this, scopeModelFactory, mergedContext, block)
+  kiteDsl(this, this, mergedContext, block)
 }
 
 /**
@@ -63,17 +60,12 @@ fun ComponentActivity.kiteDsl(
  *
  * These elements can be retrieved via their type as the key.
  *
- * All services added into the [scopeModelFactory] and extra context elements
- * provided by [kiteContext] will be set into the [kiteContext] of the scope.
- *
  * @param scopeModelStoreOwner the scope of the [KiteScopeModel]. The default value if the fragment itself.
- * @param scopeModelFactory the factory which creates [KiteScopeModel] and provides services.
  * @param kiteContext additional to context of the the scope.
  * @param block the DSL which will be invoked in the scope.
  */
 fun Fragment.kiteDsl(
   scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
-  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ) {
@@ -83,13 +75,12 @@ fun Fragment.kiteDsl(
     requireContext().asKiteContextElement(),
     fragment.asKiteContextElement()
   )
-  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, scopeModelFactory, mergedContext, block)
+  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, mergedContext, block)
 }
 
 internal fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
   scopeModelOwner: KiteScopeModelStoreOwner,
-  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ): KiteDslScope {
@@ -98,6 +89,7 @@ internal fun kiteDsl(
     "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. " +
       "Current state is $currentState"
   }
+  val scopeModelFactory = KiteScopeModelFactory()
   val scopeModel = ViewModelProvider(
     scopeModelOwner,
     scopeModelFactory
@@ -109,6 +101,5 @@ internal fun kiteDsl(
   kiteContext.setByType(mainThreadChecker)
   kiteContext.setByType(lifecycleOwner)
   kiteContext.setByType(scopeModel)
-  scopeModel.addServiceToContext(kiteContext)
   return KiteDslScope(lifecycleOwner.lifecycleScope, kiteContext).apply(block)
 }

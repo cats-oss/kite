@@ -6,8 +6,8 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import java.util.concurrent.ConcurrentHashMap
+import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
-import jp.co.cyberagent.kite.runtime.KiteScopeModelFactory
 import jp.co.cyberagent.kite.runtime.KiteScopeModelStoreOwner
 import jp.co.cyberagent.kite.runtime.kiteDsl
 
@@ -32,8 +32,8 @@ class TestKiteFragment private constructor(
   }
 
   class Config(
-    val kiteScopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
     val storeOwner: StoreOwner = StoreOwner.SELF,
+    val kiteContext: KiteContext = KiteContext(),
     val kiteDslBlock: (KiteDslScope.(Fragment) -> Unit)? = null
   ) {
     enum class StoreOwner {
@@ -56,7 +56,7 @@ class TestKiteFragment private constructor(
     }
     kiteDsl(
       scopeModelStoreOwner = scopeModelStoreOwner,
-      scopeModelFactory = config.kiteScopeModelFactory
+      kiteContext = config.kiteContext
     ) {
       config.kiteDslBlock?.invoke(this, this@TestKiteFragment)
     }

@@ -11,7 +11,6 @@ import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
 import jp.co.cyberagent.kite.core.requireByType
-import jp.co.cyberagent.kite.runtime.KiteScopeModel
 
 private class LiveDataBackedKiteMutableState<T>(
   lifecycleOwner: LifecycleOwner,
