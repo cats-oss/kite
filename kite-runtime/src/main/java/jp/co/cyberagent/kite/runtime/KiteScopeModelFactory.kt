@@ -4,6 +4,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlin.reflect.KClass
 
+/**
+ * The factory to create a [KiteScopeModel].
+ *
+ * Usage:
+ *
+ * ```
+ * // DI setup
+ * @Provide
+ * fun provideKiteScopeModelFactory(
+ *   val repository: Repository
+ * ): KiteScopeModelFactory {
+ *   return KiteScopeModeFactory().apply {
+ *     addService(repository)
+ *   }
+ * }
+ *
+ * // Inject into Activity
+ * @Inject
+ * lateinit var scopeModelFactory: KiteScopeModelFactory
+ *
+ * override fun onCreate(savedInstanceState: Bundle?) {
+ *   super.onCreate(savedInstanceState)
+ *   kiteDsl(scopeModelFactory = scopeModelFactory) {
+ *     val repository = kiteContext.requireByType<Repository>()
+ *   }
+ * }
+ * ```
+ */
 open class KiteScopeModelFactory : ViewModelProvider.Factory {
 
   private val serviceMap = mutableMapOf<KClass<*>, Any>()

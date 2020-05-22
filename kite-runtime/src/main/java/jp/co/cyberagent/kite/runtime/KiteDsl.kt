@@ -18,8 +18,27 @@ import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.runtime.internal.AndroidMainThreadChecker
 import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
 
+/**
+ * Creates a [KiteDslScope] and calls the specified kite DSL block with this scope.
+ * Can only invoke this function inside [Activity.onCreate], otherwise [IllegalStateException]
+ * will be thrown.
+ *
+ * Several element will be set into the [KiteContext] of this scope:
+ *
+ * - Activity
+ * - Context
+ *
+ * These elements can be retrieved via their type as the key.
+ *
+ * All services added into the [scopeModelFactory] and extra context elements
+ * provided by [kiteContext] will be set into the [KiteDslScope.kiteContext] context of this scope.
+ *
+ * @param scopeModelFactory the factory which creates [KiteScopeModel] and provides services.
+ * @param kiteContext additional to context of the the scope.
+ * @param block the DSL which will be invoked in the scope.
+ */
 fun ComponentActivity.kiteDsl(
-  scopeModelFactory: KiteScopeModelFactory? = null,
+  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ) {
@@ -31,9 +50,30 @@ fun ComponentActivity.kiteDsl(
   kiteDsl(this, this, scopeModelFactory, mergedContext, block)
 }
 
+/**
+ * Creates a [KiteDslScope] and calls the specified kite DSL block with this scope.
+ * Can only invoke this function inside [Fragment.onViewCreated], otherwise [IllegalStateException]
+ * will be thrown.
+ *
+ * Several element will be set into the [KiteContext] of the scope:
+ *
+ * - Activity
+ * - Context
+ * - Fragment
+ *
+ * These elements can be retrieved via their type as the key.
+ *
+ * All services added into the [scopeModelFactory] and extra context elements
+ * provided by [kiteContext] will be set into the [kiteContext] of the scope.
+ *
+ * @param scopeModelStoreOwner the scope of the [KiteScopeModel]. The default value if the fragment itself.
+ * @param scopeModelFactory the factory which creates [KiteScopeModel] and provides services.
+ * @param kiteContext additional to context of the the scope.
+ * @param block the DSL which will be invoked in the scope.
+ */
 fun Fragment.kiteDsl(
   scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
-  scopeModelFactory: KiteScopeModelFactory? = null,
+  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ) {
@@ -49,7 +89,7 @@ fun Fragment.kiteDsl(
 internal fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
   scopeModelOwner: KiteScopeModelStoreOwner,
-  scopeModelFactory: KiteScopeModelFactory? = null,
+  scopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ): KiteDslScope {
@@ -60,7 +100,7 @@ internal fun kiteDsl(
   }
   val scopeModel = ViewModelProvider(
     scopeModelOwner,
-    scopeModelFactory ?: KiteScopeModelFactory()
+    scopeModelFactory
   )[KiteScopeModel::class.java]
   // Since kiteContext is provided internally, we modified it directly here.
   val stateCreator: KiteStateCreator = LiveDataBackedKiteStateCreator(kiteContext)

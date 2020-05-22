@@ -39,7 +39,7 @@ class TestKiteActivity : AppCompatActivity() {
   }
 
   class Config(
-    var kiteScopeModelFactory: KiteScopeModelFactory? = null,
+    var kiteScopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
     var kiteDslBlock: (KiteDslScope.(Activity) -> Unit)? = null
   )
 

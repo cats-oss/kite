@@ -32,7 +32,7 @@ class TestKiteFragment private constructor(
   }
 
   class Config(
-    val kiteScopeModelFactory: KiteScopeModelFactory? = null,
+    val kiteScopeModelFactory: KiteScopeModelFactory = KiteScopeModelFactory(),
     val storeOwner: StoreOwner = StoreOwner.SELF,
     val kiteDslBlock: (KiteDslScope.(Fragment) -> Unit)? = null
   ) {
