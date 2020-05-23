@@ -102,6 +102,10 @@ fun LibraryExtension.androidLibraryConfig() {
   packagingOptions {
     exclude("META-INF/AL2.0")
     exclude("META-INF/LGPL2.1")
+
+    // FIXME: Cannot Publish Library Containing Top-Level Kotlin Functions
+    // https://issuetracker.google.com/issues/155523324
+    excludes = excludes - "/META-INF/*.kotlin_module"
   }
 }
 
