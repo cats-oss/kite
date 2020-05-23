@@ -8,7 +8,8 @@ plugins {
 }
 
 dependencies {
-  implementation(Kotlin.stdlib.jdk8)
+  api(Kotlin.stdlib.jdk8)
   api(KotlinX.coroutines.core)
+
   testImplementation(project(":testcommon"))
 }

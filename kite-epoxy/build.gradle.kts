@@ -10,9 +10,9 @@ plugins {
 dependencies {
   api(project(":kite-core"))
 
-  implementation(Kotlin.stdlib.jdk8)
+  api(Kotlin.stdlib.jdk8)
 
   api(Airbnb.epoxy)
 
-  testImplementation(Testing.junit4)
+  testImplementation(project(":androidtestcommon"))
 }

@@ -9,13 +9,14 @@ plugins {
 }
 
 dependencies {
-  implementation(project(":kite-core"))
-  implementation(project(":kite-runtime"))
-  implementation(Kotlin.stdlib.jdk8)
+  api(project(":kite-core"))
+  api(project(":kite-runtime"))
+
+  api(Kotlin.stdlib.jdk8)
   api(KotlinX.coroutines.test)
 
-  implementation(AndroidX.appCompat)
-  implementation(AndroidX.test.coreKtx)
+  api(AndroidX.appCompat)
+  api(AndroidX.test.coreKtx)
 
   testImplementation(project(":androidtestcommon"))
   testImplementation(AndroidX.fragmentTesting)

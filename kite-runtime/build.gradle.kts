@@ -10,7 +10,7 @@ plugins {
 dependencies {
   api(project(":kite-core"))
 
-  implementation(Kotlin.stdlib.jdk8)
+  api(Kotlin.stdlib.jdk8)
 
   api(AndroidX.appCompat)
   api(AndroidX.fragmentKtx)
