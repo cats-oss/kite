@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * A set of [CoroutineDispatcher] and should be set into the [KiteContext].
+ * A set of [CoroutineDispatcher] and will be set into the [KiteContext].
  * This allows the coroutine to become testable with providing testable [CoroutineDispatcher].
  */
 class KiteCoroutineDispatchers(

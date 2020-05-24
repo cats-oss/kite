@@ -1,6 +1,5 @@
 package jp.co.cyberagent.kite.core
 
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
 /**
@@ -11,13 +10,7 @@ interface KiteContext {
   /**
    * Returns all keys in this context.
    */
-  val keys: List<Any>
-
-  /**
-   * Associates the [value] with the given [key]. If the key already existed then
-   * throws [IllegalStateException].
-   */
-  operator fun <T : Any> set(key: Any, value: T)
+  val keys: Set<Any>
 
   /**
    * Returns the value with the given [key]. If the key is not found then returns null.
@@ -32,39 +25,14 @@ interface KiteContext {
 }
 
 /**
- * Creates an empty [KiteContext].
+ * A modifiable [KiteContext].
  */
-@Suppress("FunctionName")
-fun KiteContext(): KiteContext = KiteContextImpl()
-
-/**
- * Associates the key of [element] with its value. If the [key] already existed then
- * throws [IllegalStateException]
- */
-operator fun KiteContext.plusAssign(element: KiteContextElement) {
-  set(element.key, element.value)
-}
-
-/**
- * Returns a context containing key-value from this context and the [element].
- */
-operator fun KiteContext.plus(element: KiteContextElement): KiteContext {
-  val kiteContext = KiteContext()
-  kiteContext += element
-  return this + kiteContext
-}
-
-/**
- * Returns the value for the given key. If the key is not found, calls the [creator] function,
- * associates its result with the given key and returns it.
- */
-fun <T : Any> KiteContext.setIfAbsent(key: Any, creator: () -> T): T {
-  var value = get<T>(key)
-  if (value == null) {
-    value = creator.invoke()
-    set(key, value)
-  }
-  return value
+interface MutableKiteContext : KiteContext {
+  /**
+   * Associates the [value] with the given [key]. If the key already existed then
+   * throws [IllegalStateException].
+   */
+  operator fun <T : Any> set(key: Any, value: T)
 }
 
 /**
@@ -73,16 +41,8 @@ fun <T : Any> KiteContext.setIfAbsent(key: Any, creator: () -> T): T {
  */
 fun <T : Any> KiteContext.require(key: Any): T {
   return requireNotNull(get(key)) {
-    "Context value $key not found."
+    "Context value with key $key not found."
   }
-}
-
-/**
- * Associates the [value] with its [KClass] as the key. If the key already existed then
- * throws [IllegalStateException].
- */
-inline fun <reified T : Any> KiteContext.setByType(value: T) {
-  set(T::class, value)
 }
 
 /**
@@ -101,13 +61,48 @@ inline fun <reified T : Any> KiteContext.requireByType(): T {
 }
 
 /**
+ * Associates the [value] with its [KClass] as the key. If the key already existed then
+ * throws [IllegalStateException].
+ */
+inline fun <reified T : Any> MutableKiteContext.setByType(value: T) {
+  set(T::class, value)
+}
+
+/**
+ * Associates the key of [element] with its value. If the [key] already existed then
+ * throws [IllegalStateException]
+ */
+operator fun MutableKiteContext.plusAssign(element: KiteContextElement) {
+  set(element.key, element.value)
+}
+
+/**
+ * Creates an empty [KiteContext].
+ */
+@Suppress("FunctionName")
+fun KiteContext(): KiteContext = EmptyKiteContext
+
+/**
+ * Builds a new [KiteContext] by populating a [MutableKiteContext] using the given [builderAction].
+ */
+fun buildKiteContext(
+  builderAction: MutableKiteContext.() -> Unit
+): KiteContext {
+  return KiteContextImpl().apply(builderAction)
+}
+
+/**
  * Returns a new [KiteContext] with the specified contents, given as a list of pairs
  * where the first value is the key and the second is the value.
  */
 fun kiteContextOf(vararg element: KiteContextElement): KiteContext {
-  val kiteContext = KiteContext()
-  element.forEach { (k, v) -> kiteContext[k] = v }
-  return kiteContext
+  return if (element.isEmpty()) {
+    EmptyKiteContext
+  } else {
+    buildKiteContext {
+      element.forEach { (k, v) -> set(k, v) }
+    }
+  }
 }
 
 /**
@@ -123,20 +118,30 @@ fun KiteDslScope.withKiteContext(
   KiteDslScope(this, kiteContext + context).apply(block)
 }
 
-private class KiteContextImpl : KiteContext {
+private object EmptyKiteContext : KiteContext {
+  override val keys: Set<Any> get() = emptySet()
+
+  override fun <T : Any> get(key: Any): T? = null
+
+  override fun plus(kiteContext: KiteContext): KiteContext = buildKiteContext {
+    kiteContext.keys.forEach { k -> set(k, kiteContext.require<Any>(k)) }
+  }
+}
+
+private class KiteContextImpl : MutableKiteContext {
 
   companion object {
     private const val KOTLIN_REFLECTION_WARNING = "(Kotlin reflection is not available)"
   }
 
-  private val map = ConcurrentHashMap<Any, Any>()
+  private val map = mutableMapOf<Any, Any>()
 
-  override val keys: List<Any>
-    get() = map.keys().toList()
+  override val keys: Set<Any>
+    get() = map.keys
 
   override fun <T : Any> set(key: Any, value: T) {
     check(!map.containsKey(key)) {
-      "Context value $key already added."
+      "Cannot set with existing key $key."
     }
     map[key] = value
   }
@@ -149,14 +154,14 @@ private class KiteContextImpl : KiteContext {
   override fun plus(kiteContext: KiteContext): KiteContext {
     if (this == kiteContext) return this
     val kiteContextKeys = kiteContext.keys
-    val combinedKiteContext = KiteContext()
-    kiteContextKeys.forEach { k ->
-      combinedKiteContext[k] = kiteContext.require<Any>(k)
+    return buildKiteContext {
+      kiteContextKeys.forEach { k ->
+        set(k, kiteContext.require<Any>(k))
+      }
+      map.filterKeys { it !in kiteContextKeys }.forEach { (k, v) ->
+        set(k, v)
+      }
     }
-    map.filterKeys { it !in kiteContextKeys }.forEach { (k, v) ->
-      combinedKiteContext[k] = v
-    }
-    return combinedKiteContext
   }
 
   override fun toString(): String {

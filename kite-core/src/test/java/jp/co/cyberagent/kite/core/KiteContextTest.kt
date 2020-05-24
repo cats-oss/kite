@@ -1,84 +1,88 @@
 package jp.co.cyberagent.kite.core
 
-import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.data.blocking.forAll
-import io.kotest.data.row
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import jp.co.cyberagent.kite.testcommon.memoize
 
 class KiteContextTest : StringSpec({
-  val kiteContext by memoize { KiteContext() }
 
-  "Set non exiting contextual value should success" {
-    forAll(
-      row("key", 1),
-      row("kite", 2),
-      row(3, "cat")
-    ) { k, v ->
-      shouldNotThrowAny {
-        kiteContext[k] = v
+  "Create empty KiteContext should success" {
+    KiteContext().keys shouldBe emptySet()
+    kiteContextOf().keys shouldBe emptySet()
+  }
+
+  "buildKiteContext should build a KiteContext with specified key value" {
+    val kiteContext = buildKiteContext {
+      set("key", 1)
+      setByType("value")
+    }
+    kiteContext.keys shouldContainExactlyInAnyOrder setOf("key", String::class)
+    kiteContext.get<Int>("key") shouldBe 1
+    kiteContext.getByType<String>() shouldBe "value"
+  }
+
+  "Set exiting contextual value should throw exception" {
+    buildKiteContext {
+      set("key", 1)
+      shouldThrow<IllegalStateException> {
+        set("key", 2)
       }
     }
   }
 
-  "Set exiting contextual value should throw exception" {
-    kiteContext["key"] = 1
-    shouldThrow<IllegalStateException> {
-      kiteContext["key"] = 2
-      Unit
-    }
-  }
-
   "Set value then get with same key should return same value" {
-    kiteContext["key"] = 1
+    val kiteContext = buildKiteContext {
+      set("key", 1)
+    }
     kiteContext.require<Int>("key") shouldBe 1
     kiteContext.get<Int>("key") shouldBe 1
   }
 
   "Get non existing value should should return null" {
-    kiteContext.get<Int>("key") shouldBe null
+    KiteContext().get<Int>("key") shouldBe null
+    kiteContextOf().get<Int>("key") shouldBe null
   }
 
   "Get non existing value should should throw exception" {
     shouldThrow<IllegalArgumentException> {
-      kiteContext.require<Int>("key")
+      KiteContext().require<Int>("key")
+      kiteContextOf().require<Int>("key")
     }
   }
 
   "Get same key with different type should throw exception" {
     shouldThrow<ClassCastException> {
-      kiteContext["key"] = 1
+      val kiteContext = buildKiteContext {
+        set("key", 1)
+      }
       kiteContext.get<String>("key")
     }
   }
 
   "SetByType should use type as key" {
-    kiteContext.setByType("Kite")
+    val kiteContext = buildKiteContext {
+      setByType("Kite")
+    }
     kiteContext.requireByType<String>() shouldBe "Kite"
     kiteContext.getByType<String>() shouldBe "Kite"
     kiteContext.require<String>(String::class) shouldBe "Kite"
   }
 
-  "SetIfAbsent multiple times with same key then get with same key should return old value" {
-    kiteContext.setIfAbsent("key") { 1 } shouldBe 1
-    kiteContext.setIfAbsent("key") { 2 } shouldBe 1
-  }
+  "Plus another context should prefer another context value if both have the same key" {
+    val kiteContext = buildKiteContext {
+      set("key1", 1)
+      set("commonKey", 2)
+    }
 
-  "Plus context should prefer latter context" {
-    kiteContext["key1"] = 1
-    kiteContext["commonKey"] = 2
+    val anotherKiteContext = buildKiteContext {
+      set("key2", 3)
+      set("commonKey", 4)
+    }
 
-    val extraKiteContext = KiteContext()
-    extraKiteContext["key2"] = 3
-    extraKiteContext["commonKey"] = 4
-
-    val newKiteContext = kiteContext + extraKiteContext
-    newKiteContext.keys shouldContainExactly listOf("key1", "key2", "commonKey")
+    val newKiteContext = kiteContext + anotherKiteContext
+    newKiteContext.keys shouldContainExactlyInAnyOrder setOf("key1", "key2", "commonKey")
     newKiteContext.get<Int>("key1") shouldBe 1
     newKiteContext.get<Int>("key2") shouldBe 3
     newKiteContext.get<Int>("commonKey") shouldBe 4
@@ -89,15 +93,17 @@ class KiteContextTest : StringSpec({
       "key" to 1,
       String::class to "Kite"
     ) should {
-      it.keys shouldContainExactlyInAnyOrder listOf("key", String::class)
+      it.keys shouldContainExactlyInAnyOrder setOf("key", String::class)
       it.get<Int>("key") shouldBe 1
       it.getByType<String>() shouldBe "Kite"
     }
   }
 
   "WithKiteContext should create a merged context" {
-    TestKiteDslScope().apply {
-      this.kiteContext.setByType("Cat")
+    val kiteContext = buildKiteContext {
+      setByType("Cat")
+    }
+    TestKiteDslScope(kiteContext).apply {
       this.kiteContext.getByType<String>() shouldBe "Cat"
 
       withKiteContext(

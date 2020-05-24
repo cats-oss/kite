@@ -6,9 +6,10 @@ import io.kotest.matchers.shouldBe
 import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.TestKiteDslScope
 import jp.co.cyberagent.kite.core.TestMainThreadChecker
-import jp.co.cyberagent.kite.core.asKiteContextElement
+import jp.co.cyberagent.kite.core.buildKiteContext
 import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.core.requireByType
+import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.core.state
 import jp.co.cyberagent.kite.testcommon.memoize
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +38,11 @@ class KiteStateSubscriberManagerTest : StringSpec({
   }
 
   "Resolve dependency should success" {
-    val kite = TestKiteDslScope()
-    kite.kiteContext += subscriberManager.asKiteContextElement()
+    val kite = TestKiteDslScope(
+      buildKiteContext {
+        setByType(subscriberManager)
+      }
+    )
     val state1 = kite.state { 0 }
     val state2 = kite.state { 0 }
     var invokedCnt = 0

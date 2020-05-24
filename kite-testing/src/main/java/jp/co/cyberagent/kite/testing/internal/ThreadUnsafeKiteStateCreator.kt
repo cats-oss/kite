@@ -1,14 +1,12 @@
 package jp.co.cyberagent.kite.testing.internal
 
 import jp.co.cyberagent.kite.core.AbstractKiteMutableState
-import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteMutableState
 import jp.co.cyberagent.kite.core.KiteStateCreator
 
 private class ThreadUnsafeKiteState<T>(
-  initialValue: () -> T,
-  kiteContext: KiteContext
-) : AbstractKiteMutableState<T>(kiteContext) {
+  initialValue: () -> T
+) : AbstractKiteMutableState<T>() {
 
   override var value: T = initialValue.invoke()
     get() {
@@ -21,11 +19,9 @@ private class ThreadUnsafeKiteState<T>(
     }
 }
 
-internal class ThreadUnsafeKiteStateCreator(
-  private val kiteContext: KiteContext
-) : KiteStateCreator {
+internal class ThreadUnsafeKiteStateCreator : KiteStateCreator {
 
   override fun <T> create(initialValue: () -> T): KiteMutableState<T> {
-    return ThreadUnsafeKiteState(initialValue, kiteContext)
+    return ThreadUnsafeKiteState(initialValue)
   }
 }

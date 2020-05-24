@@ -2,7 +2,6 @@ package jp.co.cyberagent.kite.core
 
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 import jp.co.cyberagent.kite.core.internal.Unset
-import jp.co.cyberagent.kite.core.internal.subscriberManager
 
 @KiteDslMaker
 interface KiteMemoScope
@@ -70,5 +69,5 @@ fun <T> KiteDslScope.memo(
   computation: KiteMemoScope.() -> T
 ): KiteState<T> {
   kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("memo")
-  return KiteMemoState({ KiteMemoScope().run(computation) }, kiteContext.subscriberManager)
+  return KiteMemoState({ KiteMemoScope().run(computation) }, kiteContext.requireByType())
 }

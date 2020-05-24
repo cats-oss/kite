@@ -1,6 +1,6 @@
 package jp.co.cyberagent.kite.core
 
-import jp.co.cyberagent.kite.core.internal.subscriberManager
+import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 
 @KiteDslMaker
 interface KiteSubscribeScope
@@ -37,7 +37,7 @@ fun KiteDslScope.subscribe(
   action: KiteSubscribeScope.() -> Unit
 ) {
   kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("subscribe")
-  kiteContext.subscriberManager.runAndResolveDependentState(
+  kiteContext.requireByType<KiteStateSubscriberManager>().runAndResolveDependentState(
     Runnable {
       KiteSubscribeScope().run(action)
     }

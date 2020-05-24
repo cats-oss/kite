@@ -70,8 +70,8 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "Subscribe action should run when state changed with different value" {
-    lifecycleOwner.lifecycle.currentState = State.RESUMED
     val state = kite.state { "Kite" }
+    lifecycleOwner.lifecycle.currentState = State.RESUMED
     var invokeCnt = 0
     kite.subscribe {
       state.value
@@ -85,9 +85,9 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "Subscribe action should only run when its state changed" {
-    lifecycleOwner.lifecycle.currentState = State.RESUMED
     val state1 = kite.state { "" }
     val state2 = kite.state { "" }
+    lifecycleOwner.lifecycle.currentState = State.RESUMED
     var invokeCnt1 = 0
     var invokeCnt2 = 0
     kite.subscribe {

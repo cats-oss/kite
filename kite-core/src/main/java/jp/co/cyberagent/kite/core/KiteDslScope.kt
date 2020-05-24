@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.core
 
+import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -20,13 +21,15 @@ interface KiteDslScope : CoroutineScope {
  */
 private class KiteDsScopeImpl(
   coroutineScope: CoroutineScope,
-  override val kiteContext: KiteContext
+  kiteContext: KiteContext
 ) : KiteDslScope,
   CoroutineScope by coroutineScope {
 
-  init {
-    kiteContext.setIfAbsent(KiteCoroutineDispatchers::class) { KiteCoroutineDispatchers() }
-  }
+  override val kiteContext: KiteContext = buildKiteContext {
+    setByType(KiteCoroutineDispatchers())
+    val mainThreadChecker = kiteContext.requireByType<MainThreadChecker>()
+    setByType(KiteStateSubscriberManager(mainThreadChecker))
+  } + kiteContext
 }
 
 /**

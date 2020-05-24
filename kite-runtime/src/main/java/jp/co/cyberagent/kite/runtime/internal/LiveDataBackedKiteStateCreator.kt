@@ -5,20 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.observe
 import jp.co.cyberagent.kite.core.AbstractKiteMutableState
-import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteMutableState
 import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
-import jp.co.cyberagent.kite.core.requireByType
 
 private class LiveDataBackedKiteMutableState<T>(
   lifecycleOwner: LifecycleOwner,
   private val liveData: MutableLiveData<T>,
-  kiteContext: KiteContext
-) : AbstractKiteMutableState<T>(kiteContext) {
-
-  private val mainThreadChecker: MainThreadChecker = kiteContext.requireByType()
+  private val mainThreadChecker: MainThreadChecker
+) : AbstractKiteMutableState<T>() {
 
   override var value: T
     get() {
@@ -42,19 +38,23 @@ private class LiveDataBackedKiteMutableState<T>(
 }
 
 internal class LiveDataBackedKiteStateCreator(
-  private val kiteContext: KiteContext
+  private val lifecycleOwner: LifecycleOwner,
+  private val scopeModel: KiteScopeModel,
+  private val mainThreadChecker: MainThreadChecker
 ) : KiteStateCreator {
 
+  private val keyGenerator: KiteStateKeyGenerator = KiteStateKeyGenerator()
+
   override fun <T> create(initialValue: () -> T): KiteMutableState<T> {
-    kiteContext.requireByType<MainThreadChecker>().checkIsMainThread("state")
-    val key = kiteContext.createStateKey()
-    val liveData = kiteContext.requireByType<KiteScopeModel>().createTagIfAbsent(key) {
+    mainThreadChecker.checkIsMainThread("state")
+    val key = keyGenerator.createStateKey()
+    val liveData = scopeModel.createTagIfAbsent(key) {
       MutableLiveData(initialValue.invoke())
     }
     return LiveDataBackedKiteMutableState(
-      kiteContext.requireByType(),
-      liveData,
-      kiteContext
+      lifecycleOwner = lifecycleOwner,
+      liveData = liveData,
+      mainThreadChecker = mainThreadChecker
     )
   }
 }

@@ -1,12 +1,9 @@
 package jp.co.cyberagent.kite.core.internal
 
 import java.util.ArrayDeque
-import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
-import jp.co.cyberagent.kite.core.requireByType
-import jp.co.cyberagent.kite.core.setIfAbsent
 
 /**
  * Helper class to auto detect the dependent [KiteState] of a [Runnable].
@@ -40,8 +37,3 @@ internal class KiteStateSubscriberManager(
     stateSubscriberMap[state]?.forEach { runAndResolveDependentState(it) }
   }
 }
-
-internal val KiteContext.subscriberManager: KiteStateSubscriberManager
-  get() = setIfAbsent(KiteStateSubscriberManager::class) {
-    KiteStateSubscriberManager(requireByType())
-  }

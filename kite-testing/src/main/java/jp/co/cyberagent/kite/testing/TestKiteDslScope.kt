@@ -5,7 +5,8 @@ import jp.co.cyberagent.kite.core.KiteCoroutineDispatchers
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteStateCreator
 import jp.co.cyberagent.kite.core.MainThreadChecker
-import jp.co.cyberagent.kite.core.setIfAbsent
+import jp.co.cyberagent.kite.core.buildKiteContext
+import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.testing.internal.AlwaysTrueMainThreadChecker
 import jp.co.cyberagent.kite.testing.internal.ThreadUnsafeKiteStateCreator
 import kotlin.coroutines.ContinuationInterceptor
@@ -15,20 +16,18 @@ import kotlinx.coroutines.test.TestCoroutineScope
 
 @ExperimentalCoroutinesApi
 class TestKiteDslScope(
-  override val kiteContext: KiteContext = KiteContext(),
+  kiteContext: KiteContext = KiteContext(),
   private val testCoroutineScope: TestCoroutineScope = TestCoroutineScope()
-) : KiteDslScope,
-  TestCoroutineScope by testCoroutineScope {
-
-  init {
-    kiteContext.setIfAbsent(KiteCoroutineDispatchers::class) {
-      val dispatcher = coroutineContext[ContinuationInterceptor] as TestCoroutineDispatcher
-      KiteCoroutineDispatchers(dispatcher, dispatcher, dispatcher)
-    }
-    kiteContext.setIfAbsent(KiteStateCreator::class) { ThreadUnsafeKiteStateCreator(kiteContext) }
-    kiteContext.setIfAbsent(MainThreadChecker::class) { AlwaysTrueMainThreadChecker() }
-  }
-}
+) : KiteDslScope by KiteDslScope(
+    coroutineScope = testCoroutineScope,
+    kiteContext = buildKiteContext {
+      val dispatcher =
+        testCoroutineScope.coroutineContext[ContinuationInterceptor] as TestCoroutineDispatcher
+      setByType(KiteCoroutineDispatchers(dispatcher, dispatcher, dispatcher))
+      setByType<KiteStateCreator>(ThreadUnsafeKiteStateCreator())
+      setByType<MainThreadChecker>(AlwaysTrueMainThreadChecker())
+    } + kiteContext
+  )
 
 @ExperimentalCoroutinesApi
 fun runTestKiteDsl(
