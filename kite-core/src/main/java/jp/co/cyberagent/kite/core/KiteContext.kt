@@ -21,7 +21,17 @@ interface KiteContext {
    * Returns a context containing value from this context and values from other [kiteContext].
    * The elements from this context with the same key as in the other one are dropped.
    */
-  operator fun plus(kiteContext: KiteContext): KiteContext
+  operator fun plus(kiteContext: KiteContext): KiteContext {
+    if (this == kiteContext) return this
+    val base = this
+    return buildKiteContext {
+      val mergedKeys = base.keys + kiteContext.keys
+      mergedKeys.forEach { key ->
+        val value: Any = kiteContext[key] ?: base.require(key)
+        set(key, value)
+      }
+    }
+  }
 }
 
 /**
@@ -119,13 +129,10 @@ fun KiteDslScope.withKiteContext(
 }
 
 private object EmptyKiteContext : KiteContext {
+
   override val keys: Set<Any> get() = emptySet()
 
   override fun <T : Any> get(key: Any): T? = null
-
-  override fun plus(kiteContext: KiteContext): KiteContext = buildKiteContext {
-    kiteContext.keys.forEach { k -> set(k, kiteContext.require<Any>(k)) }
-  }
 }
 
 private class KiteContextImpl : MutableKiteContext {
@@ -149,19 +156,6 @@ private class KiteContextImpl : MutableKiteContext {
   override fun <T : Any> get(key: Any): T? {
     @Suppress("UNCHECKED_CAST")
     return map[key] as T?
-  }
-
-  override fun plus(kiteContext: KiteContext): KiteContext {
-    if (this == kiteContext) return this
-    val kiteContextKeys = kiteContext.keys
-    return buildKiteContext {
-      kiteContextKeys.forEach { k ->
-        set(k, kiteContext.require<Any>(k))
-      }
-      map.filterKeys { it !in kiteContextKeys }.forEach { (k, v) ->
-        set(k, v)
-      }
-    }
   }
 
   override fun toString(): String {
