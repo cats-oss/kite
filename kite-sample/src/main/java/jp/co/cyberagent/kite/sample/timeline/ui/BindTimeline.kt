@@ -31,22 +31,18 @@ fun KiteDslScope.bindTimeline(
 
   epoxyDsl(recyclerView) {
     config {
-      isDebugLoggingEnabled = true
+      it.isDebugLoggingEnabled = true
     }
 
-    isReady {
-      !timelineState.value.isLoading
-    }
-
-    buildModels {
+    buildModels { controller ->
       val timeline = timelineState.value.timeline
-      timeline.contents.map {
+      timeline.contents.forEach {
         ContentModel(
           id = it.id,
           content = it.text,
           isFavorite = timeline.isFavorite.getOrElse(it.id) { false },
           onClick = updateIsFavorite
-        ).id(it.id).addTo(this)
+        ).id(it.id).addTo(controller)
       }
     }
   }

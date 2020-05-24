@@ -13,46 +13,43 @@ import jp.co.cyberagent.kite.core.subscribe
 @KiteDslMaker
 interface KiteEpoxyDslScope {
 
-  fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean)
+  fun config(block: EpoxyConfig)
 
-  fun config(block: KiteEpoxyController.() -> Unit)
-
-  fun buildModels(modelBuilder: KiteEpoxyController.() -> Unit)
+  fun buildModels(modelBuilder: EpoxyModelBuilder)
 }
 
 private class KiteEpoxyDslScopeImpl : KiteEpoxyDslScope {
 
-  private val isReadyList = mutableListOf<KiteEpoxyIsReadyScope.() -> Boolean>()
+  private val configList = mutableListOf<EpoxyConfig>()
 
-  private val configList = mutableListOf<KiteEpoxyController.() -> Unit>()
-
-  private val modelBuilderList = mutableListOf<KiteEpoxyController.() -> Unit>()
+  private val modelBuilderList = mutableListOf<EpoxyModelBuilder>()
 
   var modelBuildingHandler: Handler = EpoxyController.defaultModelBuildingHandler
 
   var diffingHandler: Handler = EpoxyController.defaultDiffingHandler
 
-  override fun isReady(f: KiteEpoxyIsReadyScope.() -> Boolean) {
-    isReadyList += f
-  }
-
-  override fun config(block: KiteEpoxyController.() -> Unit) {
+  override fun config(block: EpoxyConfig) {
     configList += block
   }
 
-  override fun buildModels(modelBuilder: KiteEpoxyController.() -> Unit) {
+  override fun buildModels(modelBuilder: EpoxyModelBuilder) {
     modelBuilderList += modelBuilder
   }
 
   fun create(): KiteEpoxyController {
-    val isReadyList = isReadyList.toList()
-    val isReady = { isReadyList.all { KiteEpoxyIsReadyScope().run(it) } }
     val configList = configList.toList()
-    val config: KiteEpoxyController.() -> Unit = { configList.forEach { it.invoke(this) } }
+    val config: EpoxyController.() -> Unit = {
+      configList.forEach {
+        it.invoke(KiteEpoxyConfigureControllerScope(), this)
+      }
+    }
     val modelBuilderList = modelBuilderList.toList()
-    val builder: KiteEpoxyController.() -> Unit = { modelBuilderList.forEach { it.invoke(this) } }
+    val builder: EpoxyController.() -> Unit = {
+      modelBuilderList.forEach {
+        it.invoke(KiteEpoxyBuildModelScope(), this)
+      }
+    }
     return KiteEpoxyController(
-      isReady = isReady,
       config = config,
       modelBuilder = builder,
       modelBuildingHandler = modelBuildingHandler,
@@ -70,6 +67,6 @@ fun KiteDslScope.epoxyDsl(
   val controller = scope.create()
   recyclerView.adapter = controller.adapter
   subscribe {
-    controller.requestModelBuildIfReady()
+    controller.requestModelBuild()
   }
 }
