@@ -1,5 +1,6 @@
 object Airbnb {
   const val epoxy = "com.airbnb.android:epoxy:_"
+  const val epoxyPaging = "com.airbnb.android:epoxy-paging:_"
 }
 
 object Kotest {

@@ -9,6 +9,7 @@
       <module name="kite.kite-common" target="1.8" />
       <module name="kite.kite-core" target="1.8" />
       <module name="kite.kite-epoxy" target="1.8" />
+      <module name="kite.kite-epoxy-paging" target="1.8" />
       <module name="kite.kite-runtime" target="1.8" />
       <module name="kite.kite-sample" target="1.8" />
       <module name="kite.kite-testing" target="1.8" />
