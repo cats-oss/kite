@@ -32,7 +32,7 @@ import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
  * These elements can be retrieved via their type as the key.
  *
  * @param kiteContext additional to context of the the scope.
- * @param block the DSL which will be invoked in the scope.
+ * @param block the DSL that will be invoked in the scope.
  */
 fun ComponentActivity.kiteDsl(
   kiteContext: KiteContext = KiteContext(),
@@ -61,7 +61,7 @@ fun ComponentActivity.kiteDsl(
  *
  * @param scopeModelStoreOwner the scope of the [KiteScopeModel]. The default value if the fragment itself.
  * @param kiteContext additional to context of the the scope.
- * @param block the DSL which will be invoked in the scope.
+ * @param block the DSL that will be invoked in the scope.
  */
 fun Fragment.kiteDsl(
   scopeModelStoreOwner: KiteScopeModelStoreOwner = this,
