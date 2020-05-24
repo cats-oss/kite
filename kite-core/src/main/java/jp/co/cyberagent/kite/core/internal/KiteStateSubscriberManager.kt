@@ -6,7 +6,7 @@ import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
 
 /**
- * Helper class to auto detect the dependent [KiteState] of a [Runnable].
+ * A helper class to auto detect the dependent [KiteState] of a [Runnable].
  */
 internal class KiteStateSubscriberManager(
   private val mainThreadChecker: MainThreadChecker

@@ -2,6 +2,8 @@ package jp.co.cyberagent.kite.core
 
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 /**
  * Define a scope for kite DSL. All kite DSL (like [state], [memo], etc) is an extension
@@ -37,10 +39,10 @@ private class KiteDsScopeImpl(
  * [KiteCoroutineDispatchers] instance will be set into the [kiteContext] if absent.
  *
  * It's not recommend to use the method to construct a [KiteDslScope] and write kite DSL.
- * Instead, you should use [Fragment.kiteDsl] or [ComponetntActivity.kiteDsl] in production code.
+ * Instead, you should use [Fragment.kiteDsl] or [ComponentActivity.kiteDsl] in production code.
  * And use [TestKiteDslScope] or [runTestKiteDsl] in test code.
  */
-@Suppress("FunctionName")
+@Suppress("FunctionName", "KDocUnresolvedReference")
 fun KiteDslScope(
   coroutineScope: CoroutineScope,
   kiteContext: KiteContext
