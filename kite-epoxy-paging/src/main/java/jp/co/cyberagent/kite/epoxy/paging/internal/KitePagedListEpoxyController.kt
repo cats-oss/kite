@@ -1,22 +1,21 @@
-package jp.co.cyberagent.kite.epoxy.paging
+package jp.co.cyberagent.kite.epoxy.paging.internal
 
 import android.os.Handler
-import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
-import jp.co.cyberagent.kite.core.KiteDslMaker
+import jp.co.cyberagent.kite.epoxy.paging.PagedListEpoxyModelListBuilder
+import jp.co.cyberagent.kite.epoxy.paging.PagedListItemTransformer
 
-@KiteDslMaker
 internal class KitePagedListEpoxyController<T>(
-  config: EpoxyController.() -> Unit,
-  private val transformer: (Int, T?) -> EpoxyModel<*>,
-  private val modelBuilder: EpoxyController.(List<EpoxyModel<*>>) -> Unit,
+  configureBlock: (KitePagedListEpoxyController<T>.() -> Unit)?,
+  private val buildModelsBlock: PagedListEpoxyModelListBuilder.() -> Unit,
+  private val transformer: PagedListItemTransformer<T>,
   modelBuildingHandler: Handler = defaultModelBuildingHandler,
   diffingHandler: Handler = defaultDiffingHandler
 ) : PagedListEpoxyController<T>(modelBuildingHandler, diffingHandler) {
 
   init {
-    config.invoke(this)
+    configureBlock?.invoke(this)
   }
 
   var force: Boolean = false
@@ -26,7 +25,8 @@ internal class KitePagedListEpoxyController<T>(
   }
 
   override fun addModels(models: List<EpoxyModel<*>>) {
-    modelBuilder.invoke(this, models)
+    val mergedModels = PagedListEpoxyModelListBuilder(models).apply(buildModelsBlock).build()
+    add(mergedModels)
   }
 
   override fun requestModelBuild() {

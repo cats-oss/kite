@@ -16,6 +16,10 @@ data class ContentModel(
   val onClick: Invoker2<String, Boolean>
 ) : EpoxyModel<View>() {
 
+  init {
+    id(id)
+  }
+
   override fun bind(view: View) {
     val binding = ModelItemBinding.bind(view)
     binding.textContent.text = content
