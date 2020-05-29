@@ -25,7 +25,6 @@ android {
 dependencies {
   implementation(project(":kite-core"))
   implementation(project(":kite-runtime"))
-  implementation(project(":kite-epoxy"))
 
   implementation(Kotlin.stdlib.jdk8)
 
@@ -37,6 +36,8 @@ dependencies {
   implementation(AndroidX.swipeRefreshLayout)
 
   implementation(Google.android.material)
+
+  implementation(Airbnb.epoxy)
 
   // testImplementation will throw exception with launchFragmentInContainer
   implementation(AndroidX.fragmentTesting)

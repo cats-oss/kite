@@ -1,10 +1,11 @@
 package jp.co.cyberagent.kite.sample.timeline.ui
 
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.epoxy.EpoxyRecyclerView
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.memo
-import jp.co.cyberagent.kite.epoxy.createEpoxyController
+import jp.co.cyberagent.kite.core.subscribe
 import jp.co.cyberagent.kite.runtime.onStart
 import jp.co.cyberagent.kite.runtime.onStop
 import jp.co.cyberagent.kite.sample.timeline.epoxymodel.ContentModel
@@ -12,7 +13,7 @@ import jp.co.cyberagent.kite.sample.timeline.state.TimelineState
 import jp.co.cyberagent.kite.sample.timeline.state.UpdateIsFavorite
 
 fun KiteDslScope.bindTimeline(
-  recyclerView: RecyclerView,
+  recyclerView: EpoxyRecyclerView,
   timelineState: KiteState<TimelineState>,
   updateIsFavorite: UpdateIsFavorite
 ) {
@@ -43,13 +44,9 @@ fun KiteDslScope.bindTimeline(
     }
   }
 
-  recyclerView.adapter = createEpoxyController {
-    configure {
-      isDebugLoggingEnabled = true
+  subscribe {
+    recyclerView.withModels {
+      contentModels.value.forEach { add(it) }
     }
-
-    buildModels {
-      +contentModels.value
-    }
-  }.adapter
+  }
 }
