@@ -48,6 +48,12 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/kotlinScripting.xml
+.idea/misc.xml
+.idea/detekt.xml
+.idea/runConfigurations.xml
+.idea/inspectionProfiles
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
