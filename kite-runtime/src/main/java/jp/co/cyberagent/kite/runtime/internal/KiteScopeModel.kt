@@ -1,5 +1,6 @@
 package jp.co.cyberagent.kite.runtime.internal
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteState
@@ -17,7 +18,9 @@ import jp.co.cyberagent.kite.core.KiteState
  * created by the owner will just re-connected to the existing [KiteScopeModel]. Then any referenced
  * [KiteState] will be restored from the [KiteScopeModel].
  */
-internal class KiteScopeModel : ViewModel() {
+internal class KiteScopeModel(
+  val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
   private val tagMap = mutableMapOf<Any, Any>()
 

@@ -15,7 +15,7 @@ class KiteLifecycleTest : StringSpec({
 
   "When state change should invoke corresponding onXXX" {
     val owner = TestLifecycleOwner()
-    val kite = kiteDsl(owner, TestKiteScopeModelOwner()) { /* no op */ }
+    val kite = kiteDsl(owner, TestKiteViewModelProvider()) { /* no op */ }
     var invoked: Boolean
 
     forAll(

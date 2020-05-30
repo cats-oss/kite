@@ -19,6 +19,7 @@ dependencies {
   api(AndroidX.lifecycle.liveDataKtx)
   api(AndroidX.lifecycle.runtimeKtx)
   api(AndroidX.lifecycle.commonJava8)
+  api(AndroidX.lifecycle.viewModelSavedState)
 
   testImplementation(project(":androidtestcommon"))
   testImplementation(AndroidX.test.coreKtx)

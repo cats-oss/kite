@@ -3,6 +3,7 @@ package jp.co.cyberagent.kite.runtime
 import android.app.Activity
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -16,7 +17,6 @@ import jp.co.cyberagent.kite.core.buildKiteContext
 import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.runtime.internal.AndroidMainThreadChecker
 import jp.co.cyberagent.kite.runtime.internal.KiteScopeModel
-import jp.co.cyberagent.kite.runtime.internal.KiteScopeModelFactory
 import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
 
 /**
@@ -26,8 +26,10 @@ import jp.co.cyberagent.kite.runtime.internal.LiveDataBackedKiteStateCreator
  *
  * Several element will be set into the [KiteContext] of this scope:
  *
- * - Activity
  * - Context
+ * - Activity
+ * - LifecycleOwner
+ * - SaveStateHandle
  *
  * These elements can be retrieved via their type as the key.
  *
@@ -43,7 +45,8 @@ fun ComponentActivity.kiteDsl(
     setByType<Activity>(activity)
     setByType<Context>(activity)
   } + kiteContext
-  kiteDsl(this, this, mergedContext, block)
+  val viewModelProvider = ViewModelProvider(this, defaultViewModelProviderFactory)
+  kiteDsl(this, viewModelProvider, mergedContext, block)
 }
 
 /**
@@ -53,9 +56,11 @@ fun ComponentActivity.kiteDsl(
  *
  * Several element will be set into the [KiteContext] of the scope:
  *
- * - Activity
  * - Context
  * - Fragment
+ * - Activity
+ * - LifecycleOwner
+ * - SaveStateHandle
  *
  * These elements can be retrieved via their type as the key.
  *
@@ -74,12 +79,18 @@ fun Fragment.kiteDsl(
     setByType(requireContext())
     setByType(fragment)
   } + kiteContext
-  kiteDsl(viewLifecycleOwner, scopeModelStoreOwner, mergedContext, block)
+  val viewModelProvider = if (scopeModelStoreOwner == requireActivity()) {
+    ViewModelProvider(requireActivity(), requireActivity().defaultViewModelProviderFactory)
+  } else {
+    ViewModelProvider(scopeModelStoreOwner, defaultViewModelProviderFactory)
+  }
+  kiteDsl(viewLifecycleOwner, viewModelProvider, mergedContext, block)
 }
 
+@VisibleForTesting
 internal fun kiteDsl(
   lifecycleOwner: LifecycleOwner,
-  scopeModelOwner: KiteScopeModelStoreOwner,
+  viewModelProvider: ViewModelProvider,
   kiteContext: KiteContext = KiteContext(),
   block: KiteDslScope.() -> Unit
 ): KiteDslScope {
@@ -88,11 +99,7 @@ internal fun kiteDsl(
     "Only can invoke kiteDsl when lifecycle is at the INITIALIZED state. " +
       "Current state is $currentState"
   }
-  val scopeModelFactory = KiteScopeModelFactory()
-  val scopeModel = ViewModelProvider(
-    scopeModelOwner,
-    scopeModelFactory
-  )[KiteScopeModel::class.java]
+  val scopeModel = viewModelProvider[KiteScopeModel::class.java]
   val mainThreadChecker: MainThreadChecker = AndroidMainThreadChecker()
   val stateCreator: KiteStateCreator = LiveDataBackedKiteStateCreator(
     lifecycleOwner = lifecycleOwner,
@@ -103,6 +110,7 @@ internal fun kiteDsl(
     setByType(mainThreadChecker)
     setByType(lifecycleOwner)
     setByType(stateCreator)
+    setByType(scopeModel.savedStateHandle)
   } + kiteContext
   return KiteDslScope(lifecycleOwner.lifecycleScope, mergedKiteContext).apply(block)
 }

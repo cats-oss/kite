@@ -20,9 +20,12 @@ import kotlinx.coroutines.withContext
 class KiteLiveDataBackedStateTest : StringSpec({
   addListener(ArchInstantTaskListener)
 
-  val lifecycleOwner by memoize { TestLifecycleOwner() }
-  val scopeModelOwner by memoize { TestKiteScopeModelOwner() }
-  val kite by memoize { kiteDsl(lifecycleOwner, scopeModelOwner) { /* no op */ } }
+  val lifecycleOwner by memoize {
+    TestLifecycleOwner()
+  }
+  val kite by memoize {
+    kiteDsl(lifecycleOwner, TestKiteViewModelProvider()) { /* no op */ }
+  }
 
   "Create state in main thread should success" {
     shouldNotThrowAny { kite.state { 0 } }
@@ -46,7 +49,10 @@ class KiteLiveDataBackedStateTest : StringSpec({
   }
 
   "State should be reused when scope model unchanged" {
-    val kiteCreator = { kiteDsl(lifecycleOwner, scopeModelOwner) { /* no op */ } }
+    val provider = TestKiteViewModelProvider()
+    val kiteCreator = {
+      kiteDsl(lifecycleOwner, provider) { /* no op */ }
+    }
     forAll(
       row(
         kiteCreator().run {

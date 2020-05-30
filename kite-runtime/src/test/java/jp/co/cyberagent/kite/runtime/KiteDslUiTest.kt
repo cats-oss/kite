@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.test.core.app.launchActivity
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
@@ -27,7 +28,7 @@ class KiteDslUiTest : StringSpec({
     val owner = TestLifecycleOwner()
     owner.lifecycle.currentState = State.INITIALIZED
     shouldNotThrowAny {
-      kiteDsl(owner, TestKiteScopeModelOwner()) { /* no op */ }
+      kiteDsl(owner, TestKiteViewModelProvider()) { /* no op */ }
     }
   }
 
@@ -39,7 +40,7 @@ class KiteDslUiTest : StringSpec({
     checkAll(states) { s ->
       owner.lifecycle.currentState = s
       shouldThrow<IllegalStateException> {
-        kiteDsl(owner, TestKiteScopeModelOwner()) { /* no op */ }
+        kiteDsl(owner, TestKiteViewModelProvider()) { /* no op */ }
       }
     }
   }
@@ -51,6 +52,7 @@ class KiteDslUiTest : StringSpec({
         kiteContext.requireByType<Activity>() shouldBeSameInstanceAs activity
         kiteContext.requireByType<Context>() shouldBeSameInstanceAs activity
         kiteContext.requireByType<LifecycleOwner>() shouldBeSameInstanceAs activity
+        kiteContext.requireByType<SavedStateHandle>()
         invoked = true
       }
     }
@@ -69,6 +71,7 @@ class KiteDslUiTest : StringSpec({
         kiteContext.requireByType<LifecycleOwner>() shouldBeSameInstanceAs
           fragment.viewLifecycleOwner
         kiteContext.requireByType<Fragment>() shouldBeSameInstanceAs fragment
+        kiteContext.requireByType<SavedStateHandle>()
         invoked = true
       }
     }
