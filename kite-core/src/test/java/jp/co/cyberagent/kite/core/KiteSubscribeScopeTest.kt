@@ -89,4 +89,20 @@ class KiteSubscribeScopeTest : StringSpec({
     invokeCnt1 shouldBe 2
     invokeCnt2 shouldBe 2
   }
+
+  "State referenced in referOnly action reference should not treated as dependency" {
+    val cnt1 = kite.state { 0 }
+    val cnt2 = kite.state { 0 }
+    var sum: Int = 0
+    kite.subscribe {
+      sum = cnt1.value + refOnly { cnt2.value }
+    }
+    sum shouldBe 0
+    cnt1.value = 1
+    sum shouldBe 1
+    cnt2.value = 100
+    sum shouldBe 1
+    cnt1.value = 2
+    sum shouldBe 102
+  }
 })

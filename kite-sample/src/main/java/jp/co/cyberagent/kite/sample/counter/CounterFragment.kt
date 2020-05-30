@@ -1,7 +1,9 @@
 package jp.co.cyberagent.kite.sample.counter
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.core.KiteMutableState
@@ -41,6 +43,16 @@ fun KiteDslScope.bindCounterExampleFragmentUi(
 
   bindCounter(binding.counter1, counter1)
   bindCounter(binding.counter2, counter2)
+
+  val context = kiteContext.requireByType<Context>()
+  var toast: Toast? = null
+  subscribe {
+    val cnt1 = counter1.value
+    val cnt2 = refOnly { counter2.value }
+    toast?.cancel()
+    toast = Toast.makeText(context, "Counter1: $cnt1, Counter2: $cnt2", Toast.LENGTH_SHORT)
+    toast?.show()
+  }
 }
 
 fun KiteDslScope.bindCounter(

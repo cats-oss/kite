@@ -7,7 +7,6 @@ import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.TestKiteDslScope
 import jp.co.cyberagent.kite.core.TestMainThreadChecker
 import jp.co.cyberagent.kite.core.buildKiteContext
-import jp.co.cyberagent.kite.core.plusAssign
 import jp.co.cyberagent.kite.core.requireByType
 import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.core.state
@@ -22,7 +21,7 @@ class KiteStateSubscriberManagerTest : StringSpec({
   "Invoke runAndResolveDependentState in background thread should throw exception" {
     shouldThrow<IllegalStateException> {
       withContext(Dispatchers.IO) {
-        subscriberManager.runAndResolveDependentState(Runnable {})
+        subscriberManager.runAndSubscribe(Subscriber { })
       }
     }
   }
@@ -46,13 +45,13 @@ class KiteStateSubscriberManagerTest : StringSpec({
     val state1 = kite.state { 0 }
     val state2 = kite.state { 0 }
     var invokedCnt = 0
-    val runnable = Runnable {
+    val subscriber = Subscriber {
       state1.value + state2.value
       invokedCnt++
     }
 
     val subscribeManager = kite.kiteContext.requireByType<KiteStateSubscriberManager>()
-    subscribeManager.runAndResolveDependentState(runnable)
+    subscribeManager.runAndSubscribe(subscriber)
     invokedCnt shouldBe 1
     subscribeManager.notifyStateChanged(state1)
     invokedCnt shouldBe 2

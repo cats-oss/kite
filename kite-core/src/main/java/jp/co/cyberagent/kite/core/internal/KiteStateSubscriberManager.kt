@@ -6,34 +6,36 @@ import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
 
 /**
- * A helper class to auto detect the dependent [KiteState] of a [Runnable].
+ * A helper class to auto detect the dependent [KiteState] of a [Subscriber].
  */
 internal class KiteStateSubscriberManager(
   private val mainThreadChecker: MainThreadChecker
 ) {
 
-  private val stateSubscriberMap: MutableMap<KiteState<*>, LinkedHashSet<Runnable>> =
+  private val stateSubscriberMap: MutableMap<KiteState<*>, LinkedHashSet<Subscriber<*>>> =
     mutableMapOf()
 
-  private val runningSubscriberQueue: ArrayDeque<Runnable> = ArrayDeque()
+  private val runningSubscriberQueue: ArrayDeque<Subscriber<*>> = ArrayDeque()
 
-  fun runAndResolveDependentState(runnable: Runnable) {
+  fun <T> runAndSubscribe(subscriber: Subscriber<T>): T {
     mainThreadChecker.checkIsMainThread("runAndResolveDependentState")
-    runningSubscriberQueue.push(runnable)
-    runnable.run()
+    runningSubscriberQueue.push(subscriber)
+    val result = subscriber()
     runningSubscriberQueue.pop()
+    return result
   }
 
   fun subscribeTo(state: KiteState<*>) {
     if (mainThreadChecker.isMainThread) {
       val runnable = runningSubscriberQueue.peek() ?: return
-      val depSet = stateSubscriberMap.getOrPut(state) { linkedSetOf() }
-      depSet += runnable
+      if (runnable is RefOnlySubscriber) return
+      val subscribers = stateSubscriberMap.getOrPut(state) { linkedSetOf() }
+      subscribers += runnable
     }
   }
 
   fun notifyStateChanged(state: KiteState<*>) {
     mainThreadChecker.checkIsMainThread("notifyStateChanged")
-    stateSubscriberMap[state]?.forEach { runAndResolveDependentState(it) }
+    stateSubscriberMap[state]?.toList()?.forEach { runAndSubscribe(it) }
   }
 }
