@@ -1,6 +1,7 @@
 package jp.co.cyberagent.kite.core
 
 import jp.co.cyberagent.kite.core.internal.KiteStateSubscriberManager
+import jp.co.cyberagent.kite.core.internal.RefOnlySubscriber
 import jp.co.cyberagent.kite.core.internal.Subscriber
 import jp.co.cyberagent.kite.core.internal.Unset
 
@@ -58,16 +59,23 @@ private class KiteMemoState<T>(
     set(value) {
       if (field != value) {
         field = value
-        subscriberManager.notifyStateChanged(this)
+        if (field !== Unset) {
+          subscriberManager.notifyStateChanged(this)
+        }
       }
     }
 
-  private val subscriber = Subscriber {
-    _value = computation.invoke()
-  }
-
   init {
-    subscriberManager.runAndSubscribe(subscriber)
+    subscriberManager.runAndSubscribe(
+      Subscriber {
+        val v = computation.invoke()
+        subscriberManager.runAndSubscribe(
+          RefOnlySubscriber {
+            _value = v
+          }
+        )
+      }
+    )
   }
 
   override val value: T
