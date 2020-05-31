@@ -54,6 +54,7 @@ captures/
 .idea/detekt.xml
 .idea/runConfigurations.xml
 .idea/inspectionProfiles
+.idea/$CACHE_FILE$
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
