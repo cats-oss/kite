@@ -12,10 +12,10 @@
               <option name="patterns">
                 <list>
                   <Item>
-                    <option name="path" value=".github/workflows/pre-merge.yaml" />
+                    <option name="path" value=".github/workflows/gradle-wrapper-validation.yml" />
                   </Item>
                   <Item>
-                    <option name="path" value=".github/workflows/gradle-wrapper-validation.yml" />
+                    <option name="path" value=".github/workflows/android-ci.yaml" />
                   </Item>
                 </list>
               </option>
