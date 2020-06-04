@@ -5,11 +5,11 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import java.util.concurrent.ConcurrentHashMap
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.runtime.KiteScopeModelStoreOwner
 import jp.co.cyberagent.kite.runtime.kiteDsl
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * A helper Fragment for testing kite DSL in the instrumented test or Robolectric test.

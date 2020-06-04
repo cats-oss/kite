@@ -5,9 +5,9 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import jp.co.cyberagent.kite.testcommon.memoize
-import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.math.min
 
 class KiteSubscribeScopeTest : StringSpec({
   val kite by memoize { TestKiteDslScope() }

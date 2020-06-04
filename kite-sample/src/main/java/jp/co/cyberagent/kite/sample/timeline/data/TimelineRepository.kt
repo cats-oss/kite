@@ -1,11 +1,11 @@
 package jp.co.cyberagent.kite.sample.timeline.data
 
+import jp.co.cyberagent.kite.sample.timeline.entity.Content
+import kotlinx.coroutines.delay
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 import java.util.UUID
-import jp.co.cyberagent.kite.sample.timeline.entity.Content
 import kotlin.random.Random
-import kotlinx.coroutines.delay
 
 class TimelineRepository {
 

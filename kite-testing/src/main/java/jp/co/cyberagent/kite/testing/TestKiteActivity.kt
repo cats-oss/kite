@@ -8,10 +8,10 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import java.util.concurrent.ConcurrentHashMap
 import jp.co.cyberagent.kite.core.KiteContext
 import jp.co.cyberagent.kite.core.KiteDslScope
 import jp.co.cyberagent.kite.runtime.kiteDsl
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * A helper Activity for testing kite DSL in the instrumented test or Robolectric test.

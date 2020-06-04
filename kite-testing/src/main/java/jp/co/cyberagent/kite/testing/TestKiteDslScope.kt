@@ -9,10 +9,10 @@ import jp.co.cyberagent.kite.core.buildKiteContext
 import jp.co.cyberagent.kite.core.setByType
 import jp.co.cyberagent.kite.testing.internal.AlwaysTrueMainThreadChecker
 import jp.co.cyberagent.kite.testing.internal.ThreadUnsafeKiteStateCreator
-import kotlin.coroutines.ContinuationInterceptor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import kotlin.coroutines.ContinuationInterceptor
 
 /**
  * A scope for testing kite DSL.

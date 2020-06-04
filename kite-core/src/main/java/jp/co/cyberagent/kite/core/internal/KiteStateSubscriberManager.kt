@@ -1,9 +1,9 @@
 package jp.co.cyberagent.kite.core.internal
 
-import java.util.ArrayDeque
 import jp.co.cyberagent.kite.core.KiteState
 import jp.co.cyberagent.kite.core.MainThreadChecker
 import jp.co.cyberagent.kite.core.checkIsMainThread
+import java.util.ArrayDeque
 
 /**
  * A helper class to auto detect the dependent [KiteState] of a [Subscriber].
