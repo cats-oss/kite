@@ -1,0 +1,19 @@
+public final class jp/co/cyberagent/kite/runtime/KiteDslKt {
+	public static final fun kiteDsl (Landroidx/activity/ComponentActivity;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function1;)V
+	public static final fun kiteDsl (Landroidx/fragment/app/Fragment;Landroidx/lifecycle/ViewModelStoreOwner;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun kiteDsl$default (Landroidx/activity/ComponentActivity;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun kiteDsl$default (Landroidx/fragment/app/Fragment;Landroidx/lifecycle/ViewModelStoreOwner;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class jp/co/cyberagent/kite/runtime/LifecycleExtensionKt {
+	public static final fun getCurrentState (Ljp/co/cyberagent/kite/core/KiteDslScope;)Landroidx/lifecycle/Lifecycle$State;
+	public static final fun onCreate (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+	public static final fun onDestroy (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+	public static final fun onLifecycleEvent (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun onLifecycleEvent$default (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static final fun onPause (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+	public static final fun onResume (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+	public static final fun onStart (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+	public static final fun onStop (Ljp/co/cyberagent/kite/core/KiteDslScope;Lkotlin/jvm/functions/Function0;)V
+}
+

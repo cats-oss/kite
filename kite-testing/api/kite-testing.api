@@ -1,0 +1,59 @@
+public final class jp/co/cyberagent/kite/testing/TestKiteActivity : androidx/appcompat/app/AppCompatActivity {
+	public static final field Companion Ljp/co/cyberagent/kite/testing/TestKiteActivity$Companion;
+	public fun <init> ()V
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteActivity$Companion {
+	public final fun makeIntent (ILjp/co/cyberagent/kite/testing/TestKiteActivity$Config;)Landroid/content/Intent;
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteActivity$Config {
+	public fun <init> ()V
+	public fun <init> (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function2;)V
+	public synthetic fun <init> (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getKiteContext ()Ljp/co/cyberagent/kite/core/KiteContext;
+	public final fun getKiteDslBlock ()Lkotlin/jvm/functions/Function2;
+	public final fun setKiteDslBlock (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteDslScope : jp/co/cyberagent/kite/core/KiteDslScope {
+	public fun <init> ()V
+	public fun <init> (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlinx/coroutines/test/TestCoroutineScope;)V
+	public synthetic fun <init> (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlinx/coroutines/test/TestCoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getCoroutineContext ()Lkotlin/coroutines/CoroutineContext;
+	public fun getKiteContext ()Ljp/co/cyberagent/kite/core/KiteContext;
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteDslScopeKt {
+	public static final fun runTestKiteDsl (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlinx/coroutines/test/TestCoroutineScope;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun runTestKiteDsl$default (Ljp/co/cyberagent/kite/core/KiteContext;Lkotlinx/coroutines/test/TestCoroutineScope;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteFragment : androidx/fragment/app/Fragment {
+	public static final field Companion Ljp/co/cyberagent/kite/testing/TestKiteFragment$Companion;
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getContentLayoutId ()I
+	public fun onViewCreated (Landroid/view/View;Landroid/os/Bundle;)V
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteFragment$Companion {
+	public final fun makeFactory (ILjp/co/cyberagent/kite/testing/TestKiteFragment$Config;)Landroidx/fragment/app/FragmentFactory;
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteFragment$Config {
+	public fun <init> ()V
+	public fun <init> (Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function2;)V
+	public synthetic fun <init> (Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;Ljp/co/cyberagent/kite/core/KiteContext;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getKiteContext ()Ljp/co/cyberagent/kite/core/KiteContext;
+	public final fun getKiteDslBlock ()Lkotlin/jvm/functions/Function2;
+	public final fun getStoreOwner ()Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+}
+
+public final class jp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner : java/lang/Enum {
+	public static final field PARENT_ACTIVITY Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+	public static final field PARENT_FRAGMENT Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+	public static final field SELF Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+	public static fun valueOf (Ljava/lang/String;)Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+	public static fun values ()[Ljp/co/cyberagent/kite/testing/TestKiteFragment$Config$StoreOwner;
+}
+

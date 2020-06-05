@@ -1,6 +1,7 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
+  id("binary-compatibility-validator")
   id("io.gitlab.arturbosch.detekt")
   id("org.jlleitschuh.gradle.ktlint")
   id("com.github.ben-manes.versions")
@@ -49,6 +50,10 @@ subprojects {
       }
     }
   }
+}
+
+apiValidation {
+  ignoredProjects = mutableSetOf("kite-sample", "testcommon", "androidtestcommon")
 }
 
 tasks.register("clean", Delete::class.java) {
