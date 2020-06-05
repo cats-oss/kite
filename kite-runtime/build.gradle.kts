@@ -7,6 +7,13 @@ plugins {
   `bintray-publish-config`
 }
 
+afterEvaluate {
+  tasks.dokka {
+    outputDirectory = "$rootDir/docs/api"
+    outputFormat = "gfm"
+  }
+}
+
 dependencies {
   api(project(":kite-core"))
 
