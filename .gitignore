@@ -246,4 +246,5 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/android,intellij,gradle,java,kotlin
 
 ### Project
+docs
 docs/api
