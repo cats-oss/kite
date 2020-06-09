@@ -1,0 +1,13 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+$dokka.location:jp.co.cyberagent.kite.runtime$currentState#jp.co.cyberagent.kite.core.KiteDslScopejp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/current-state.md
+$dokka.location:jp.co.cyberagent.kite.runtime$kiteDsl(androidx.activity.ComponentActivity, jp.co.cyberagent.kite.core.KiteContext, kotlin.Function1((jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Unit)))jp.co.cyberagent.kite.runtime/androidx.activity.-component-activity/kite-dsl.md
+$dokka.location:jp.co.cyberagent.kite.runtime$kiteDsl(androidx.fragment.app.Fragment, androidx.lifecycle.ViewModelStoreOwner, jp.co.cyberagent.kite.core.KiteContext, kotlin.Function1((jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Unit)))jp.co.cyberagent.kite.runtime/androidx.fragment.app.-fragment/kite-dsl.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onCreate(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-create.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onDestroy(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-destroy.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onLifecycleEvent(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function0((kotlin.Unit)), kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-lifecycle-event.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onPause(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-pause.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onResume(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-resume.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onStart(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-start.md
+$dokka.location:jp.co.cyberagent.kite.runtime$onStop(jp.co.cyberagent.kite.core.KiteDslScope, kotlin.Function0((kotlin.Unit)))jp.co.cyberagent.kite.runtime/jp.co.cyberagent.kite.core.-kite-dsl-scope/on-stop.md
+jp.co.cyberagent.kite.runtime

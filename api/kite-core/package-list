@@ -1,0 +1,4 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+jp.co.cyberagent.kite.core
