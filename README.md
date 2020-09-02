@@ -3,7 +3,7 @@
 [![Android API](https://img.shields.io/badge/API-14%2B-blue.svg?label=API&maxAge=300)](https://www.android.com/history/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-**_This project is currently in development and the API subject to breaking changes without notice._**
+**_Deperated._**
 
 A Kotlin DSL to bind Android UI components to your app state.
 
